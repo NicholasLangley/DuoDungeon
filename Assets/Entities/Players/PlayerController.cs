@@ -24,19 +24,13 @@ public class PlayerController : MonoBehaviour, ICommandable
 
     public List<Command> GetCommands()
     {
-        
-        List<Command> commands = new List<Command>();
-
-        if (Input.GetKeyDown(KeyCode.W))
+        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
-            MoveCommand mcRed = new MoveCommand(redPlayer, redPlayer.transform.position, redPlayer.transform.position + redPlayer.transform.forward);
-            MoveCommand mcBlue = new MoveCommand(bluePlayer, bluePlayer.transform.position, bluePlayer.transform.position + bluePlayer.transform.forward);
-
-            commands.Add(mcRed);
-            commands.Add(mcBlue);
-
-            return commands;
+            return AttemptMovement();
         }
+        
+
+        
 
         return null;
     }
@@ -46,5 +40,44 @@ public class PlayerController : MonoBehaviour, ICommandable
     public bool CheckIfBusy()
     {
         return (redPlayer.busy || bluePlayer.busy);
+    }
+
+    //movement
+    List<Command> AttemptMovement()
+    {
+        List<Command> commands = new List<Command>();
+
+        Vector3 nextRedPos = redPlayer.transform.position;
+        Vector3 nextBluePos = bluePlayer.transform.position;
+
+        if (Input.GetAxisRaw("Vertical") > 0)
+        {
+            nextRedPos += redPlayer.transform.forward;
+            nextBluePos += bluePlayer.transform.forward;
+        }
+        else if (Input.GetAxisRaw("Vertical") < 0)
+        {
+            nextRedPos -= redPlayer.transform.forward;
+            nextBluePos -= bluePlayer.transform.forward;
+        }
+        else if (Input.GetAxisRaw("Horizontal") > 0)
+        {
+            nextRedPos += redPlayer.transform.right;
+            nextBluePos += bluePlayer.transform.right;
+        }
+        else if (Input.GetAxisRaw("Horizontal") < 0)
+        {
+            nextRedPos -= redPlayer.transform.right;
+            nextBluePos -= bluePlayer.transform.right;
+        }
+        else { return null; }
+
+        MoveCommand mcRed = new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
+        MoveCommand mcBlue = new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+
+        commands.Add(mcRed);
+        commands.Add(mcBlue);
+
+        return commands;
     }
 }
