@@ -87,8 +87,8 @@ public class PlayerController : MonoBehaviour, ICommandable
         Command cmdBlue;
 
         //return command based on if space is occupied or not
-        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, redPlayer.transform.position, nextRedPos) : new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
-        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, bluePlayer.transform.position, nextBluePos) : new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, nextRedPos) : new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
+        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, nextBluePos) : new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
 
         commands.Add(cmdRed);
         commands.Add(cmdBlue);

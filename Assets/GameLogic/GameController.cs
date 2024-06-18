@@ -38,7 +38,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //no need to check for turn logic if entities are performing an action
         if (checkForBusyEntities() == true) { return; }
+
+
         if (takingTurn)
         {
             environmentalTurn();

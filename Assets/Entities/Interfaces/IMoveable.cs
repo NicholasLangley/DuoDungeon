@@ -10,4 +10,6 @@ public interface IMoveable
     float movementLerpDuration { get; set; }
 
     public void MoveTo(Vector3 dest);
+
+    public void FailToMoveTo(Vector3 dest);
 }

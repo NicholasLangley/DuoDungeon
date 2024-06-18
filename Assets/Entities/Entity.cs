@@ -64,7 +64,13 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         stateMachine.changeState(movementState);
     }
 
-    
+    public void FailToMoveTo(Vector3 dest)
+    {
+        destPosition = dest;
+        srcPosition = transform.position;
+        stateMachine.changeState(movementBlockedState);
+    }
+
 
     public Command GetCommand()
     {
