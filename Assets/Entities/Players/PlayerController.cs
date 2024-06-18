@@ -24,10 +24,16 @@ public class PlayerController : MonoBehaviour, ICommandable
 
     public List<Command> GetCommands()
     {
+        //Movement
         if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             return AttemptMovement();
         }
+
+        //Attack
+
+
+        //Interact
         
 
         
@@ -50,6 +56,7 @@ public class PlayerController : MonoBehaviour, ICommandable
         Vector3 nextRedPos = redPlayer.transform.position;
         Vector3 nextBluePos = bluePlayer.transform.position;
 
+        //get next position for each player
         if (Input.GetAxisRaw("Vertical") > 0)
         {
             nextRedPos += redPlayer.transform.forward;
@@ -72,11 +79,19 @@ public class PlayerController : MonoBehaviour, ICommandable
         }
         else { return null; }
 
-        MoveCommand mcRed = new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
-        MoveCommand mcBlue = new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+        //check if space is occupied
+        bool redBlocked = false;
+        bool blueBlocked = false;
 
-        commands.Add(mcRed);
-        commands.Add(mcBlue);
+        Command cmdRed;
+        Command cmdBlue;
+
+        //return command based on if space is occupied or not
+        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, redPlayer.transform.position, nextRedPos) : new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
+        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, bluePlayer.transform.position, nextBluePos) : new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+
+        commands.Add(cmdRed);
+        commands.Add(cmdBlue);
 
         return commands;
     }

@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
+    private void Awake()
+    {
+        base.Awake();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        base.Start();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (moving) { Move(); }
+        base.Update();
     }
 }

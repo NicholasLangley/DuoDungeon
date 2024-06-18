@@ -8,30 +8,52 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     //IMoveable variables
     public Vector3 srcPosition { get; set; }
     public Vector3 destPosition { get; set; }
-    public float movementLerpTimer { get; set; }
 
     [field: SerializeField] public float movementLerpDuration { get; set; }
-    public bool moving { get; set; }
 
 
     //ICommandable variables
-    public bool busy { get; set; }
+    [field: SerializeField] public bool busy { get; set; }
 
+    #region State Machine
+
+    public EntityStateMachine stateMachine;
+
+    public EntityIdleState idleState;
+    public EntityMovementState movementState;
+    public EntityMovementBlockedState movementBlockedState;
+
+    #endregion
+
+    protected void Awake()
+    {
+        #region Create State Machine and states
+        stateMachine = new EntityStateMachine();
+
+        idleState = new EntityIdleState(this, stateMachine);
+        movementState = new EntityMovementState(this, stateMachine);
+        movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
+
+        #endregion
+    }
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
-        //IMoveable
-        moving = false;
-
         //ICommandable
         busy = false;
+
+        #region Initialize State Machine
+
+        stateMachine.Initialize(idleState);
+
+        #endregion
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
-        
+        stateMachine.currentState.StateUpdate();
     }
 
 
@@ -39,23 +61,14 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     {
         destPosition = dest;
         srcPosition = transform.position;
-        movementLerpTimer = 0;
-        moving = true;
-        busy = true;
+        stateMachine.changeState(movementState);
     }
 
-    public void Move()
-    {
-        movementLerpTimer += Time.deltaTime;
-        Vector3 movePos = Vector3.Lerp(srcPosition, destPosition, movementLerpTimer / movementLerpDuration);
-        transform.position = movePos;
-
-        if (movementLerpTimer >= movementLerpDuration) { moving = false; busy = false; }
-    }
+    
 
     public Command GetCommand()
     {
-        return null;
+        return stateMachine.currentState.StateGetCommand();
     }
 
     public List<Command> GetCommands() { return null; }

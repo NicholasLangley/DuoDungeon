@@ -38,27 +38,22 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (checkForBusyEntities() == true) { return; }
         if (takingTurn)
         {
-            if (checkForBusyEntities() == false)
-            {
-                environmentalTurn();
-            }
+            environmentalTurn();
             if (takingTurn == false) { previousTurns.Push(currentTurn);}
         }
 
         else if (undoingTurn)
         {
-            if (checkForBusyEntities() == false)
-            {
-                currentlyUndoingTurn.undoLayer(currentUndoLayer--);
-                if (currentUndoLayer < 0) { undoingTurn = false; }
-            }
+            currentlyUndoingTurn.undoLayer(currentUndoLayer--);
+            if (currentUndoLayer < 0) { undoingTurn = false; }
         }
 
         else if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            BeginUndoingTurn();            
+            BeginUndoingTurn();
         }
 
         else { checkForPlayerTakingTurn(); }
