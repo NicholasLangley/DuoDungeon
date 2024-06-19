@@ -80,8 +80,18 @@ public class PlayerController : MonoBehaviour, ICommandable
         else { return null; }
 
         //check if space is occupied
-        bool redBlocked = false;
-        bool blueBlocked = false;
+        bool redBlocked = redPlayer.isDestinationOccupied(nextRedPos);
+        bool blueBlocked = bluePlayer.isDestinationOccupied(nextBluePos);
+
+        //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
+        if(redBlocked && !blueBlocked && nextRedPos == bluePlayer.transform.position)
+        {
+            redBlocked = false;
+        }
+        else if (blueBlocked && !redBlocked && nextBluePos == redPlayer.transform.position)
+        {
+            blueBlocked = false;
+        }
 
         Command cmdRed;
         Command cmdBlue;

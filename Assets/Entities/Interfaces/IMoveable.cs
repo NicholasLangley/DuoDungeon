@@ -9,6 +9,8 @@ public interface IMoveable
     Vector3 destPosition { get; set; }
     float movementLerpDuration { get; set; }
 
+    LayerMask movementCollisionMask { get; set; }
+
     public void MoveTo(Vector3 dest);
 
     public void FailToMoveTo(Vector3 dest);

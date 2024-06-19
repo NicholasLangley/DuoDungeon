@@ -9,6 +9,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     public Vector3 srcPosition { get; set; }
     public Vector3 destPosition { get; set; }
 
+    [field: SerializeField] public LayerMask movementCollisionMask { get; set; }
+
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
 
@@ -71,6 +73,15 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         stateMachine.changeState(movementBlockedState);
     }
 
+    public bool isDestinationOccupied(Vector3 destinationToCheck)
+    {
+        if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     public Command GetCommand()
     {
