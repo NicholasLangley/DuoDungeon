@@ -13,6 +13,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
 
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
+    public float degreesToRotate { get; set; }
+
 
     //ICommandable variables
     [field: SerializeField] public bool busy { get; set; }
@@ -24,6 +26,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     public EntityIdleState idleState;
     public EntityMovementState movementState;
     public EntityMovementBlockedState movementBlockedState;
+    public EntityRotationState rotationState;
 
     #endregion
 
@@ -35,6 +38,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         idleState = new EntityIdleState(this, stateMachine);
         movementState = new EntityMovementState(this, stateMachine);
         movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
+        rotationState = new EntityRotationState(this, stateMachine);
 
         #endregion
     }
@@ -73,7 +77,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         stateMachine.changeState(movementBlockedState);
     }
 
-    public bool isDestinationOccupied(Vector3 destinationToCheck)
+    public bool IsDestinationOccupied(Vector3 destinationToCheck)
     {
         if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
         {
@@ -81,6 +85,12 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         }
 
         return false;
+    }
+
+    public void RotateBy(float degrees)
+    {
+        degreesToRotate = degrees;
+        stateMachine.changeState(rotationState);
     }
 
     public Command GetCommand()

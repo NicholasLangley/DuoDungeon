@@ -25,18 +25,22 @@ public class PlayerController : MonoBehaviour, ICommandable
     public List<Command> GetCommands()
     {
         //Movement
-        if(Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             return AttemptMovement();
         }
+
+        //rotation
+        else if (Input.GetKeyDown(KeyCode.Q)) { return RotatePlayers(-90f); }
+        else if (Input.GetKeyDown(KeyCode.E)) { return RotatePlayers(90f); }
 
         //Attack
 
 
         //Interact
-        
 
-        
+
+
 
         return null;
     }
@@ -80,8 +84,8 @@ public class PlayerController : MonoBehaviour, ICommandable
         else { return null; }
 
         //check if space is occupied
-        bool redBlocked = redPlayer.isDestinationOccupied(nextRedPos);
-        bool blueBlocked = bluePlayer.isDestinationOccupied(nextBluePos);
+        bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
+        bool blueBlocked = bluePlayer.IsDestinationOccupied(nextBluePos);
 
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
         if(redBlocked && !blueBlocked && nextRedPos == bluePlayer.transform.position)
@@ -99,6 +103,23 @@ public class PlayerController : MonoBehaviour, ICommandable
         //return command based on if space is occupied or not
         cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, nextRedPos) : new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
         cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, nextBluePos) : new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+
+        commands.Add(cmdRed);
+        commands.Add(cmdBlue);
+
+        return commands;
+    }
+
+    List<Command> RotatePlayers(float degrees)
+    {
+        List<Command> commands = new List<Command>();
+
+        Command cmdRed;
+        Command cmdBlue;
+
+        //return command based on if space is occupied or not
+        cmdRed = new RotationCommand(redPlayer, degrees);
+        cmdBlue = new RotationCommand(bluePlayer, degrees);
 
         commands.Add(cmdRed);
         commands.Add(cmdBlue);

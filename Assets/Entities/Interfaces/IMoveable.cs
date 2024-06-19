@@ -11,7 +11,11 @@ public interface IMoveable
 
     LayerMask movementCollisionMask { get; set; }
 
+    float degreesToRotate { get; set; }
+
     public void MoveTo(Vector3 dest);
 
     public void FailToMoveTo(Vector3 dest);
+
+    public void RotateBy(float degrees);
 }
