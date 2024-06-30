@@ -13,7 +13,8 @@ TagManager:
   - UI
   - Player
   - Enemy
-  - Wall
+  - BlockMovement
+  - BlockProjectiles
   - 
   - 
   - 
@@ -34,9 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
+  - RedBody
+  - BlueBody
   m_SortingLayers:
   - name: Default
     uniqueID: 0

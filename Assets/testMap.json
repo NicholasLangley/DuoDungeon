@@ -1,0 +1,25 @@
+{
+    "metadata": "EMPTY",
+    "blocks": [
+        {
+            "type": 0,
+            "info": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "blocksMovement": true,
+                "blocksProjectiles": false
+            }
+        },
+        {
+            "type": 0,
+            "info": {
+                "x": 1,
+                "y": 1,
+                "z": 1,
+                "blocksMovement": true,
+                "blocksProjectiles": true
+            }
+        }
+    ]
+}

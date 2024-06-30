@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    //Map loading
+    MapLoader mapLoader;
+    //TEMPORARY//
+    [SerializeField]
+    TextAsset testMap;
+
+    //Turn variables
     Stack<Turn> previousTurns;
     bool takingTurn;
     Turn currentTurn;
@@ -24,6 +31,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mapLoader = new MapLoader();
+
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
 
@@ -60,6 +69,16 @@ public class GameController : MonoBehaviour
         }
 
         else { checkForPlayerTakingTurn(); }
+
+        //TEMP MAP LOAD TEST
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            mapLoader.loadMap(testMap);
+        }
+        else if (Input.GetKeyDown(KeyCode.N))
+        {
+            mapLoader.clearMap();
+        }
     }
 
     /////////////////
