@@ -6,6 +6,8 @@ using Newtonsoft.Json.Linq;
 
 public class BlockBuilder
 {
+    GameObject[] allPrefabs;
+
     public enum BlockType { Basic, Door, Ice }
 
     public BlockBuilder()
@@ -13,27 +15,40 @@ public class BlockBuilder
 
     }
 
+    public void loadAllPrefabs()
+    {
+        allPrefabs = Resources.LoadAll<GameObject>("Blocks");
+    }
+
+    public void clearAllPrefabs()
+    {
+        allPrefabs = null;
+    }
+
     public GameObject BuildBlock(BlockType type, Newtonsoft.Json.Linq.JToken blockInfo)
     {
-        GameObject newBlock = new GameObject();
         switch (type)
             {
             case BlockType.Door:
-                break;
+                return null;
 
             case BlockType.Ice:
-                break;
+                return null;
 
             default:
-                BaseBlock block = newBlock.AddComponent<BaseBlock>();
-                block.Initialize((bool)blockInfo["blocksMovement"], (bool)blockInfo["blocksProjectiles"]);
-                break;
+                return createDefaultBlock(blockInfo);
 
-        }
+        }    
+    }
+
+
+    GameObject createDefaultBlock(Newtonsoft.Json.Linq.JToken blockInfo)
+    {
+        int blockIndex = (int)blockInfo["block_id"];
+        GameObject newBlock = GameObject.Instantiate(allPrefabs[blockIndex]);
         Vector3 blockPos = new Vector3((int)blockInfo["x"], (int)blockInfo["y"], (int)blockInfo["z"]);
         newBlock.transform.position = blockPos;
 
         return newBlock;
-        
     }
 }

@@ -1,0 +1,23 @@
+{
+    "metadata": "EMPTY",
+    "blocks": [
+        {
+            "type": 0,
+          "info": {
+            "block_id":  0,
+            "x": 0,
+            "y": 0,
+            "z": 0,
+          }
+        },
+        {
+            "type": 0,
+          "info": {
+            "block_id": 0,
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        }
+    ]
+}
