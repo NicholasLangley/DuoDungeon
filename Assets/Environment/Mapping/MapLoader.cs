@@ -6,19 +6,14 @@ using Newtonsoft.Json.Linq;
 
 public class MapLoader
 {
-    GameObject mapParent;
-
     BlockBuilder blockBuilder;
-
-    List<GameObject> currentBlocks;
 
     public MapLoader()
     {
         blockBuilder = new BlockBuilder();
-        currentBlocks = new List<GameObject>();
     }
 
-    public void loadMap(TextAsset mapJsonFile)
+    public void loadMap(Map map, TextAsset mapJsonFile)
     {
         //load all prefabs - probably horrible efficiency, optimize later if necessary
         blockBuilder.loadAllPrefabs();
@@ -29,27 +24,14 @@ public class MapLoader
 
         //TODO METADATA STUFF//
 
-
-        mapParent = new GameObject();
-        mapParent.name = "MAP";
-
         //read and create blocks
         foreach (JObject blockObject in mapJson["blocks"])
         {
         GameObject newBlock = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
-        newBlock.transform.parent = mapParent.transform;
-        currentBlocks.Add(newBlock);
+        Vector3Int intPosition = new Vector3Int(Mathf.RoundToInt(newBlock.transform.position.x), Mathf.RoundToInt(newBlock.transform.position.y), Mathf.RoundToInt(newBlock.transform.position.z));
+        map.AddBlock(intPosition, newBlock);
         }
 
         blockBuilder.clearAllPrefabs();
-    }
-
-    public void clearMap()
-    {
-        foreach(GameObject block in currentBlocks)
-        {
-            GameObject.Destroy(block);
-        }
-        GameObject.Destroy(mapParent);
     }
 }

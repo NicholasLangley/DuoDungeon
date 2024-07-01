@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //Map loading
+    Map currentlyLoadedMap;
     MapLoader mapLoader;
     //TEMPORARY//
     [SerializeField]
@@ -32,6 +33,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         mapLoader = new MapLoader();
+        currentlyLoadedMap = new Map();
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
@@ -73,11 +75,12 @@ public class GameController : MonoBehaviour
         //TEMP MAP LOAD TEST
         if(Input.GetKeyDown(KeyCode.B))
         {
-            mapLoader.loadMap(testMap);
+            currentlyLoadedMap.ClearMap();
+            mapLoader.loadMap(currentlyLoadedMap, testMap);
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
-            mapLoader.clearMap();
+            currentlyLoadedMap.ClearMap();
         }
     }
 
