@@ -97,6 +97,9 @@ public class PlayerController : MonoBehaviour, ICommandable
             blueBlocked = false;
         }
 
+        //red player takes precedence if both try to move to same location
+        if (nextRedPos == nextBluePos) { blueBlocked = true; }
+
         Command cmdRed;
         Command cmdBlue;
 

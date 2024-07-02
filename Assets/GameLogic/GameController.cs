@@ -5,11 +5,14 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //Map loading
+    [SerializeField]
     Map currentlyLoadedMap;
     MapLoader mapLoader;
     //TEMPORARY//
     [SerializeField]
     TextAsset testMap;
+    [SerializeField]
+    BlockPrefabGenerator blockPrefabGenerator;
 
     //Turn variables
     Stack<Turn> previousTurns;
@@ -32,8 +35,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapLoader = new MapLoader();
-        currentlyLoadedMap = new Map();
+        mapLoader = new MapLoader(blockPrefabGenerator);
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();

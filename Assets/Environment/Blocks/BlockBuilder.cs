@@ -6,49 +6,51 @@ using Newtonsoft.Json.Linq;
 
 public class BlockBuilder
 {
-    GameObject[] allPrefabs;
+    BlockPrefabGenerator blockPrefabGenerator;
 
     public enum BlockType { Basic, Door, Ice }
 
-    public BlockBuilder()
+    public BlockBuilder(BlockPrefabGenerator bfg)
     {
-
+        blockPrefabGenerator = bfg;
     }
 
-    public void loadAllPrefabs()
-    {
-        allPrefabs = Resources.LoadAll<GameObject>("Blocks");
-    }
 
-    public void clearAllPrefabs()
+    public Block BuildBlock(BlockType type, JToken blockEntry)
     {
-        allPrefabs = null;
-    }
+        Block newBlock = blockPrefabGenerator.generatePrefab((int)blockEntry["block_id"]);
 
-    public GameObject BuildBlock(BlockType type, Newtonsoft.Json.Linq.JToken blockInfo)
-    {
+        setBlockPosition(newBlock, blockEntry["position"]);
+        setBlockRotation(newBlock, blockEntry["rotation"]);
+
         switch (type)
             {
             case BlockType.Door:
-                return null;
+                break;
 
             case BlockType.Ice:
-                return null;
+                break;
 
             default:
-                return createDefaultBlock(blockInfo);
+                break;
+        }
 
-        }    
+        return newBlock;
     }
 
 
-    GameObject createDefaultBlock(Newtonsoft.Json.Linq.JToken blockInfo)
-    {
-        int blockIndex = (int)blockInfo["block_id"];
-        GameObject newBlock = GameObject.Instantiate(allPrefabs[blockIndex]);
-        Vector3 blockPos = new Vector3((int)blockInfo["x"], (int)blockInfo["y"], (int)blockInfo["z"]);
-        newBlock.transform.position = blockPos;
 
-        return newBlock;
+
+
+    public void setBlockPosition(Block block, JToken position)
+    {
+        Vector3 blockPos = new Vector3((int)position["x"], (int)position["y"], (int)position["z"]);
+        block.transform.position = blockPos;
+    }
+
+    public void setBlockRotation(Block block, JToken rotation)
+    {
+        //Quaternion blockRotation = new Quaternion((int)rotation["x"], (int)rotation["y"], (int)rotation["z"], 0);
+        //block.transform.rotation = blockRotation;
     }
 }

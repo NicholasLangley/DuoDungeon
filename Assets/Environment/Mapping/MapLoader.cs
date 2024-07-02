@@ -8,17 +8,13 @@ public class MapLoader
 {
     BlockBuilder blockBuilder;
 
-    public MapLoader()
+    public MapLoader(BlockPrefabGenerator blockPrefabGenerator)
     {
-        blockBuilder = new BlockBuilder();
+        blockBuilder = new BlockBuilder(blockPrefabGenerator);
     }
 
     public void loadMap(Map map, TextAsset mapJsonFile)
     {
-        //load all prefabs - probably horrible efficiency, optimize later if necessary
-        blockBuilder.loadAllPrefabs();
-
-
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJsonFile.text);
 
@@ -27,11 +23,9 @@ public class MapLoader
         //read and create blocks
         foreach (JObject blockObject in mapJson["blocks"])
         {
-        GameObject newBlock = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
-        Vector3Int intPosition = new Vector3Int(Mathf.RoundToInt(newBlock.transform.position.x), Mathf.RoundToInt(newBlock.transform.position.y), Mathf.RoundToInt(newBlock.transform.position.z));
+        Block newBlock = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
+        Vector3Int intPosition = Map.GetIntVector3(newBlock.transform.position);
         map.AddBlock(intPosition, newBlock);
         }
-
-        blockBuilder.clearAllPrefabs();
     }
 }

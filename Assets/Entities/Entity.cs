@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, IMoveable, ICommandable
 {
+    [SerializeField]
+    Map map;
 
     //IMoveable variables
     public Vector3 srcPosition { get; set; }
@@ -79,6 +81,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
 
     public bool IsDestinationOccupied(Vector3 destinationToCheck)
     {
+        Block destinationBlock = map.GetBlock(Map.GetIntVector3(destinationToCheck));
+        if (destinationBlock != null && destinationBlock.blocksMovement) { return true; }
+
         if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
         {
             return true;

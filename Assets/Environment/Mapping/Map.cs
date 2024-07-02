@@ -2,34 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map
+public class Map : MonoBehaviour
 {
-    GameObject mapParent;
+    Dictionary<Vector3Int, Block> currentBlocks;
 
-    Dictionary<Vector3Int, GameObject> currentBlocks;
-
-    public Map()
+    public void Start()
     {
-        currentBlocks = new Dictionary<Vector3Int, GameObject>();
-
-        mapParent = new GameObject();
-        mapParent.name = "MAP";
+        currentBlocks = new Dictionary<Vector3Int, Block>();
     }
 
     public void ClearMap()
     {
-        foreach (GameObject block in currentBlocks.Values)
+        foreach (Block block in currentBlocks.Values)
         {
-            GameObject.Destroy(block);
+            GameObject.Destroy(block.gameObject);
         }
         currentBlocks.Clear();
     }
 
-    public void AddBlock(Vector3Int position, GameObject block)
+    public void AddBlock(Vector3Int position, Block block)
     {
         currentBlocks.Add(position, block);
-        block.transform.parent = mapParent.transform;
+        block.transform.parent = transform;
     }
 
+    public Block GetBlock(Vector3Int position)
+    {
+        if (currentBlocks.ContainsKey(position)) { return currentBlocks[position]; }
+
+        return null;
+    }
+
+    public static Vector3Int GetIntVector3(Vector3 floatVector)
+    {
+        return new Vector3Int(Mathf.RoundToInt(floatVector.x), Mathf.RoundToInt(floatVector.y), Mathf.RoundToInt(floatVector.z));
+    }
 
 }
