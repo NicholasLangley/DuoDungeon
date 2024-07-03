@@ -840,9 +840,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1f114e2a979534bb2c404c79a6deb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentlyLoadedMap: {fileID: 723354872}
+  map: {fileID: 723354872}
+  blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
   testMap: {fileID: 4900000, guid: 6649e02146f7b1140bceec99cc12d06f, type: 3}
-  blockPrefabGenerator: {fileID: 11400000, guid: 99ad44fe72013164c9f40345ae937c45, type: 2}
   playerController: {fileID: 190484678}
 --- !u!4 &1848279068
 Transform:

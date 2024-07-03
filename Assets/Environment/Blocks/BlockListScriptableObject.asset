@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f4eeb630a84ce8409703b9d8f0dc920, type: 3}
-  m_Name: BlockPrefabGeneratorScriptableObject
+  m_Script: {fileID: 11500000, guid: c49efeedff8b4104895a2fa9a11bc00e, type: 3}
+  m_Name: BlockListScriptableObject
   m_EditorClassIdentifier: 
   blocks:
   - {fileID: 7898873113469120169, guid: 3ef39e87e6cb3b147b62e527b1e5fe60, type: 3}

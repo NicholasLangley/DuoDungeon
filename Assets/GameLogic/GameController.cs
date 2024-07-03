@@ -6,13 +6,14 @@ public class GameController : MonoBehaviour
 {
     //Map loading
     [SerializeField]
-    Map currentlyLoadedMap;
-    MapLoader mapLoader;
+    Map map;
+    MapBuilder mapBuilder;
+    [SerializeField]
+    BlockList blockList;
+    BlockBuilder blockBuilder;
     //TEMPORARY//
     [SerializeField]
     TextAsset testMap;
-    [SerializeField]
-    BlockPrefabGenerator blockPrefabGenerator;
 
     //Turn variables
     Stack<Turn> previousTurns;
@@ -35,7 +36,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapLoader = new MapLoader(blockPrefabGenerator);
+        blockBuilder = new BlockBuilder(blockList);
+        mapBuilder = new MapBuilder(blockBuilder, map);
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
@@ -77,12 +79,12 @@ public class GameController : MonoBehaviour
         //TEMP MAP LOAD TEST
         if(Input.GetKeyDown(KeyCode.B))
         {
-            currentlyLoadedMap.ClearMap();
-            mapLoader.loadMap(currentlyLoadedMap, testMap);
+            map.ClearMap();
+            mapBuilder.loadMap(testMap);
         }
         else if (Input.GetKeyDown(KeyCode.N))
         {
-            currentlyLoadedMap.ClearMap();
+            map.ClearMap();
         }
     }
 

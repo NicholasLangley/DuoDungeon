@@ -4,21 +4,21 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+
 public class BlockBuilder
 {
-    BlockPrefabGenerator blockPrefabGenerator;
+    BlockList blockList;
+
+    public BlockBuilder(BlockList list)
+    {
+        blockList = list;
+    }
 
     public enum BlockType { Basic, Door, Ice }
 
-    public BlockBuilder(BlockPrefabGenerator bfg)
-    {
-        blockPrefabGenerator = bfg;
-    }
-
-
     public Block BuildBlock(BlockType type, JToken blockEntry)
     {
-        Block newBlock = blockPrefabGenerator.generatePrefab((int)blockEntry["block_id"]);
+        Block newBlock = generatePrefab((int)blockEntry["block_id"]);
 
         setBlockPosition(newBlock, blockEntry["position"]);
         setBlockRotation(newBlock, blockEntry["rotation"]);
@@ -40,7 +40,10 @@ public class BlockBuilder
 
 
 
-
+    Block generatePrefab(int blockID)
+    {
+        return GameObject.Instantiate(blockList.getBlock(blockID));
+    }
 
     public void setBlockPosition(Block block, JToken position)
     {
