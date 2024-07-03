@@ -12,4 +12,9 @@ public class BlockList : ScriptableObject
     {
         return blocks[blockId];
     }
+
+    public int GetLength()
+    {
+        return blocks.Count;
+    }
 }
