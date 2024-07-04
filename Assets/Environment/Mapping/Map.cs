@@ -23,7 +23,6 @@ public class Map : MonoBehaviour
     public void AddBlock(Vector3Int position, Block block)
     {
         currentBlocks.Add(position, block);
-        block.transform.parent = transform;
     }
 
     public Block GetBlock(Vector3Int position)

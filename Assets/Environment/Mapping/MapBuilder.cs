@@ -28,6 +28,7 @@ public class MapBuilder
             Block newBlock = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
             Vector3Int intPosition = Map.GetIntVector3(newBlock.transform.position);
             map.AddBlock(intPosition, newBlock);
+            newBlock.transform.parent = map.transform;
         }
     }
 

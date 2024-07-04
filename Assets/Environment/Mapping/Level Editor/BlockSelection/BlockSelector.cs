@@ -12,6 +12,8 @@ public class BlockSelector : MonoBehaviour
     GameObject blockButtonPrefab;
     [SerializeField]
     GameObject blockButtonGrid;
+    [SerializeField]
+    BlockPlacer blockPlacer;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -35,5 +37,6 @@ public class BlockSelector : MonoBehaviour
     public void selectBlock(Block block)
     {
         Debug.Log("Selected Block " + block.name);
+        blockPlacer.setBlock(block);
     }
 }

@@ -9,6 +9,8 @@ public class yLevelManager : MonoBehaviour
 
     [SerializeField]
     TextMeshProUGUI yText;
+    [SerializeField]
+    BlockPlacer blockPlacer;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -16,27 +18,27 @@ public class yLevelManager : MonoBehaviour
         yLevel = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void incrementYLevel()
     {
         yLevel++;
-        yText.text = yLevel.ToString();
+        updateYLevel();
     }
 
     public void decrementYLevel()
     {
         yLevel--;
-        yText.text = yLevel.ToString();
+        updateYLevel();
     }
 
     public void setYLevel(int y)
     {
         yLevel = y;
+        updateYLevel();
+    }
+
+    void updateYLevel()
+    {
         yText.text = yLevel.ToString();
+        blockPlacer.SetYIntersectionPlane(yLevel);
     }
 }
