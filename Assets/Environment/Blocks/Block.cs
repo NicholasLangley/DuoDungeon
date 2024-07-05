@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    public int blockID { get; set; }
+
     [SerializeField]
     public bool blocksMovement, blocksProjectiles, isInbetweenBlock;
 

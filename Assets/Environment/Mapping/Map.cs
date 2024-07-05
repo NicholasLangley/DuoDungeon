@@ -22,6 +22,13 @@ public class Map : MonoBehaviour
 
     public void AddBlock(Vector3Int position, Block block)
     {
+        //overwrite
+        if (currentBlocks.ContainsKey(position)) 
+        {
+            GameObject.Destroy(currentBlocks[position].gameObject);
+            currentBlocks.Remove(position); 
+        }
+
         currentBlocks.Add(position, block);
     }
 

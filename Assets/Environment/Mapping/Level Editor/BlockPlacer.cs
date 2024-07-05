@@ -5,6 +5,7 @@ using UnityEngine;
 public class BlockPlacer : MonoBehaviour
 {
     Block currentBlock;
+    int currentBlockID;
     Block blockPlacementIndicator;
     MeshRenderer blockPlacementMesh;
     Plane yLevelIntersectionPlane;
@@ -16,7 +17,7 @@ public class BlockPlacer : MonoBehaviour
     {
         currentBlock = null;
         blockPlacementIndicator = null;
-        yLevelIntersectionPlane = new Plane();
+        yLevelIntersectionPlane = new Plane(); 
         SetYIntersectionPlane(0);
     }
 
@@ -44,12 +45,15 @@ public class BlockPlacer : MonoBehaviour
 
     }
 
-    public void setBlock(Block block)
+    public void setBlock(Block block, int id)
     {
         currentBlock = block;
+        currentBlockID = id;
         if (blockPlacementIndicator != null) { GameObject.Destroy(blockPlacementIndicator.gameObject); }
-        blockPlacementIndicator = GameObject.Instantiate(block, transform);
+        blockPlacementIndicator = GameObject.Instantiate(block);
+        blockPlacementIndicator.name = "blockPlacementIndicator";
         blockPlacementMesh = blockPlacementIndicator.GetComponent<MeshRenderer>();
+        blockPlacementIndicator.gameObject.AddComponent<GridLines>();
     }
 
     public void SetYIntersectionPlane(int yLevel)
@@ -60,8 +64,10 @@ public class BlockPlacer : MonoBehaviour
     void PlaceBlock(Vector3Int position)
     {
         Block newBlock = Instantiate(currentBlock, map.transform);
+        newBlock.blockID = currentBlockID;
         newBlock.transform.position = position;
-        map.AddBlock(position, currentBlock);
+        map.AddBlock(position, newBlock);
+        Debug.Log(newBlock.blockID);
     }
 
     void hideBlock()

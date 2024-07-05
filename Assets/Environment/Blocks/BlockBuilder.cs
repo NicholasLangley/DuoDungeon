@@ -42,7 +42,9 @@ public class BlockBuilder
 
     Block generatePrefab(int blockID)
     {
-        return GameObject.Instantiate(blockList.getBlock(blockID));
+        Block prefab = GameObject.Instantiate(blockList.getBlock(blockID));
+        prefab.blockID = blockID;
+        return prefab;
     }
 
     public void setBlockPosition(Block block, JToken position)

@@ -23,8 +23,9 @@ public class BlockSelector : MonoBehaviour
             GameObject newButton = Instantiate(blockButtonPrefab, blockButtonGrid.transform);
             BlockSelectionButton blockButton = newButton.GetComponent<BlockSelectionButton>();
             blockButton.SetBlock(i, blockList.getBlock(i));
+            int blockID = i; //if you just pass in i, every button sends blockList.GetLength();
 
-            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block));
+            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockID));
         }
     }
 
@@ -34,9 +35,8 @@ public class BlockSelector : MonoBehaviour
         
     }
 
-    public void selectBlock(Block block)
+    public void selectBlock(Block block, int id)
     {
-        Debug.Log("Selected Block " + block.name);
-        blockPlacer.setBlock(block);
+        blockPlacer.setBlock(block, id);
     }
 }
