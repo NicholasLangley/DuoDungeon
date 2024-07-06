@@ -43,6 +43,34 @@ public class BlockPlacer : MonoBehaviour
             PlaceBlock(Map.GetIntVector3(intersectionPos));
         }
 
+
+        //BLOCK ROTATION
+        //probably rewrite this later
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            RotateBlockPlacement(RotationDirection.FORWARD);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            RotateBlockPlacement(RotationDirection.LEFT);
+        }
+        else if (Input.GetKeyDown(KeyCode.K))
+        {
+            RotateBlockPlacement(RotationDirection.BACK);
+        }
+        else if (Input.GetKeyDown(KeyCode.L))
+        {
+            RotateBlockPlacement(RotationDirection.RIGHT);
+        }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            RotateBlockPlacement(RotationDirection.LEFTROLL);
+        }
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            RotateBlockPlacement(RotationDirection.RIGHTROLL);
+        }
+
     }
 
     public void setBlock(Block block, int id)
@@ -66,8 +94,8 @@ public class BlockPlacer : MonoBehaviour
         Block newBlock = Instantiate(currentBlock, map.transform);
         newBlock.blockID = currentBlockID;
         newBlock.transform.position = position;
+        newBlock.transform.rotation = blockPlacementIndicator.transform.rotation;
         map.AddBlock(position, newBlock);
-        Debug.Log(newBlock.blockID);
     }
 
     void hideBlock()
@@ -78,6 +106,46 @@ public class BlockPlacer : MonoBehaviour
     void unHideBlock()
     {
         blockPlacementMesh.enabled = true;
+    }
+
+    enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
+
+    void RotateBlockPlacement(RotationDirection dir)
+    {
+        Vector3 rotationAxis;
+        float rotationAmount = 90;
+
+        switch (dir)
+        {
+            case RotationDirection.RIGHT:
+                rotationAxis = Vector3.up;
+                break;
+
+            case RotationDirection.LEFT:
+                rotationAxis = Vector3.up;
+                rotationAmount = -90f;
+                break;
+
+            case RotationDirection.FORWARD:
+                rotationAxis = Vector3.right;
+                break;
+
+            case RotationDirection.BACK:
+                rotationAxis = Vector3.right;
+                rotationAmount = -90f;
+                break;
+
+            case RotationDirection.RIGHTROLL:
+                rotationAxis = Vector3.forward;
+                break;
+
+            default: //LEFTROLL
+                rotationAxis = Vector3.forward;
+                rotationAmount = -90f;
+                break;
+        }
+
+        blockPlacementIndicator.transform.Rotate(rotationAxis, rotationAmount);
     }
 
 }
