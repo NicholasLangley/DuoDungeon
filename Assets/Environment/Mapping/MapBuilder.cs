@@ -30,11 +30,7 @@ public class MapBuilder
             map.AddBlock(intPosition, newBlock);
             newBlock.transform.parent = map.transform;
         }
+
+        map.saveMapToFile("saveTEST");
     }
-
-    public void SaveMap(string path)
-    {
-
-    }
-
 }

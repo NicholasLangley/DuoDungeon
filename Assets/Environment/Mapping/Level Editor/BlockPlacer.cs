@@ -145,7 +145,7 @@ public class BlockPlacer : MonoBehaviour
                 break;
         }
 
-        blockPlacementIndicator.transform.Rotate(rotationAxis, rotationAmount);
+        blockPlacementIndicator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
     }
 
 }

@@ -55,7 +55,7 @@ public class BlockBuilder
 
     public void setBlockRotation(Block block, JToken rotation)
     {
-        //Quaternion blockRotation = new Quaternion((int)rotation["x"], (int)rotation["y"], (int)rotation["z"], 0);
-        //block.transform.rotation = blockRotation;
+        Quaternion blockRotation = new Quaternion((float)rotation["x"], (float)rotation["y"], (float)rotation["z"], (float)rotation["w"]);
+        block.transform.rotation = blockRotation;
     }
 }
