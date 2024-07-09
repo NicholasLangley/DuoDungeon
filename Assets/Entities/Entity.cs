@@ -15,7 +15,11 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
 
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
+    [field: SerializeField] public bool affectedByGravity { get; set; }
+
     public float degreesToRotate { get; set; }
+
+
 
 
     //ICommandable variables
@@ -29,6 +33,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     public EntityMovementState movementState;
     public EntityMovementBlockedState movementBlockedState;
     public EntityRotationState rotationState;
+    public EntityFallingState fallingState;
 
     #endregion
 
@@ -41,6 +46,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         movementState = new EntityMovementState(this, stateMachine);
         movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
         rotationState = new EntityRotationState(this, stateMachine);
+        fallingState = new EntityFallingState(this, stateMachine);
 
         #endregion
     }
@@ -90,6 +96,18 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         }
 
         return false;
+    }
+
+    public bool isEntityGrounded()
+    {
+        Vector3Int groundPos = Map.GetIntVector3(transform.position);
+        groundPos.y -= 1;
+
+        Block groundBlock = map.GetBlock(groundPos);
+
+        if (groundBlock == null || !groundBlock.blocksMovement) { return false; }
+
+        return true;
     }
 
     public void RotateBy(float degrees)

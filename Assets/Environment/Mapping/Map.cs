@@ -7,7 +7,7 @@ public class Map : MonoBehaviour
 {
     Dictionary<Vector3Int, Block> currentBlocks;
 
-    public void Start()
+    public void Awake()
     {
         currentBlocks = new Dictionary<Vector3Int, Block>();
     }
@@ -46,7 +46,7 @@ public class Map : MonoBehaviour
     }
 
 
-    public void saveMapToFile(string filename)
+    public void SaveMapToFile(string filename)
     {
         string mapJSON = "{\n";
 

@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     List<Entity> _enivornmentalEntities;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         blockBuilder = new BlockBuilder(blockList);
         mapBuilder = new MapBuilder(blockBuilder, map);
@@ -48,6 +48,7 @@ public class GameController : MonoBehaviour
         previousTurns = new Stack<Turn>();
 
         //initialize map
+        mapBuilder.loadMap(testMap);
     }
 
     // Update is called once per frame
@@ -76,16 +77,7 @@ public class GameController : MonoBehaviour
 
         else { checkForPlayerTakingTurn(); }
 
-        //TEMP MAP LOAD TEST
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            map.ClearMap();
-            mapBuilder.loadMap(testMap);
-        }
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            map.ClearMap();
-        }
+
     }
 
     /////////////////

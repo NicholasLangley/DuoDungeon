@@ -17,6 +17,7 @@ public class MapBuilder
 
     public void loadMap(TextAsset mapJsonFile)
     {
+        map.ClearMap();
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJsonFile.text);
 
@@ -31,6 +32,6 @@ public class MapBuilder
             newBlock.transform.parent = map.transform;
         }
 
-        map.saveMapToFile("saveTEST");
+        //map.SaveMapToFile("saveTEST");
     }
 }

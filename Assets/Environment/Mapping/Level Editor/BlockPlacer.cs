@@ -38,7 +38,7 @@ public class BlockPlacer : MonoBehaviour
         }
         else if (blockPlacementMesh != null) { hideBlock(); }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && currentBlock != null && intersectionPos != Vector3.negativeInfinity)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && currentBlock != null)
         {
             PlaceBlock(Map.GetIntVector3(intersectionPos));
         }
@@ -91,6 +91,12 @@ public class BlockPlacer : MonoBehaviour
 
     void PlaceBlock(Vector3Int position)
     {
+        if (IsPositionOutOfBounds(position)) 
+        {
+            Debug.Log("block out of bounds");
+            return;
+        }
+
         Block newBlock = Instantiate(currentBlock, map.transform);
         newBlock.blockID = currentBlockID;
         newBlock.transform.position = position;
@@ -146,6 +152,15 @@ public class BlockPlacer : MonoBehaviour
         }
 
         blockPlacementIndicator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
+    }
+
+    bool IsPositionOutOfBounds(Vector3 pos)
+    {
+        if (pos.x >= int.MaxValue || pos.x <= int.MinValue) { return true; }
+        if (pos.y >= int.MaxValue || pos.y <= int.MinValue) { return true; }
+        if (pos.z >= int.MaxValue || pos.z <= int.MinValue) { return true; }
+
+        return false;
     }
 
 }
