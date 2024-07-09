@@ -45,6 +45,19 @@ public class PlayerController : MonoBehaviour, ICommandable
         return null;
     }
 
+    public List<Command> GetPassiveCommands()
+    {
+        List<Command> foundCommands = new List<Command>();
+
+        Command redCmd = redPlayer.GetPassiveCommand();
+        Command blueCmd = bluePlayer.GetPassiveCommand();
+
+        if (redCmd != null) { foundCommands.Add(redCmd); }
+        if (blueCmd != null) { foundCommands.Add(blueCmd); }
+
+        return foundCommands;
+    }
+
     public Command GetCommand() { return null; }
 
     public bool CheckIfBusy()
@@ -128,5 +141,16 @@ public class PlayerController : MonoBehaviour, ICommandable
         commands.Add(cmdBlue);
 
         return commands;
+    }
+
+    public void SetPlayersToUndo()
+    {
+        redPlayer.currentlyUndoing = true;
+        bluePlayer.currentlyUndoing = true;
+    }
+    public void UnsetPlayersFromUndo()
+    {
+        redPlayer.currentlyUndoing = false;
+        bluePlayer.currentlyUndoing = false;
     }
 }

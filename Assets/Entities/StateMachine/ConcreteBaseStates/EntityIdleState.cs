@@ -17,7 +17,6 @@ public class EntityIdleState : EntityState
     public override void EnterState()
     {
         _entity.busy = false;
-        if (!_entity.isEntityGrounded()) { _stateMachine.changeState(_entity.fallingState); }
     }
 
     public override void ExitState()

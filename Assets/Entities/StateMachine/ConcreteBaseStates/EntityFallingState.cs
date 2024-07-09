@@ -50,19 +50,13 @@ public class EntityFallingState : EntityState
     void Fall()
     {
         fallingLerpTimer += Time.deltaTime;
-        Vector3 movePos = Vector3.Lerp(startPos, fallDestination, fallingLerpTimer / _entity.movementLerpDuration);
+        Vector3 movePos = Vector3.Lerp(startPos, fallDestination, fallingLerpTimer / _entity.fallLerpDuration);
         _entity.transform.position = movePos;
 
-        if (fallingLerpTimer >= _entity.movementLerpDuration) 
+        if (fallingLerpTimer >= _entity.fallLerpDuration) 
         {
-            //landed
-            if (_entity.isEntityGrounded()) { _stateMachine.changeState(_entity.idleState); }
-            //still falling
-            else 
-            { 
-                GetNewFallDestination();
-                fallingLerpTimer = 0f;
-            }
+            //if player is still midair a new command will be genereated by the player controller
+            _stateMachine.changeState(_entity.idleState);
         }
     }
 
@@ -70,6 +64,7 @@ public class EntityFallingState : EntityState
     {
         startPos = _entity.transform.position;
         fallDestination = _entity.transform.position;
-        fallDestination.y -= 1;
+        if (_entity.currentlyUndoing) { fallDestination.y += 1; }
+        else { fallDestination.y -= 1; }
     }
 }

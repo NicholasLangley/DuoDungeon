@@ -12,6 +12,7 @@ public interface IMoveable
     LayerMask movementCollisionMask { get; set; }
 
     bool affectedByGravity { get; set; }
+    float fallLerpDuration { get; set; }
 
     float degreesToRotate { get; set; }
 
@@ -20,4 +21,6 @@ public interface IMoveable
     public void FailToMoveTo(Vector3 dest);
 
     public void RotateBy(float degrees);
+
+    public void Fall();
 }

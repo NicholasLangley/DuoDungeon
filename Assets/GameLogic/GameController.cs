@@ -60,14 +60,32 @@ public class GameController : MonoBehaviour
 
         if (takingTurn)
         {
-            environmentalTurn();
-            if (takingTurn == false) { previousTurns.Push(currentTurn);}
+            List<Command> activeEnvironmentCommands = ActiveEnvironmentalTurn();
+            List<Command> passiveEnvironmentCommands = PassiveEnvironmentalTurn();
+            //ends current turn
+            if (activeEnvironmentCommands.Count + passiveEnvironmentCommands.Count <= 0)
+            {
+                previousTurns.Push(currentTurn);
+                takingTurn = false;
+            }
+            //add commands to turn layer and continue
+            else{
+                currentTurn.AddTurnLayer();
+                foreach(Command activeCMD in activeEnvironmentCommands)
+                {
+                    currentTurn.AddCommand(activeCMD);
+                }
+                foreach (Command passiveCMD in passiveEnvironmentCommands)
+                {
+                    currentTurn.AddCommand(passiveCMD);
+                }
+            }
         }
 
         else if (undoingTurn)
         {
             currentlyUndoingTurn.undoLayer(currentUndoLayer--);
-            if (currentUndoLayer < 0) { undoingTurn = false; }
+            if (currentUndoLayer < 0) { FinishUndoingTurn(); }
         }
 
         else if (Input.GetKeyDown(KeyCode.Backspace))
@@ -83,6 +101,8 @@ public class GameController : MonoBehaviour
     /////////////////
     //Taking Turn ///
     ////////////////
+    
+    //StartTurn on player input
     void checkForPlayerTakingTurn()
     {
         List<Command> playerCommands = playerController.GetCommands();
@@ -103,6 +123,7 @@ public class GameController : MonoBehaviour
         enemiesTakeTurn();
     }
 
+    //enemies act at same time as player
     void enemiesTakeTurn()
     {
         foreach (Entity enemy in _enemies)
@@ -116,26 +137,54 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void environmentalTurn()
+    //environmental active triggers such as traps
+    List<Command> ActiveEnvironmentalTurn()
     {
-        bool environmentalEntityActivatedThisLayer = false;
+        List<Command> triggeredCommands = new List<Command>();
 
         foreach (Entity environmentalEntity in _enivornmentalEntities)
         {
             Command cmd = environmentalEntity.GetCommand();
             if (cmd != null)
             {
-                if(environmentalEntityActivatedThisLayer == false)
-                {
-                    currentTurn.AddTurnLayer();
-                    environmentalEntityActivatedThisLayer = true;
-                }
                 cmd.Execute();
-                currentTurn.AddCommand(cmd);
+                triggeredCommands.Add(cmd);
             }
         }
 
-        takingTurn = environmentalEntityActivatedThisLayer;
+        return triggeredCommands;
+    }
+
+    //entities check for active environmental effects such as ice or holes
+    //occurs after any traps could have gone off and only affects non busy enemies
+    List<Command> PassiveEnvironmentalTurn()
+    {
+        List<Command> foundCommands = new List<Command>();
+
+        //players
+        List<Command> playerFoundCommands = playerController.GetPassiveCommands();
+        foreach (Command cmd in playerFoundCommands)
+        {
+            cmd.Execute();
+            foundCommands.Add(cmd);
+        }
+
+
+        //enemies
+        foreach (Entity enemy in _enemies)
+        {
+            if(!enemy.busy)
+            {
+                Command cmd = enemy.GetPassiveCommand();
+                if(cmd != null)
+                {
+                    cmd.Execute();
+                    foundCommands.Add(cmd);
+                }
+            }
+        }
+
+        return foundCommands;
     }
 
     /////////////////
@@ -145,13 +194,38 @@ public class GameController : MonoBehaviour
     {
         if (previousTurns.Count > 0)
         {
+            SetEntitiesToUndo();
             undoingTurn = true;
             currentlyUndoingTurn = previousTurns.Pop();
             currentUndoLayer = currentlyUndoingTurn.TurnActions.Count - 1;
         }
     }
 
+    void SetEntitiesToUndo()
+    {
+        playerController.SetPlayersToUndo();
 
+        foreach (Entity enemy in _enemies)
+        {
+            enemy.currentlyUndoing = true;
+        }
+    }
+
+    void UnsetEntitiesFromUndo()
+    {
+        playerController.UnsetPlayersFromUndo();
+
+        foreach (Entity enemy in _enemies)
+        {
+            enemy.currentlyUndoing = false;
+        }
+    }
+
+    void FinishUndoingTurn()
+    {
+        UnsetEntitiesFromUndo();
+        undoingTurn = false;
+    }
 
 
     ////////////////////////

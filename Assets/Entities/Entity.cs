@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour, IMoveable, ICommandable
+public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
 {
     [SerializeField]
     Map map;
@@ -16,6 +16,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
     [field: SerializeField] public bool affectedByGravity { get; set; }
+    [field: SerializeField] public float fallLerpDuration { get; set; }
 
     public float degreesToRotate { get; set; }
 
@@ -37,6 +38,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
 
     #endregion
 
+    //IUndoable
+    public bool currentlyUndoing { get; set; }
+
     protected void Awake()
     {
         #region Create State Machine and states
@@ -56,6 +60,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
     {
         //ICommandable
         busy = false;
+        currentlyUndoing = false;
 
         #region Initialize State Machine
 
@@ -83,6 +88,11 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         destPosition = dest;
         srcPosition = transform.position;
         stateMachine.changeState(movementBlockedState);
+    }
+
+    public void Fall()
+    {
+        stateMachine.changeState(fallingState);
     }
 
     public bool IsDestinationOccupied(Vector3 destinationToCheck)
@@ -116,9 +126,27 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable
         stateMachine.changeState(rotationState);
     }
 
+    //Active decisions by the entity such as to move or attack
     public Command GetCommand()
     {
         return stateMachine.currentState.StateGetCommand();
+    }
+
+    //commands that arise from the enemies current environment (sliding on ice, or falling in a hole for example)
+    public Command GetPassiveCommand()
+    {
+        Command cmd = null;
+
+        //check for falling
+        if(affectedByGravity)
+        {
+            if(!isEntityGrounded())
+            {
+                cmd = new FallCommand(this);
+            }
+        }
+
+        return cmd;
     }
 
     public List<Command> GetCommands() { return null; }
