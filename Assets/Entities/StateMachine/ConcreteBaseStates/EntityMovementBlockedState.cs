@@ -5,6 +5,7 @@ using UnityEngine;
 public class EntityMovementBlockedState : EntityState
 {
     float movementLerpTimer = 0;
+    Vector3 srcPosition;
     Vector3 bumpDest;
 
     public EntityMovementBlockedState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
@@ -19,7 +20,8 @@ public class EntityMovementBlockedState : EntityState
     public override void EnterState()
     {
         movementLerpTimer = 0;
-        bumpDest = Vector3.Lerp(_entity.srcPosition, _entity.destPosition, 0.5f); //halfway between
+        srcPosition = _entity.transform.position;
+        bumpDest = Vector3.Lerp(srcPosition, _entity.GetProjectedDestinationPosition(_entity.movementDirection), 0.5f); //halfway between
         _entity.busy = true;
     }
 
@@ -50,11 +52,11 @@ public class EntityMovementBlockedState : EntityState
         //move towards obstacle
         if (movementLerpTimer <= 0.5f * _entity.movementLerpDuration)
         {
-             movePos = Vector3.Lerp(_entity.srcPosition, bumpDest, movementLerpTimer / _entity.movementLerpDuration);
+             movePos = Vector3.Lerp(srcPosition, bumpDest, movementLerpTimer / _entity.movementLerpDuration);
         }
         else
         {
-            movePos = Vector3.Lerp(bumpDest, _entity.srcPosition, movementLerpTimer / _entity.movementLerpDuration);
+            movePos = Vector3.Lerp(bumpDest, srcPosition, movementLerpTimer / _entity.movementLerpDuration);
         }
         
         _entity.transform.position = movePos;

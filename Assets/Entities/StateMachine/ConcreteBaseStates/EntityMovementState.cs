@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EntityMovementState : EntityState
 {
+    Vector3 srcPosition;
+    Vector3 destPosition;
     float movementLerpTimer;
     public EntityMovementState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
     {
@@ -18,6 +20,8 @@ public class EntityMovementState : EntityState
     {
         movementLerpTimer = 0;
         _entity.busy = true;
+        srcPosition = _entity.transform.position;
+        destPosition = _entity.GetProjectedDestinationPosition(_entity.movementDirection);
     }
 
     public override void ExitState()
@@ -43,7 +47,7 @@ public class EntityMovementState : EntityState
     public void Move()
     {
         movementLerpTimer += Time.deltaTime;
-        Vector3 movePos = Vector3.Lerp(_entity.srcPosition, _entity.destPosition, movementLerpTimer / _entity.movementLerpDuration);
+        Vector3 movePos = Vector3.Lerp(srcPosition, destPosition, movementLerpTimer / _entity.movementLerpDuration);
         _entity.transform.position = movePos;
 
         if (movementLerpTimer >= _entity.movementLerpDuration) { _stateMachine.changeState(_entity.idleState); }

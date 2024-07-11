@@ -12,6 +12,11 @@ public class LevelEditorController : MonoBehaviour
     BlockList blockList;
     BlockBuilder blockBuilder;
 
+    /////////////////
+    //TEMPORARY///////
+    //////////////////
+    [SerializeField] TextAsset temporaryLoadMap;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +31,10 @@ public class LevelEditorController : MonoBehaviour
         {
             map.SaveMapToFile("saveTEST");
             Debug.Log("map saved");
+        }
+        else if (Input.GetKeyDown(KeyCode.Home))
+        {
+            mapBuilder.loadMap(temporaryLoadMap);
         }
     }
 }

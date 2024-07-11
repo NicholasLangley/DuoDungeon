@@ -1463,6 +1463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 1088762740}
   blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
+  temporaryLoadMap: {fileID: 4900000, guid: 9b9b3381c5324374380a9a705cccef42, type: 3}
 --- !u!4 &1137269225
 Transform:
   m_ObjectHideFlags: 0

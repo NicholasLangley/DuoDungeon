@@ -5,19 +5,19 @@ using UnityEngine;
 public class MovementBlockedCommand : Command
 {
     IMoveable actor;
-    Vector3 destPos;
-    public MovementBlockedCommand(IMoveable actor, Vector3 dest)
+    MovementDirection direction;
+    public MovementBlockedCommand(IMoveable actor, MovementDirection dir)
     {
         this.actor = actor;
-        destPos = dest;
+        direction = dir;
     }
     public override void Execute()
     {
-        actor.FailToMoveTo(destPos);
+        actor.FailToMoveTo(direction);
     }
 
     public override void Undo()
     {
-        actor.FailToMoveTo(destPos);
+        actor.FailToMoveTo(direction);
     }
 }

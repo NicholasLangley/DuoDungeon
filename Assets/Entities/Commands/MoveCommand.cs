@@ -5,23 +5,21 @@ using UnityEngine;
 public class MoveCommand : Command
 {
     IMoveable actor;
-    Vector3 startingPos;
-    Vector3 destPos;
+    MovementDirection direction;
 
-    public MoveCommand(IMoveable actor, Vector3 start, Vector3 dest)
+    public MoveCommand(IMoveable actor, MovementDirection dir)
     {
         this.actor = actor;
-        startingPos = start;
-        destPos = dest;
+        direction = dir;
     }
 
     public override void Execute()
     {
-        actor.MoveTo(destPos);
+        actor.MoveTo(direction);
     }
 
     public override void Undo()
     {
-        actor.MoveTo(startingPos);
+        actor.MoveTo(IMoveable.ReverseMovementDirection(direction));
     }
 }

@@ -8,8 +8,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
     Map map;
 
     //IMoveable variables
-    public Vector3 srcPosition { get; set; }
-    public Vector3 destPosition { get; set; }
+    public MovementDirection movementDirection { get; set; }
 
     [field: SerializeField] public LayerMask movementCollisionMask { get; set; }
 
@@ -76,23 +75,55 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
     }
 
 
-    public void MoveTo(Vector3 dest)
+    public void MoveTo(MovementDirection dir)
     {
-        destPosition = dest;
-        srcPosition = transform.position;
+        movementDirection = dir;
         stateMachine.changeState(movementState);
     }
 
-    public void FailToMoveTo(Vector3 dest)
+    public void FailToMoveTo(MovementDirection dir)
     {
-        destPosition = dest;
-        srcPosition = transform.position;
+        movementDirection = dir;
         stateMachine.changeState(movementBlockedState);
     }
 
     public void Fall()
     {
         stateMachine.changeState(fallingState);
+    }
+
+    public Vector3 GetProjectedDestinationPosition(MovementDirection dir)
+    {
+        Vector3 nextPos = transform.position;
+
+        switch(dir)
+        {
+            case MovementDirection.FORWARD:
+                nextPos += transform.forward;
+                break;
+            case MovementDirection.BACKWARD:
+                nextPos -= transform.forward;
+                break;
+            case MovementDirection.RIGHT:
+                nextPos += transform.right;
+                break;
+            case MovementDirection.LEFT:
+                nextPos -= transform.right;
+                break;
+            default:
+                break;
+        }
+
+        //check for entering stairs on current level
+        Block blockBeingEntered = map.GetBlock(Map.GetIntVector3(nextPos));
+        if (blockBeingEntered != null && blockBeingEntered.GetBlockType() == BLOCK_TYPE.STAIR)
+        {
+            nextPos.y += (blockBeingEntered as StairBlock).stairHeight;
+        }
+
+        return nextPos;
+
+
     }
 
     public bool IsDestinationOccupied(Vector3 destinationToCheck)

@@ -70,31 +70,29 @@ public class PlayerController : MonoBehaviour, ICommandable
     {
         List<Command> commands = new List<Command>();
 
-        Vector3 nextRedPos = redPlayer.transform.position;
-        Vector3 nextBluePos = bluePlayer.transform.position;
+        MovementDirection movementDir;
 
         //get next position for each player
         if (Input.GetAxisRaw("Vertical") > 0)
         {
-            nextRedPos += redPlayer.transform.forward;
-            nextBluePos += bluePlayer.transform.forward;
+            movementDir = MovementDirection.FORWARD;
         }
         else if (Input.GetAxisRaw("Vertical") < 0)
         {
-            nextRedPos -= redPlayer.transform.forward;
-            nextBluePos -= bluePlayer.transform.forward;
+            movementDir = MovementDirection.BACKWARD;
         }
         else if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            nextRedPos += redPlayer.transform.right;
-            nextBluePos += bluePlayer.transform.right;
+            movementDir = MovementDirection.RIGHT;
         }
         else if (Input.GetAxisRaw("Horizontal") < 0)
         {
-            nextRedPos -= redPlayer.transform.right;
-            nextBluePos -= bluePlayer.transform.right;
+            movementDir = MovementDirection.LEFT;
         }
         else { return null; }
+
+        Vector3 nextRedPos = redPlayer.GetProjectedDestinationPosition(movementDir);
+        Vector3 nextBluePos = bluePlayer.GetProjectedDestinationPosition(movementDir);
 
         //check if space is occupied
         bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
@@ -117,8 +115,8 @@ public class PlayerController : MonoBehaviour, ICommandable
         Command cmdBlue;
 
         //return command based on if space is occupied or not
-        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, nextRedPos) : new MoveCommand(redPlayer, redPlayer.transform.position, nextRedPos);
-        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, nextBluePos) : new MoveCommand(bluePlayer, bluePlayer.transform.position, nextBluePos);
+        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, movementDir) : new MoveCommand(redPlayer, movementDir);
+        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, movementDir) : new MoveCommand(bluePlayer, movementDir);
 
         commands.Add(cmdRed);
         commands.Add(cmdBlue);

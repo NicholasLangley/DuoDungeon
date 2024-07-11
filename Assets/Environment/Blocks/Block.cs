@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BLOCK_TYPE { DEFAULT, STAIR }
+
 public class Block : MonoBehaviour
 {
     public int blockID { get; set; }
@@ -9,10 +11,12 @@ public class Block : MonoBehaviour
     [SerializeField]
     public bool blocksMovement, blocksProjectiles, isInbetweenBlock;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    protected BLOCK_TYPE blockType;
 
+    // Start is called before the first frame update
+    void Awake()
+    {
+        blockType = BLOCK_TYPE.DEFAULT;
     }
 
     // Update is called once per frame
@@ -25,4 +29,11 @@ public class Block : MonoBehaviour
     {
 
     }
+
+    public BLOCK_TYPE GetBlockType()
+    {
+        return blockType;
+    }
+
+
 }
