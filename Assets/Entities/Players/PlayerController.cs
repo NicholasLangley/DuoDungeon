@@ -91,8 +91,8 @@ public class PlayerController : MonoBehaviour, ICommandable
         }
         else { return null; }
 
-        Vector3 nextRedPos = redPlayer.GetProjectedDestinationPosition(movementDir);
-        Vector3 nextBluePos = bluePlayer.GetProjectedDestinationPosition(movementDir);
+        Vector3 nextRedPos = redPlayer.GetProjectedDestinationBlockPosition(movementDir);
+        Vector3 nextBluePos = bluePlayer.GetProjectedDestinationBlockPosition(movementDir);
 
         //check if space is occupied
         bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);

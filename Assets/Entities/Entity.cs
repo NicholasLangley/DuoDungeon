@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
+public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable
 {
     [SerializeField]
     Map map;
@@ -39,6 +39,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
 
     //IUndoable
     public bool currentlyUndoing { get; set; }
+
+    //IClimbable
+    [field: SerializeField] public float maxStairClimbHeight { get; set; }
 
     protected void Awake()
     {
@@ -92,7 +95,15 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
         stateMachine.changeState(fallingState);
     }
 
-    public Vector3 GetProjectedDestinationPosition(MovementDirection dir)
+    public Block GetCurrentlyOccupiedBlock ()
+    {
+        Vector3 gridPosition = transform.position;
+        gridPosition.y = Mathf.Floor(gridPosition.y);
+
+        return (map.GetBlock(Map.GetIntVector3(gridPosition)));
+    }
+
+    public Vector3 GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
         Vector3 nextPos = transform.position;
 
@@ -114,22 +125,40 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
                 break;
         }
 
-        //check for entering stairs on current level
-        Block blockBeingEntered = map.GetBlock(Map.GetIntVector3(nextPos));
-        if (blockBeingEntered != null && blockBeingEntered.GetBlockType() == BLOCK_TYPE.STAIR)
+        //logical center of current block
+        nextPos.y = Mathf.Floor(nextPos.y);
+
+        //if in a block find exit height (if height >= 1 then the player has gone up a y level and we'll check for collision there)
+        Block currentBlock = GetCurrentlyOccupiedBlock();
+        if (currentBlock != null) { nextPos.y += currentBlock.CalculateAttemptedExitEdgeHeight(nextPos); }
+        nextPos.y = Mathf.Floor(nextPos.y);
+
+        //check for stairs going down
+        Block straightForwardDestBlock = GetBlockFromMap(nextPos);
+        //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
+        if(straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
         {
-            nextPos.y += (blockBeingEntered as StairBlock).stairHeight;
+            Vector3 belowDest = nextPos;
+            belowDest.y -= 1;
+            Block belowDestBlock = GetBlockFromMap(belowDest);
+            if(belowDestBlock != null && !belowDestBlock.blocksAllMovement && belowDestBlock.isGround)
+            {
+                nextPos = belowDest;
+            }
         }
 
         return nextPos;
+    }
 
-
+    public Block GetBlockFromMap(Vector3 pos)
+    {
+        return map.GetBlock(pos);
     }
 
     public bool IsDestinationOccupied(Vector3 destinationToCheck)
     {
         Block destinationBlock = map.GetBlock(Map.GetIntVector3(destinationToCheck));
-        if (destinationBlock != null && destinationBlock.blocksMovement) { return true; }
+        if (destinationBlock != null && !destinationBlock.canEntityEnter(this)) { return true; }
 
         if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
         {
@@ -141,12 +170,15 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable
 
     public bool isEntityGrounded()
     {
+        Block currentBlock = GetCurrentlyOccupiedBlock();
+        if (currentBlock != null && currentBlock.isGround) { return true; }
+
         Vector3Int groundPos = Map.GetIntVector3(transform.position);
         groundPos.y -= 1;
 
         Block groundBlock = map.GetBlock(groundPos);
 
-        if (groundBlock == null || !groundBlock.blocksMovement) { return false; }
+        if (groundBlock == null || !groundBlock.isGround) { return false; }
 
         return true;
     }

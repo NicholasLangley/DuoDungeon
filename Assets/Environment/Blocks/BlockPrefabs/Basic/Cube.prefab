@@ -96,6 +96,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocksMovement: 1
+  MidBlockHeight: 0
+  forwardEdgeHeight: 0
+  backwardEdgeHeight: 0
+  rightEdgeHeight: 0
+  leftEdgeHeight: 0
+  blocksAllMovement: 1
+  isGround: 1
   blocksProjectiles: 0
   isInbetweenBlock: 0

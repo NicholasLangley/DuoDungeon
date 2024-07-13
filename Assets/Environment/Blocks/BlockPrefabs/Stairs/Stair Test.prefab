@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1868265630140264170}
   - component: {fileID: 379029574908559077}
   - component: {fileID: 1231984963808832699}
-  - component: {fileID: 687585488034423065}
+  - component: {fileID: 6652908043840384017}
   m_Layer: 0
   m_Name: Stair Test
   m_TagString: Untagged
@@ -106,7 +106,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &687585488034423065
+--- !u!114 &6652908043840384017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,10 +115,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2245346612070820524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f059c6e63f5f9ea43afcd284050b6111, type: 3}
+  m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocksMovement: 0
+  MidBlockHeight: 0.5
+  forwardEdgeHeight: 0
+  backwardEdgeHeight: 0
+  rightEdgeHeight: 0
+  leftEdgeHeight: 1
+  blocksAllMovement: 0
+  isGround: 1
   blocksProjectiles: 0
   isInbetweenBlock: 0
-  stairHeight: 0.5

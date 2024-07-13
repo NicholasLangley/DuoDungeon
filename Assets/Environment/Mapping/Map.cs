@@ -40,6 +40,11 @@ public class Map : MonoBehaviour
         return null;
     }
 
+    public Block GetBlock(Vector3 position)
+    {
+        return (GetBlock(Map.GetIntVector3(position)));
+    }
+
     public static Vector3Int GetIntVector3(Vector3 floatVector)
     {
         return new Vector3Int(Mathf.RoundToInt(floatVector.x), Mathf.RoundToInt(floatVector.y), Mathf.RoundToInt(floatVector.z));

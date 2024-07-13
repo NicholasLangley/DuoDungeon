@@ -42,5 +42,5 @@ public interface IMoveable
 
     public void Fall();
 
-    public Vector3 GetProjectedDestinationPosition(MovementDirection dir);
+    public Vector3 GetProjectedDestinationBlockPosition(MovementDirection dir);
 }

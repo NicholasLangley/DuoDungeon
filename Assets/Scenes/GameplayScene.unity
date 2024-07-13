@@ -244,6 +244,7 @@ MonoBehaviour:
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
   <busy>k__BackingField: 0
+  <maxStairClimbHeight>k__BackingField: 0.4
 --- !u!4 &190098567
 Transform:
   m_ObjectHideFlags: 0
@@ -573,6 +574,7 @@ MonoBehaviour:
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
   <busy>k__BackingField: 0
+  <maxStairClimbHeight>k__BackingField: 0.2
 --- !u!136 &717248527
 CapsuleCollider:
   m_ObjectHideFlags: 0
