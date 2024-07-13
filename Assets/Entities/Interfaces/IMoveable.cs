@@ -31,6 +31,7 @@ public interface IMoveable
 
     bool affectedByGravity { get; set; }
     float fallLerpDuration { get; set; }
+    Vector3 fallSrcPosition { get; set; }
 
     float degreesToRotate { get; set; }
 
@@ -40,7 +41,7 @@ public interface IMoveable
 
     public void RotateBy(float degrees);
 
-    public void Fall();
+    public void Fall(Vector3 srcPosition);
 
     public Vector3 GetProjectedDestinationBlockPosition(MovementDirection dir);
 }

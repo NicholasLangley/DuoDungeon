@@ -5,18 +5,20 @@ using UnityEngine;
 public class FallCommand : Command
 {
     IMoveable actor;
-    public FallCommand(IMoveable actor)
+    Vector3 srcPosition;
+    public FallCommand(IMoveable actor, Vector3 src)
     {
         this.actor = actor;
+        srcPosition = src;
     }
     public override void Execute()
     {
-        actor.Fall();
+        actor.Fall(srcPosition);
     }
 
     public override void Undo()
     {
         //falling state will detect undoing and raise actor instead 
-        actor.Fall();
+        actor.Fall(srcPosition);
     }
 }

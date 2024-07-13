@@ -17,6 +17,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     [field: SerializeField] public bool affectedByGravity { get; set; }
     [field: SerializeField] public float fallLerpDuration { get; set; }
 
+    public Vector3 fallSrcPosition { get; set; }
+
     public float degreesToRotate { get; set; }
 
 
@@ -90,8 +92,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         stateMachine.changeState(movementBlockedState);
     }
 
-    public void Fall()
+    public void Fall(Vector3 srcPos)
     {
+        fallSrcPosition = srcPos;
         stateMachine.changeState(fallingState);
     }
 
@@ -141,7 +144,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             Vector3 belowDest = nextPos;
             belowDest.y -= 1;
             Block belowDestBlock = GetBlockFromMap(belowDest);
-            if(belowDestBlock != null && !belowDestBlock.blocksAllMovement && belowDestBlock.isGround)
+            if(belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
             }
@@ -172,13 +175,14 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     {
         Block currentBlock = GetCurrentlyOccupiedBlock();
         if (currentBlock != null && currentBlock.isGround) { return true; }
+        else if (currentBlock == null && transform.position.y > Mathf.Floor(transform.position.y)) { return false; }
 
         Vector3Int groundPos = Map.GetIntVector3(transform.position);
         groundPos.y -= 1;
 
         Block groundBlock = map.GetBlock(groundPos);
 
-        if (groundBlock == null || !groundBlock.isGround) { return false; }
+        if (groundBlock == null || !groundBlock.isGround || groundBlock.MidBlockHeight < 0.99f) { return false; }
 
         return true;
     }
@@ -205,7 +209,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         {
             if(!isEntityGrounded())
             {
-                cmd = new FallCommand(this);
+                cmd = new FallCommand(this, transform.position);
             }
         }
 

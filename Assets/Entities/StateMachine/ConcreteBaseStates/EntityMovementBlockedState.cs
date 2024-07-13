@@ -21,7 +21,13 @@ public class EntityMovementBlockedState : EntityState
     {
         movementLerpTimer = 0;
         srcPosition = _entity.transform.position;
-        bumpDest = Vector3.Lerp(srcPosition, _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection), 0.5f); //halfway between
+        Vector3 attemptedDestination = _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
+        bumpDest = Vector3.Lerp(srcPosition, attemptedDestination, 0.5f);
+        
+        Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
+        if (srcBlock != null) { bumpDest.y = srcBlock.transform.position.y + srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination); }
+        else { bumpDest.y = srcPosition.y; }
+
         _entity.busy = true;
     }
 

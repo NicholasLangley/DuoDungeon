@@ -42,6 +42,7 @@ public class EntityMovementState : EntityState
         else { halfwayPosition.y = srcPosition.y; }
 
         if (destBlock != null) { destPosition.y += destBlock.MidBlockHeight; }
+        else { destPosition.y = halfwayPosition.y; }
 
         inSrcBlock = true;
     }
