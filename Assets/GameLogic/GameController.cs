@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     bool undoingTurn;
     int currentUndoLayer;
     Turn currentlyUndoingTurn;
+    bool undoCommandIsBuffered;
 
     //turn order
     //1. Player
@@ -44,6 +45,7 @@ public class GameController : MonoBehaviour
 
         takingTurn = false;
         undoingTurn = false;
+        undoCommandIsBuffered = false;
 
         previousTurns = new Stack<Turn>();
 
@@ -54,11 +56,30 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            undoCommandIsBuffered = true;
+            if(takingTurn)
+            {
+                previousTurns.Push(currentTurn);
+                takingTurn = false;
+            }
+        }
+
         //no need to check for turn logic if entities are performing an action
         if (checkForBusyEntities() == true) { return; }
+        if (!undoingTurn &&Time.timeScale != 1.0f) { Time.timeScale = 1.0f; }
+
+        //interrupt infinite loops or long sequences if the player chooses
+        if (undoCommandIsBuffered == true)
+        {
+            BeginUndoingTurn();
+            undoCommandIsBuffered = false;
+        }
+        
 
 
-        if (takingTurn)
+        else if (takingTurn)
         {
             List<Command> activeEnvironmentCommands = ActiveEnvironmentalTurn();
             List<Command> passiveEnvironmentCommands = PassiveEnvironmentalTurn();
@@ -86,11 +107,6 @@ public class GameController : MonoBehaviour
         {
             currentlyUndoingTurn.undoLayer(currentUndoLayer--);
             if (currentUndoLayer < 0) { FinishUndoingTurn(); }
-        }
-
-        else if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            BeginUndoingTurn();
         }
 
         else { checkForPlayerTakingTurn(); }
@@ -198,6 +214,7 @@ public class GameController : MonoBehaviour
             undoingTurn = true;
             currentlyUndoingTurn = previousTurns.Pop();
             currentUndoLayer = currentlyUndoingTurn.TurnActions.Count - 1;
+            Time.timeScale = 2.0f;
         }
     }
 
