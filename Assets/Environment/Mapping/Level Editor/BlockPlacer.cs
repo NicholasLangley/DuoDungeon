@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BlockPlacer : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class BlockPlacer : MonoBehaviour
         }
         else if (blockPlacementMesh != null) { hideBlock(); }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && currentBlock != null)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && currentBlock != null && !EventSystem.current.IsPointerOverGameObject())
         {
             PlaceBlock(Map.GetIntVector3(intersectionPos));
         }
