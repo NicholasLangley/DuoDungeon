@@ -5,7 +5,6 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //Map loading
-    [SerializeField]
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
@@ -29,16 +28,28 @@ public class GameController : MonoBehaviour
     //1. Player
     //2. Enemies
     //3. Environment
-    [SerializeField]
     PlayerController playerController;
+
+    [Header("Player Prefabs")]
+    [SerializeField]
+    PlayerEntity redPlayerPrefab;
+    [SerializeField]
+    PlayerEntity bluePlayerPrefab;
+
     List<Entity> _enemies;
+    [Header("Enemy Prefabs")]
+    [SerializeField]
+    Entity enemy1Prefab;
+
     List<Entity> _enivornmentalEntities;
+    [Header("Environmental Entity Prefabs")]
+    [SerializeField]
+    Entity Evironment1Prefab;
 
     // Start is called before the first frame update
     void Awake()
     {
-        blockBuilder = new BlockBuilder(blockList);
-        mapBuilder = new MapBuilder(blockBuilder, map);
+        playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab));
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
@@ -50,7 +61,7 @@ public class GameController : MonoBehaviour
         previousTurns = new Stack<Turn>();
 
         //initialize map
-        mapBuilder.loadMap(testMap);
+        LoadLevel(testMap);
     }
 
     // Update is called once per frame
@@ -113,6 +124,24 @@ public class GameController : MonoBehaviour
 
 
     }
+
+    ///////////////////
+    ///Level Loading///
+    ///////////////////
+    public void LoadLevel(TextAsset level)
+    {
+        map = new Map();
+        blockBuilder = new BlockBuilder(blockList);
+        mapBuilder = new MapBuilder(blockBuilder, map);
+
+        //blocks only
+        mapBuilder.LoadMap(level);
+
+        //spawn Players
+        playerController.SpawnPlayers(mapBuilder.redPlayerSpawn, mapBuilder.redPlayerSpawnRotation, mapBuilder.bluePlayerSpawn, mapBuilder.bluePlayerSpawnRotation, map);
+
+    }
+    
 
     /////////////////
     //Taking Turn ///

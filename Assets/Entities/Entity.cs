@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable
 {
-    [SerializeField]
-    Map map;
+    public Map map { get; set; }
 
     //IMoveable variables
     public MovementDirection movementDirection { get; set; }

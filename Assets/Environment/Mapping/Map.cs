@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class Map : MonoBehaviour
+public class Map
 {
     Dictionary<Vector3Int, Block> currentBlocks;
 
-    public void Awake()
+    public Map()
     {
         currentBlocks = new Dictionary<Vector3Int, Block>();
     }

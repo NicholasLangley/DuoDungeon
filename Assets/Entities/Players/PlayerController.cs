@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, ICommandable
+public class PlayerController : ICommandable
 {
     [SerializeField]
     PlayerEntity redPlayer;
@@ -10,16 +10,23 @@ public class PlayerController : MonoBehaviour, ICommandable
     PlayerEntity bluePlayer;
     public bool busy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    // Start is called before the first frame update
-    void Start()
+    public PlayerController(PlayerEntity red, PlayerEntity blue)
     {
-
+        redPlayer = red;
+        bluePlayer = blue;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SpawnPlayers(Vector3 redPlayerSpawn, Quaternion redPlayerSpawnRotation, Vector3 bluePlayerSpawn, Quaternion bluePlayerSpawnRotation, Map map)
     {
+        //reset player stats if any
 
+        redPlayer.transform.position = redPlayerSpawn;
+        redPlayer.transform.rotation = redPlayerSpawnRotation;
+        redPlayer.map = map;
+
+        bluePlayer.transform.position = bluePlayerSpawn;
+        bluePlayer.transform.rotation = bluePlayerSpawnRotation;
+        bluePlayer.map = map;
     }
 
     public List<Command> GetCommands()

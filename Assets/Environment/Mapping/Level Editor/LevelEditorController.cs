@@ -34,7 +34,7 @@ public class LevelEditorController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Home))
         {
-            mapBuilder.loadMap(temporaryLoadMap);
+            mapBuilder.LoadMap(temporaryLoadMap);
         }
     }
 }

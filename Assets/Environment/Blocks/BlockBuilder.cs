@@ -49,13 +49,23 @@ public class BlockBuilder
 
     public void setBlockPosition(Block block, JToken position)
     {
-        Vector3 blockPos = new Vector3((int)position["x"], (int)position["y"], (int)position["z"]);
+        Vector3 blockPos = parseJSONPosition(position);
         block.transform.position = blockPos;
+    }
+
+    public static Vector3 parseJSONPosition(JToken pos)
+    {
+        return new Vector3((int)pos["x"], (int)pos["y"], (int)pos["z"]);
     }
 
     public void setBlockRotation(Block block, JToken rotation)
     {
-        Quaternion blockRotation = new Quaternion((float)rotation["x"], (float)rotation["y"], (float)rotation["z"], (float)rotation["w"]);
+        Quaternion blockRotation = parseJSONRotation(rotation);
         block.transform.rotation = blockRotation;
+    }
+
+    public static Quaternion parseJSONRotation(JToken rotation)
+    {
+        return new Quaternion((float)rotation["x"], (float)rotation["y"], (float)rotation["z"], (float)rotation["w"]);
     }
 }

@@ -98,7 +98,7 @@ public class BlockPlacer : MonoBehaviour
             return;
         }
 
-        Block newBlock = Instantiate(currentBlock, map.transform);
+        Block newBlock = Instantiate(currentBlock/*, map.transform*/);
         newBlock.blockID = currentBlockID;
         newBlock.transform.position = position;
         newBlock.transform.rotation = blockPlacementIndicator.transform.rotation;
