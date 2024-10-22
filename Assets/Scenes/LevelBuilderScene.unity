@@ -1352,50 +1352,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008651890}
   m_CullTransparentMesh: 1
---- !u!1 &1088762739
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1088762741}
-  - component: {fileID: 1088762740}
-  m_Layer: 0
-  m_Name: Map
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1088762740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1088762739}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b81bc160f945e7948abf7dca6684b45a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1088762741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1088762739}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5118241, y: 0.6884915, z: -1.222123}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1113049841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1461,8 +1417,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2438fd9e97c1904d9d9520107fb99e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 1088762740}
   blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
+  objectPlacer: {fileID: 1220146675}
   temporaryLoadMap: {fileID: 4900000, guid: 9b9b3381c5324374380a9a705cccef42, type: 3}
 --- !u!4 &1137269225
 Transform:
@@ -1718,7 +1674,7 @@ GameObject:
   - component: {fileID: 1220146676}
   - component: {fileID: 1220146675}
   m_Layer: 0
-  m_Name: BlockPlacer
+  m_Name: ObjectPlacer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1736,7 +1692,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1175150f18d15744eaf790cf00cdb50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 1088762740}
+  redPlayerModelPrefab: {fileID: 7164448246570874572, guid: b2fe956857493814daf1258cc3c00470, type: 3}
+  bluePlayerModelPrefab: {fileID: 4696509709556579610, guid: 100192a0f687c3c4fa0a14a98c522ed0, type: 3}
+  redPlayerPlacementIndicator: {fileID: 0}
+  bluePlayerPlacementIndicator: {fileID: 0}
 --- !u!4 &1220146676
 Transform:
   m_ObjectHideFlags: 0
@@ -2185,7 +2144,6 @@ SceneRoots:
   - {fileID: 1838619225}
   - {fileID: 1157785925}
   - {fileID: 1137269225}
-  - {fileID: 1088762741}
   - {fileID: 429356402}
   - {fileID: 200944349}
   - {fileID: 1220146676}

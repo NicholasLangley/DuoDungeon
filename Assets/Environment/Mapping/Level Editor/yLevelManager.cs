@@ -10,7 +10,7 @@ public class yLevelManager : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI yText;
     [SerializeField]
-    BlockPlacer blockPlacer;
+    ObjectPlacer blockPlacer;
 
     // Start is called before the first frame update
     void OnEnable()

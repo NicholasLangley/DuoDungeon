@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BlockListScriptableObject
   m_EditorClassIdentifier: 
   blocks:
-  - {fileID: 7898873113469120169, guid: 3ef39e87e6cb3b147b62e527b1e5fe60, type: 3}
-  - {fileID: 7760883848537105829, guid: 44d32fd07373c404786f96e460aacae9, type: 3}
-  - {fileID: 6652908043840384017, guid: d15ba253b2a2cc34da68ac5a9c92dc9f, type: 3}
+  - {fileID: 4532370135384009348, guid: 3ef39e87e6cb3b147b62e527b1e5fe60, type: 3}
+  - {fileID: 581105177497003801, guid: 44d32fd07373c404786f96e460aacae9, type: 3}
+  - {fileID: 2245346612070820524, guid: d15ba253b2a2cc34da68ac5a9c92dc9f, type: 3}

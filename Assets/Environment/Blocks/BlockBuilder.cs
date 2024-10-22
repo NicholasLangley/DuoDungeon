@@ -16,9 +16,9 @@ public class BlockBuilder
 
     public enum BlockType { Basic, Door, Ice }
 
-    public Block BuildBlock(BlockType type, JToken blockEntry)
+    public GameObject BuildBlock(BlockType type, JToken blockEntry)
     {
-        Block newBlock = generatePrefab((int)blockEntry["block_id"]);
+        GameObject newBlock = generatePrefab((int)blockEntry["block_id"]);
 
         setBlockPosition(newBlock, blockEntry["position"]);
         setBlockRotation(newBlock, blockEntry["rotation"]);
@@ -40,14 +40,14 @@ public class BlockBuilder
 
 
 
-    Block generatePrefab(int blockID)
+    GameObject generatePrefab(int blockID)
     {
-        Block prefab = GameObject.Instantiate(blockList.getBlock(blockID));
-        prefab.blockID = blockID;
+        GameObject prefab = GameObject.Instantiate(blockList.getBlock(blockID));
+        prefab.GetComponent<Block>().blockID = blockID;
         return prefab;
     }
 
-    public void setBlockPosition(Block block, JToken position)
+    public void setBlockPosition(GameObject block, JToken position)
     {
         Vector3 blockPos = parseJSONPosition(position);
         block.transform.position = blockPos;
@@ -58,7 +58,7 @@ public class BlockBuilder
         return new Vector3((int)pos["x"], (int)pos["y"], (int)pos["z"]);
     }
 
-    public void setBlockRotation(Block block, JToken rotation)
+    public void setBlockRotation(GameObject block, JToken rotation)
     {
         Quaternion blockRotation = parseJSONRotation(rotation);
         block.transform.rotation = blockRotation;

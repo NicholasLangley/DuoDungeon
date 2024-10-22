@@ -1,33 +1,34 @@
 {
-  "metadata": "EMPTY",
-  "players": {
-    "red": {
-      "position": {
-        "x": -4,
-        "y": 1,
-        "z": -2
-      },
-      "rotation": {
-        "w": 1,
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    },
-    "blue": {
-      "position": {
-        "x": -3,
-        "y": 1,
-        "z": -2
-      },
-      "rotation": {
-        "w": 1,
-        "x": 0,
-        "y": 0,
-        "z": 0
-      }
-    }
-  },
+"metadata": "EMPTY",
+"players": {
+"red": {
+"position": {
+"x": -3,
+"y": 1,
+"z": -2
+},
+"rotation": {
+"w": -0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+
+},
+"blue": {
+"position": {
+"x": -5,
+"y": 1,
+"z": -2
+},
+"rotation": {
+"w": 0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+}
+},
 "blocks": [
 {
 "type": 0,
@@ -1333,6 +1334,42 @@
 "x": -9,
 "y": 3,
 "z": -4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 0,
+"z": -10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 1,
+"position": {
+"x": -1,
+"y": 0,
+"z": -9
 },
 "rotation": {
 "w": 1,

@@ -6,9 +6,9 @@ using UnityEngine;
 public class BlockList : ScriptableObject
 {
     [SerializeField]
-    List<Block> blocks;
+    List<GameObject> blocks;
 
-    public Block getBlock(int blockId)
+    public GameObject getBlock(int blockId)
     {
         return blocks[blockId];
     }

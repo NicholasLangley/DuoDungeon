@@ -16,16 +16,16 @@ public class PlayerController : ICommandable
         bluePlayer = blue;
     }
 
-    public void SpawnPlayers(Vector3 redPlayerSpawn, Quaternion redPlayerSpawnRotation, Vector3 bluePlayerSpawn, Quaternion bluePlayerSpawnRotation, Map map)
+    public void SpawnPlayers(Map map)
     {
         //reset player stats if any
 
-        redPlayer.transform.position = redPlayerSpawn;
-        redPlayer.transform.rotation = redPlayerSpawnRotation;
+        redPlayer.transform.position = map.redPlayerSpawn;
+        redPlayer.transform.rotation = map.redPlayerSpawnRotation;
         redPlayer.map = map;
 
-        bluePlayer.transform.position = bluePlayerSpawn;
-        bluePlayer.transform.rotation = bluePlayerSpawnRotation;
+        bluePlayer.transform.position = map.bluePlayerSpawn;
+        bluePlayer.transform.rotation = map.bluePlayerSpawnRotation;
         bluePlayer.map = map;
     }
 

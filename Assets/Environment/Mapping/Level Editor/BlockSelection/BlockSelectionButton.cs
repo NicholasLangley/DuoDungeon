@@ -12,7 +12,7 @@ public class BlockSelectionButton : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI text;
 
-    public Block block;
+    public GameObject block;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,7 @@ public class BlockSelectionButton : MonoBehaviour
         
     }
 
-    public void SetBlock(int id, Block B)
+    public void SetBlock(int id, GameObject B)
     {
         blockId = id;
         block = B;

@@ -7,6 +7,9 @@ public class Map
 {
     Dictionary<Vector3Int, Block> currentBlocks;
 
+    public Vector3 redPlayerSpawn, bluePlayerSpawn;
+    public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
+
     public Map()
     {
         currentBlocks = new Dictionary<Vector3Int, Block>();
@@ -53,26 +56,26 @@ public class Map
 
     public void SaveMapToFile(string filename)
     {
+        if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
+        {
+            //TODO allow this but mark map as incomplete/unplayable
+            Debug.Log("ERROR missing players from map, cannot save as is");
+            return;
+        }
+
         string mapJSON = "{\n";
 
         //METADATA
         mapJSON += "\"metadata\": \"EMPTY\",\n";
 
-        //start of blocks array
-        mapJSON += "\"blocks\": [\n";
+        //Players
+        mapJSON += GetPlayersJSON();
 
-        bool firstBlock = true;
-        //fill blocks array
-        foreach (Block block in currentBlocks.Values)
-        {
-            //add comma after previous block
-            if (!firstBlock) { mapJSON += ",\n"; }
-            else { firstBlock = false; }
-            mapJSON += convertBlockToJSON(block);
-        }
+        //Blocks Data
+        mapJSON += GetBlocksListJSON();
 
-        //finish blocks array and file
-        mapJSON += "\n]\n}";
+        //end file
+        mapJSON += "\n}";
 
         Debug.Log(mapJSON);
         //save file to text
@@ -82,7 +85,43 @@ public class Map
         File.WriteAllText(filepath, mapJSON);
     }
 
-    string convertBlockToJSON(Block b)
+    string GetBlocksListJSON()
+    {
+        string blocksListJSON = "";
+
+        //start of blocks array
+        blocksListJSON += "\"blocks\": [\n";
+
+        bool firstBlock = true;
+        //fill blocks array
+        foreach (Block block in currentBlocks.Values)
+        {
+            //add comma after previous block
+            if (!firstBlock) { blocksListJSON += ",\n"; }
+            else { firstBlock = false; }
+            blocksListJSON += ConvertBlockToJSON(block);
+        }
+
+        //finish blocks array
+        blocksListJSON += "\n]";
+
+        return blocksListJSON;
+    }
+
+    string GetPlayersJSON()
+    {
+        return "\"players\": {\n" +
+                    "\"red\": {\n" +
+                        GetPositionJSON(redPlayerSpawn) +
+                        GetRotationJSON(redPlayerSpawnRotation) +
+                    "\n},\n"    +
+                    "\"blue\": {\n" +
+                        GetPositionJSON(bluePlayerSpawn) +
+                        GetRotationJSON(bluePlayerSpawnRotation) +
+              "}\n},\n";
+    }
+
+    string ConvertBlockToJSON(Block b)
     {
         //start block
         string json = "{\n";
@@ -97,19 +136,10 @@ public class Map
         json += "\"block_id\": " + b.blockID + ",\n";
 
         //position
-        json += "\"position\": {\n" +
-            "\"x\": " + b.transform.position.x + ",\n" +
-            "\"y\": " + b.transform.position.y + ",\n" +
-            "\"z\": " + b.transform.position.z + "\n" +
-            "},\n";
+        json += GetPositionJSON(b.transform.position);
 
         //rotation
-        json += "\"rotation\": {\n" +
-            "\"w\": " + b.transform.rotation.w + ",\n" +
-            "\"x\": " + b.transform.rotation.x + ",\n" +
-            "\"y\": " + b.transform.rotation.y + ",\n" +
-            "\"z\": " + b.transform.rotation.z + "\n" +
-            "}\n";//add comma here if more fields added
+        json += GetRotationJSON(b.transform.rotation); //add comma to this function if adding more parts to block info
 
         //finish info
         json += "}\n";
@@ -118,5 +148,24 @@ public class Map
         json += "}\n";
 
         return json;
+    }
+
+    string GetPositionJSON(Vector3 pos)
+    {
+        return "\"position\": {\n" +
+            "\"x\": " + pos.x + ",\n" +
+            "\"y\": " + pos.y + ",\n" +
+            "\"z\": " + pos.z + "\n" +
+            "},\n";
+    }
+
+    string GetRotationJSON(Quaternion rot)
+    {
+        return "\"rotation\": {\n" +
+            "\"w\": " + rot.w + ",\n" +
+            "\"x\": " + rot.x + ",\n" +
+            "\"y\": " + rot.y + ",\n" +
+            "\"z\": " + rot.z + "\n" +
+            "}\n";//add comma here if more fields added to block ie, components
     }
 }

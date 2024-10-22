@@ -138,7 +138,7 @@ public class GameController : MonoBehaviour
         mapBuilder.LoadMap(level);
 
         //spawn Players
-        playerController.SpawnPlayers(mapBuilder.redPlayerSpawn, mapBuilder.redPlayerSpawnRotation, mapBuilder.bluePlayerSpawn, mapBuilder.bluePlayerSpawnRotation, map);
+        playerController.SpawnPlayers(map);
 
     }
     

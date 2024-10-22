@@ -12,6 +12,9 @@ public class LevelEditorController : MonoBehaviour
     BlockList blockList;
     BlockBuilder blockBuilder;
 
+    [SerializeField]
+    ObjectPlacer objectPlacer;
+
     /////////////////
     //TEMPORARY///////
     //////////////////
@@ -20,8 +23,10 @@ public class LevelEditorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        map = new Map();
         blockBuilder = new BlockBuilder(blockList);
         mapBuilder = new MapBuilder(blockBuilder, map);
+        objectPlacer.map = map;
     }
 
     // Update is called once per frame
@@ -35,6 +40,21 @@ public class LevelEditorController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Home))
         {
             mapBuilder.LoadMap(temporaryLoadMap);
+            //TODO do this better
+            objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
+            objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
+            objectPlacer.bluePlayerPlacementIndicator.transform.position = map.bluePlayerSpawn;
+            objectPlacer.bluePlayerPlacementIndicator.transform.rotation = map.bluePlayerSpawnRotation;
+        }
+
+        //temporary player selection
+        else if (Input.GetKeyDown(KeyCode.V))
+        {
+            objectPlacer.SetPlayer(true);
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            objectPlacer.SetPlayer(false);
         }
     }
 }

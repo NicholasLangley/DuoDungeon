@@ -10,9 +10,6 @@ public class MapBuilder
     BlockBuilder blockBuilder;
     GameObject mapParent;
 
-    public Vector3 redPlayerSpawn, bluePlayerSpawn;
-    public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
-
     public MapBuilder(BlockBuilder bb, Map m)
     {
         map = m;
@@ -33,10 +30,10 @@ public class MapBuilder
         //read and create blocks
         foreach (JObject blockObject in mapJson["blocks"])
         {
-            Block newBlock = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
-            Vector3Int intPosition = Map.GetIntVector3(newBlock.transform.position);
-            map.AddBlock(intPosition, newBlock);
-            newBlock.transform.parent = mapParent.transform;
+            GameObject newBlockObject = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
+            Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
+            map.AddBlock(intPosition, newBlockObject.GetComponent<Block>());
+            newBlockObject.transform.parent = mapParent.transform;
         }
 
         //readPlayers
@@ -48,10 +45,10 @@ public class MapBuilder
 
     private void ReadPlayers(JObject playerJObject)
     {
-        redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
-        redPlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["red"]["rotation"]);
+        map.redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
+        map.redPlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["red"]["rotation"]);
 
-        bluePlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["blue"]["position"]);
-        bluePlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["blue"]["rotation"]);
+        map.bluePlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["blue"]["position"]);
+        map.bluePlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["blue"]["rotation"]);
     }
 }
