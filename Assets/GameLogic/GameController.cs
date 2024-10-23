@@ -61,13 +61,13 @@ public class GameController : MonoBehaviour
         previousTurns = new Stack<Turn>();
 
         //initialize map
-        LoadLevel(testMap);
+        LoadLevel("/saveTEST" + ".json");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        if (Input.GetKey(KeyCode.Backspace) && !undoingTurn)
         {
             undoCommandIsBuffered = true;
             if(takingTurn)
@@ -128,14 +128,15 @@ public class GameController : MonoBehaviour
     ///////////////////
     ///Level Loading///
     ///////////////////
-    public void LoadLevel(TextAsset level)
+    public void LoadLevel(string filename)
     {
+        if (map != null) { map.ClearMap(); }
         map = new Map();
         blockBuilder = new BlockBuilder(blockList);
         mapBuilder = new MapBuilder(blockBuilder, map);
 
         //blocks only
-        mapBuilder.LoadMap(level);
+        mapBuilder.LoadMap(filename);
 
         //spawn Players
         playerController.SpawnPlayers(map);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 public class MapBuilder
 {
@@ -18,11 +19,13 @@ public class MapBuilder
         mapParent = new GameObject("MapParent");
     }
 
-    public void LoadMap(TextAsset mapJsonFile)
+    public void LoadMap(string filename)
     {
         map.ClearMap();
+        string filepath = Application.dataPath + "/LevelsTEMP/" + filename;
+        string mapJSON = File.ReadAllText(filepath);
         //map parsing starts here
-        JObject mapJson = JObject.Parse(mapJsonFile.text);
+        JObject mapJson = JObject.Parse(mapJSON);
 
         //TODO METADATA STUFF//
         

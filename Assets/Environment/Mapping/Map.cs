@@ -79,7 +79,7 @@ public class Map
 
         Debug.Log(mapJSON);
         //save file to text
-        string filepath = Application.dataPath + "/" + filename + ".json";
+        string filepath = Application.dataPath + "/levelsTEMP/" + filename + ".json";
 
         //overwrites file if it already exists
         File.WriteAllText(filepath, mapJSON);
