@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameController : MonoBehaviour
 {
@@ -10,9 +11,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     BlockList blockList;
     BlockBuilder blockBuilder;
-    //TEMPORARY//
-    [SerializeField]
-    TextAsset testMap;
 
     //Turn variables
     Stack<Turn> previousTurns;
@@ -29,6 +27,7 @@ public class GameController : MonoBehaviour
     //2. Enemies
     //3. Environment
     PlayerController playerController;
+    PlayerInputHandler playerInputHandler;
 
     [Header("Player Prefabs")]
     [SerializeField]
@@ -47,9 +46,10 @@ public class GameController : MonoBehaviour
     Entity Evironment1Prefab;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab));
+        playerInputHandler = PlayerInputHandler.Instance;
+        playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler);
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Backspace) && !undoingTurn)
+        if (playerInputHandler.UndoInput && !undoingTurn)
         {
             undoCommandIsBuffered = true;
             if(takingTurn)

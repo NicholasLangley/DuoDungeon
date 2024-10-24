@@ -123,6 +123,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &190201345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 190201347}
+  - component: {fileID: 190201346}
+  m_Layer: 0
+  m_Name: PlayerInputHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &190201346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190201345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8e3c07c28913542b8926acaa5bca97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionMap: {fileID: -944628639613478452, guid: a807990643b90994e93e3a99878087e4, type: 3}
+  actionMapName: GameplayPlayerController
+--- !u!4 &190201347
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190201345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.9292107, y: 4.8171496, z: -5.180746}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +293,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
-  testMap: {fileID: 4900000, guid: 9b9b3381c5324374380a9a705cccef42, type: 3}
   redPlayerPrefab: {fileID: 475656349081761589, guid: 28b3aa6dcff399a41b85f8abb1cc4175, type: 3}
   bluePlayerPrefab: {fileID: 721603250547316228, guid: a4a0cf0418f5c654498664f6393e04c7, type: 3}
   enemy1Prefab: {fileID: 0}
@@ -273,3 +318,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 705507995}
   - {fileID: 1848279068}
+  - {fileID: 190201347}

@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerController : ICommandable
 {
-    [SerializeField]
     PlayerEntity redPlayer;
-    [SerializeField]
     PlayerEntity bluePlayer;
+    PlayerInputHandler playerInputHandler;
+
     public bool busy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public PlayerController(PlayerEntity red, PlayerEntity blue)
+    public PlayerController(PlayerEntity red, PlayerEntity blue, PlayerInputHandler inputHandler)
     {
         redPlayer = red;
         bluePlayer = blue;
+        playerInputHandler = inputHandler;
     }
 
     public void SpawnPlayers(Map map)
@@ -32,14 +33,14 @@ public class PlayerController : ICommandable
     public List<Command> GetCommands()
     {
         //Movement
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        if (playerInputHandler.MoveInput != Vector2.zero)
         {
             return AttemptMovement();
         }
 
         //rotation
-        else if (Input.GetKeyDown(KeyCode.Q)) { return RotatePlayers(-90f); }
-        else if (Input.GetKeyDown(KeyCode.E)) { return RotatePlayers(90f); }
+        else if (playerInputHandler.RotateInput < 0) { return RotatePlayers(-90f); }
+        else if (playerInputHandler.RotateInput > 0) { return RotatePlayers(90f); }
 
         //Attack
 
@@ -80,19 +81,19 @@ public class PlayerController : ICommandable
         MovementDirection movementDir;
 
         //get next position for each player
-        if (Input.GetAxisRaw("Vertical") > 0)
+        if (playerInputHandler.MoveInput.y > 0)
         {
             movementDir = MovementDirection.FORWARD;
         }
-        else if (Input.GetAxisRaw("Vertical") < 0)
+        else if (playerInputHandler.MoveInput.y < 0)
         {
             movementDir = MovementDirection.BACKWARD;
         }
-        else if (Input.GetAxisRaw("Horizontal") > 0)
+        else if (playerInputHandler.MoveInput.x > 0)
         {
             movementDir = MovementDirection.RIGHT;
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0)
+        else if (playerInputHandler.MoveInput.x < 0)
         {
             movementDir = MovementDirection.LEFT;
         }
