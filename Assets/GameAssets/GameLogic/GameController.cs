@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     //2. Enemies
     //3. Environment
     PlayerController playerController;
+    [SerializeField]
     PlayerInputHandler playerInputHandler;
 
     [Header("Player Prefabs")]
@@ -48,7 +49,6 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerInputHandler = PlayerInputHandler.Instance;
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler);
 
         _enemies = new List<Entity>();
@@ -70,11 +70,6 @@ public class GameController : MonoBehaviour
         if (playerInputHandler.UndoInput && !undoingTurn)
         {
             undoCommandIsBuffered = true;
-            if(takingTurn)
-            {
-                previousTurns.Push(currentTurn);
-                takingTurn = false;
-            }
         }
 
         //no need to check for turn logic if entities are performing an action
@@ -84,6 +79,11 @@ public class GameController : MonoBehaviour
         //interrupt infinite loops or long sequences if the player chooses
         if (undoCommandIsBuffered == true)
         {
+            if (takingTurn)
+            {
+                previousTurns.Push(currentTurn);
+                takingTurn = false;
+            }
             BeginUndoingTurn();
             undoCommandIsBuffered = false;
         }
@@ -116,8 +116,8 @@ public class GameController : MonoBehaviour
 
         else if (undoingTurn)
         {
+            if (currentUndoLayer < 0) { FinishUndoingTurn(); return; }
             currentlyUndoingTurn.undoLayer(currentUndoLayer--);
-            if (currentUndoLayer < 0) { FinishUndoingTurn(); }
         }
 
         else { checkForPlayerTakingTurn(); }

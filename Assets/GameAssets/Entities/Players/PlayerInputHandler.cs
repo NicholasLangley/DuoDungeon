@@ -19,20 +19,8 @@ public class PlayerInputHandler : MonoBehaviour
     public float RotateInput { get; private set; }
     public bool UndoInput { get; private set; }
 
-    public static PlayerInputHandler Instance { get; set; }
-
     void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         moveAction = inputActionMap.FindActionMap(actionMapName).FindAction("Move");
         rotateAction = inputActionMap.FindActionMap(actionMapName).FindAction("Rotate");
         undoAction = inputActionMap.FindActionMap(actionMapName).FindAction("Undo");
@@ -60,9 +48,9 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        moveAction.Disable();
-        rotateAction.Disable();
-        undoAction.Disable();
+        if (moveAction != null) { moveAction.Disable(); }
+        if (rotateAction != null) { rotateAction.Disable(); }
+        if (undoAction != null) { undoAction.Disable();}
     }
 
 }
