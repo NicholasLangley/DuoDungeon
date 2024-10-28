@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementTests : InputTestFixture
+public class PlayerMovementTests : CustomInputTestFixture
 {
     GameController gameController;
     Keyboard keyboard;
@@ -39,34 +39,22 @@ public class PlayerMovementTests : InputTestFixture
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
         //forward
-        Press(keyboard.wKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.wKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.wKey, 0.5f);
         Assert.AreEqual(redStartPos + redPlayer.transform.forward, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos + bluePlayer.transform.forward, bluePlayer.transform.localPosition);
 
         //back
-        Press(keyboard.sKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.sKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.sKey, 0.5f);
         Assert.AreEqual(redStartPos, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos, bluePlayer.transform.localPosition);
 
         //left
-        Press(keyboard.aKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.aKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.aKey, 0.5f);
         Assert.AreEqual(redStartPos - redPlayer.transform.right, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos - bluePlayer.transform.right, bluePlayer.transform.localPosition);
 
         //right
-        Press(keyboard.dKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.dKey);
-        yield return new WaitForSeconds(0.5f);
+        yield return PressThenRelease(keyboard.dKey, 0.5f);
         Assert.AreEqual(redStartPos, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos, bluePlayer.transform.localPosition);
 
@@ -74,34 +62,22 @@ public class PlayerMovementTests : InputTestFixture
         //UNDOING
         /////////
         //undo right
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.AreEqual(redStartPos - redPlayer.transform.right, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos - bluePlayer.transform.right, bluePlayer.transform.localPosition);
 
         //undo left
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.AreEqual(redStartPos, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos, bluePlayer.transform.localPosition);
 
         //undo back
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.AreEqual(redStartPos + redPlayer.transform.forward, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos + bluePlayer.transform.forward, bluePlayer.transform.localPosition);
 
         //undo forward
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.AreEqual(redStartPos, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos, bluePlayer.transform.localPosition);
 
@@ -125,62 +101,41 @@ public class PlayerMovementTests : InputTestFixture
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
         //forward
-        Press(keyboard.wKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.wKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.wKey, 0.5f);
         Assert.AreEqual(redStartPos + redPlayer.transform.forward, redPlayer.transform.localPosition);
         Assert.AreEqual(blueStartPos + bluePlayer.transform.forward, bluePlayer.transform.localPosition);
 
         //floor to stair
-        Press(keyboard.wKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.wKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.wKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 2.0f * redPlayer.transform.forward + 0.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 2.0f * bluePlayer.transform.forward + 0.5f * Vector3.up, bluePlayer.transform.localPosition), 0.1f);
 
         //stair to stair
-        Press(keyboard.wKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.wKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.wKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 3.0f * redPlayer.transform.forward + 1.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 3.0f * bluePlayer.transform.forward + 1.5f * Vector3.up, bluePlayer.transform.localPosition), 0.1f);
 
         //stair to floor
-        Press(keyboard.wKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.wKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.wKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 4.0f * redPlayer.transform.forward + 2.0f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 4.0f * bluePlayer.transform.forward + 2.0f * Vector3.up, bluePlayer.transform.localPosition), 0.1f);
 
         ////////////
         ///UNDOING//
         ///////////
-        
+
         //undo stair to floor
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 3.0f * redPlayer.transform.forward + 1.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 3.0f * bluePlayer.transform.forward + 1.5f * Vector3.up, bluePlayer.transform.localPosition), 0.1f);
 
         //undo stair to stair
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 2.0f * redPlayer.transform.forward + 0.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 2.0f * bluePlayer.transform.forward + 0.5f * Vector3.up, bluePlayer.transform.localPosition), 0.1f);
 
         //undo floor to stair
-        Press(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.05f);
-        Release(keyboard.backspaceKey);
-        yield return new WaitForSeconds(0.6f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 1.0f * redPlayer.transform.forward, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 1.0f * bluePlayer.transform.forward, bluePlayer.transform.localPosition), 0.1f);
 
