@@ -74,10 +74,21 @@ public class EntityFallingState : EntityState
             modifiedFallLerpDuration = (fallDestination.y - startPos.y) * modifiedFallLerpDuration;
             return;
         }
-        
-        baseBlockPosition.y -= 1;
+
+        Block startingBlock = _entity.GetBlockFromMap(baseBlockPosition);
+        Block destBlock;
         fallDestination = baseBlockPosition;
-        Block destBlock = _entity.GetBlockFromMap(baseBlockPosition);
+
+        if (startingBlock != null && startingBlock.isGround)
+        {
+            destBlock = startingBlock;
+        }
+        else
+        {
+            fallDestination.y -= 1;
+            destBlock = _entity.GetBlockFromMap(fallDestination);
+        }
+        
         if (destBlock != null)
         {
             fallDestination.y += destBlock.MidBlockHeight;

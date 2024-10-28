@@ -173,7 +173,11 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     public bool isEntityGrounded()
     {
         Block currentBlock = GetCurrentlyOccupiedBlock();
-        if (currentBlock != null && currentBlock.isGround) { return true; }
+        if (currentBlock != null && currentBlock.isGround) 
+        {
+            if (transform.position.y - currentBlock.transform.position.y - currentBlock.MidBlockHeight > 0.01f) { return false; }
+            return true; 
+        }
         else if (currentBlock == null && transform.position.y > Mathf.Floor(transform.position.y)) { return false; }
 
         Vector3Int groundPos = Map.GetIntVector3(transform.position);

@@ -46,7 +46,7 @@ public class Block : MonoBehaviour
     {
         if (blocksAllMovement) { return false; }
 
-        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform) + transform.position.y;
+        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform.position) + transform.position.y;
 
         Block entityCurrentBlock = e.GetCurrentlyOccupiedBlock();
         float entityExitY;
@@ -71,9 +71,9 @@ public class Block : MonoBehaviour
         return false;
     }
 
-    public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform)
+    public float CalculateAttemptedEntryEdgeHeight(Vector3 entryPoint)
     {
-        Vector3 relativeDirection = transform.InverseTransformPoint(entityTransform.position);
+        Vector3 relativeDirection = transform.InverseTransformPoint(entryPoint);
         relativeDirection.y = 0;
 
         Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);

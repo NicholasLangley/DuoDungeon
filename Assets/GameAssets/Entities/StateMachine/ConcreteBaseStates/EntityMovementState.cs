@@ -37,11 +37,19 @@ public class EntityMovementState : EntityState
         Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
         Block destBlock = _entity.GetBlockFromMap(destPosition);
 
+        float srcBlockExitHeight = srcBlock != null ? srcBlock.CalculateAttemptedExitEdgeHeight(destPosition) : 0;
+        float destBlockEnterHeight = destBlock != null ? destBlock.CalculateAttemptedEntryEdgeHeight(srcPosition) : 0;
+
         //function doesnt care about y differences
-        if (srcBlock != null) { halfwayPosition.y = srcBlock.transform.position.y + srcBlock.CalculateAttemptedExitEdgeHeight(destPosition); }
+        if (srcBlock != null) 
+        {
+            //if entity is not grounded it was undoing from a fall, so there is no ground to enter(into)
+            if (_entity.isEntityGrounded()) { halfwayPosition.y = srcBlock.transform.position.y + srcBlockExitHeight; }
+            else { halfwayPosition.y = destBlockEnterHeight; }
+        }
         else { halfwayPosition.y = srcPosition.y; }
 
-        if (destBlock != null) { destPosition.y += destBlock.MidBlockHeight; }
+        if (destBlock != null && (srcBlockExitHeight - destBlockEnterHeight) < _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
         else { destPosition.y = halfwayPosition.y; }
 
         inSrcBlock = true;

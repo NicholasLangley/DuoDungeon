@@ -34,12 +34,12 @@ public class LevelEditorController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Insert))
         {
-            map.SaveMapToFile("/Autotests/BasicTestMap");
+            map.SaveMapToFile("/Autotests/MovementTestMap");
             Debug.Log("map saved");
         }
         else if (Input.GetKeyDown(KeyCode.Home))
         {
-            mapBuilder.LoadMap("/Autotests/BasicTestMap" + ".json");
+            mapBuilder.LoadMap("/Autotests/MovementTestMap" + ".json");
             //TODO do this better
             objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
             objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
