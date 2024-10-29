@@ -39,22 +39,22 @@ public class PlayerMovementTests : CustomInputTestFixture
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
         //back
-        yield return PressThenRelease(keyboard.sKey, 0.5f);
+        yield return PressThenRelease(keyboard.sKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - redPlayer.transform.forward, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.forward, bluePlayer.transform.localPosition), 0.1f);
 
         //forward
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
         //right
-        yield return PressThenRelease(keyboard.dKey, 0.5f);
+        yield return PressThenRelease(keyboard.dKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.right, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.right, bluePlayer.transform.localPosition), 0.1f);
 
         //left
-        yield return PressThenRelease(keyboard.aKey, 0.5f);
+        yield return PressThenRelease(keyboard.aKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -62,22 +62,22 @@ public class PlayerMovementTests : CustomInputTestFixture
         //UNDOING
         /////////
         //undo left
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.right, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.right, bluePlayer.transform.localPosition), 0.1f);
 
         //undo right
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
         //undo forward
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - redPlayer.transform.forward, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.forward, bluePlayer.transform.localPosition), 0.1f);
 
         //undo back
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -103,27 +103,27 @@ public class PlayerMovementTests : CustomInputTestFixture
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
         //floor to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.forward + 0.125f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.forward + 0.125f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 2.0f * redPlayer.transform.forward + 0.375f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 2.0f * bluePlayer.transform.forward + 0.375f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 3.0f * redPlayer.transform.forward + 0.625f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 3.0f * bluePlayer.transform.forward + 0.625f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 4.0f * redPlayer.transform.forward + 0.875f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 4.0f * bluePlayer.transform.forward + 0.875f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to floor
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 5.0f * redPlayer.transform.forward + Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 5.0f * bluePlayer.transform.forward + Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
@@ -132,27 +132,27 @@ public class PlayerMovementTests : CustomInputTestFixture
         ///////////
 
         //undo partial to floor
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 4.0f * redPlayer.transform.forward + 0.875f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 4.0f * bluePlayer.transform.forward + 0.875f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo partial to partial
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 3.0f * redPlayer.transform.forward + 0.625f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 3.0f * bluePlayer.transform.forward + 0.625f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo partial to partial
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 2.0f * redPlayer.transform.forward + 0.375f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 2.0f * bluePlayer.transform.forward + 0.375f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo partial to partial
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.forward + 0.125f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.forward + 0.125f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo floor to partial
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -174,24 +174,24 @@ public class PlayerMovementTests : CustomInputTestFixture
         GameObject bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)");
 
         //align players with test row
-        yield return PressThenRelease(keyboard.dKey, 0.5f);
+        yield return PressThenRelease(keyboard.dKey, 0.7f);
 
         Vector3 redStartPos = redPlayer.transform.localPosition;
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
         //floor to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.forward + 0.1f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.forward + 0.1f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to partial
-        yield return PressThenRelease(keyboard.wKey, 0.5f);
+        yield return PressThenRelease(keyboard.wKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + 2.0f * redPlayer.transform.forward + 0.2f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + 2.0f * bluePlayer.transform.forward + 0.2f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to floor (initial partial to partial alignment)
-        yield return PressThenRelease(keyboard.sKey, 0.5f);
-        yield return PressThenRelease(keyboard.sKey, 0.5f);
+        yield return PressThenRelease(keyboard.sKey, 0.7f);
+        yield return PressThenRelease(keyboard.sKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -200,18 +200,18 @@ public class PlayerMovementTests : CustomInputTestFixture
         ////////
         
         //undo partial to floor
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.forward + 0.1f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.forward + 0.1f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo partial to partial (initial realignment skip)
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos + redPlayer.transform.forward + 0.1f * Vector3.up, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos + bluePlayer.transform.forward + 0.1f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //undo floor to partial
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -242,7 +242,7 @@ public class PlayerMovementTests : CustomInputTestFixture
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.right + 0.5f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
         //partial to full movement blocked
-        yield return PressThenRelease(keyboard.dKey, 0.5f);
+        yield return PressThenRelease(keyboard.dKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - redPlayer.transform.right + 0.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.right + 0.5f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
@@ -256,7 +256,7 @@ public class PlayerMovementTests : CustomInputTestFixture
         //movement blocked
         //partial to partial (red)
         //full to partial (blue)
-        yield return PressThenRelease(keyboard.dKey, 0.5f);
+        yield return PressThenRelease(keyboard.dKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - 2.0f * redPlayer.transform.right + 0.9f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - 2.0f * bluePlayer.transform.right + 1.0f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
@@ -267,7 +267,7 @@ public class PlayerMovementTests : CustomInputTestFixture
         //undo movement blocked
         //partial to partial (red)
         //full to partial (blue)
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - 2.0f * redPlayer.transform.right + 0.9f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - 2.0f * bluePlayer.transform.right + 1.0f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
@@ -280,7 +280,7 @@ public class PlayerMovementTests : CustomInputTestFixture
 
         //undo movement blocked
         //partial to full
-        yield return PressThenRelease(keyboard.backspaceKey, 0.5f);
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - redPlayer.transform.right + 0.5f * Vector3.down, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.right + 0.5f * Vector3.down, bluePlayer.transform.localPosition), 0.1f);
 
@@ -292,4 +292,50 @@ public class PlayerMovementTests : CustomInputTestFixture
         yield return null;
     }
 
+    //Tests steps too big to climb
+    //floor to partial - big step
+    //partial to partial - big step
+    //partial to floor - big step
+    [UnityTest]
+    public IEnumerator PlayerRotationBasic()
+    {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        yield return new WaitForSeconds(1.0f);
+
+        GameObject redPlayer = GameObject.Find("RedPlayerPrefab(Clone)");
+        GameObject bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)");
+
+        Quaternion redStartRotation = redPlayer.transform.rotation;
+        Quaternion blueStartRotation = bluePlayer.transform.rotation;
+
+        Quaternion redRightRotation = Quaternion.Euler(redStartRotation.eulerAngles.x, redStartRotation.eulerAngles.y + 90, redStartRotation.eulerAngles.z);
+        Quaternion blueRightRotation = Quaternion.Euler(blueStartRotation.eulerAngles.x, blueStartRotation.eulerAngles.y + 90, blueStartRotation.eulerAngles.z);
+
+        //rotate right
+        yield return PressThenRelease(keyboard.eKey, 0.7f);
+        Assert.LessOrEqual(Quaternion.Angle(redRightRotation, redPlayer.transform.rotation), 0.1f);
+        Assert.LessOrEqual(Quaternion.Angle(blueRightRotation, bluePlayer.transform.rotation), 0.1f);
+
+        //rotate left
+        yield return PressThenRelease(keyboard.qKey, 0.7f);
+        Assert.LessOrEqual(Quaternion.Angle(redStartRotation, redPlayer.transform.rotation), 0.1f);
+        Assert.LessOrEqual(Quaternion.Angle(blueStartRotation, bluePlayer.transform.rotation), 0.1f);
+
+        ////////
+        //UNDO//
+        ////////
+
+        //undo rotate left
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
+        Assert.LessOrEqual(Quaternion.Angle(redRightRotation, redPlayer.transform.rotation), 0.1f);
+        Assert.LessOrEqual(Quaternion.Angle(blueRightRotation, bluePlayer.transform.rotation), 0.1f);
+
+        //undo rotate right
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
+        Assert.LessOrEqual(Quaternion.Angle(redStartRotation, redPlayer.transform.rotation), 0.1f);
+        Assert.LessOrEqual(Quaternion.Angle(blueStartRotation, bluePlayer.transform.rotation), 0.1f);
+
+        yield return null;
+    }
 }
