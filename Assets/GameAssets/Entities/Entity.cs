@@ -130,9 +130,10 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         //logical center of current block
         nextPos.y = Mathf.Floor(nextPos.y);
 
-        //if in a block find exit height (if height >= 1 then the player has gone up a y level and we'll check for collision there)
+        //if in a partial block find exit height (if height >= 1 then the player has gone up a y level and we'll check for collision there)
         Block currentBlock = GetCurrentlyOccupiedBlock();
-        if (currentBlock != null) { nextPos.y += currentBlock.CalculateAttemptedExitEdgeHeight(nextPos); }
+        float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos) : 0;
+        nextPos.y += exitHeight;
         nextPos.y = Mathf.Floor(nextPos.y);
 
         //check for stairs going down
@@ -148,6 +149,13 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
                 nextPos = belowDest;
             }
         }
+        /*block exists and is full (player will try to climb ontop of it if possible)
+        else if(straightForwardDestBlock != null && exitHeight < 1.0f)
+        {
+            float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform.position);
+            if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
+            { nextPos += transform.up; }
+        }*/
 
         return nextPos;
     }

@@ -50,6 +50,7 @@ public class EntityMovementState : EntityState
         else { halfwayPosition.y = srcPosition.y; }
 
         if (destBlock != null && (srcBlockExitHeight - destBlockEnterHeight) < _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
+        //else if (destBlock == null && destPosition.y - Mathf.Floor(srcPosition.y) > 0.99f) { }//player climbed up to this block
         else { destPosition.y = halfwayPosition.y; }
 
         inSrcBlock = true;

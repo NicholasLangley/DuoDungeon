@@ -101,7 +101,7 @@ MonoBehaviour:
   backwardEdgeHeight: 1
   rightEdgeHeight: 1
   leftEdgeHeight: 1
-  blocksAllMovement: 1
+  blocksAllMovement: 0
   isGround: 1
   blocksProjectiles: 0
   isInbetweenBlock: 0
