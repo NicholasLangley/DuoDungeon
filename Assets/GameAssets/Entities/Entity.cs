@@ -149,13 +149,16 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
                 nextPos = belowDest;
             }
         }
-        /*block exists and is full (player will try to climb ontop of it if possible)
+        //block exists and is full (player will try to climb ontop of it if possible)
         else if(straightForwardDestBlock != null && exitHeight < 1.0f)
         {
             float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform.position);
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
-            { nextPos += transform.up; }
-        }*/
+            { 
+                Block potentialNextBlock = GetBlockFromMap(nextPos + transform.up);
+                if (potentialNextBlock != null) { nextPos += transform.up; }
+            }
+        }
 
         return nextPos;
     }
