@@ -338,4 +338,45 @@ public class PlayerMovementTests : CustomInputTestFixture
 
         yield return null;
     }
+
+
+    //Tests climbing from a partial block to a full block with a partial ontop
+    //red should be blocked because too high
+    //blue should succeed
+    [UnityTest]
+    public IEnumerator PlayerMovementPartialClimbFullStackedWithPartial()
+    {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        yield return new WaitForSeconds(1.0f);
+
+        GameObject redPlayer = GameObject.Find("RedPlayerPrefab(Clone)");
+        GameObject bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)");
+
+        
+
+        //initial align
+        yield return PressThenRelease(keyboard.sKey, 1f);
+        yield return PressThenRelease(keyboard.sKey, 1f);
+
+        Vector3 redStartPos = redPlayer.transform.localPosition;
+        Vector3 blueStartPos = bluePlayer.transform.localPosition;
+
+        yield return PressThenRelease(keyboard.sKey, 1f);
+        Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
+        Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.forward + 0.2f * bluePlayer.transform.up, bluePlayer.transform.localPosition), 0.1f);
+
+        /////////
+        ///UNDO//
+        ////////
+
+        //undo movement blocked
+        //partial to partial (red)
+        //full to partial (blue)
+        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
+        Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
+        Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
+
+        yield return null;
+    }
 }

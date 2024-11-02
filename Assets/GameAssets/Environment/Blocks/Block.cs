@@ -59,7 +59,9 @@ public class Block : MonoBehaviour
         //if player climbing up a level and still has to climb this block
         if (transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
         {
-            if (enteringEdgeHeight + 1 <= e.maxStairClimbHeight + entityExitY) { return true; }
+            float maxClimb = (e.maxStairClimbHeight + entityExitY);
+            float climbNeeded = enteringEdgeHeight;
+            if (climbNeeded <= maxClimb) { return true; }
         }
         //same height or greater entry
         else if (transform.position.y >= Mathf.Floor(e.transform.position.y))
