@@ -12,6 +12,7 @@ public class ObjectPlacer : MonoBehaviour
     Plane yLevelIntersectionPlane;
     public Map map;
     GameObject mapTransform;
+    Vector3 intersectionPos;
 
     [SerializeField]
     GameObject redPlayerModelPrefab, bluePlayerModelPrefab;
@@ -31,6 +32,7 @@ public class ObjectPlacer : MonoBehaviour
         mapTransform = new GameObject();
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
+        intersectionPos = Vector3.negativeInfinity;
     }
 
     // Update is called once per frame
@@ -38,7 +40,7 @@ public class ObjectPlacer : MonoBehaviour
     {
         Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
         float distance;
-        Vector3 intersectionPos = Vector3.negativeInfinity;
+        intersectionPos = Vector3.negativeInfinity;
         if (yLevelIntersectionPlane.Raycast(ray, out distance))
         {
             if (objectPlacementIndicator != null)
@@ -49,40 +51,6 @@ public class ObjectPlacer : MonoBehaviour
             }
         }
         else { hideBlock(); }
-
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            if (currentPlacementType == objectType.block && currentBlock != null) { PlaceBlock(Map.GetIntVector3(intersectionPos)); }
-            else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { PlacePlayer(Map.GetIntVector3(intersectionPos)); }
-        }
-
-
-        //BLOCK ROTATION
-        //probably rewrite this later
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            RotateObjectPlacement(RotationDirection.FORWARD);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            RotateObjectPlacement(RotationDirection.LEFT);
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            RotateObjectPlacement(RotationDirection.BACK);
-        }
-        else if (Input.GetKeyDown(KeyCode.L))
-        {
-            RotateObjectPlacement(RotationDirection.RIGHT);
-        }
-        else if (Input.GetKeyDown(KeyCode.U))
-        {
-            RotateObjectPlacement(RotationDirection.LEFTROLL);
-        }
-        else if (Input.GetKeyDown(KeyCode.O))
-        {
-            RotateObjectPlacement(RotationDirection.RIGHTROLL);
-        }
 
     }
 
@@ -118,7 +86,13 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementIndicator.gameObject.AddComponent<GridLines>();
     }
 
-    
+    public void PlaceCurrentObject()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) { return; }
+        
+        if (currentPlacementType == objectType.block && currentBlock != null) { PlaceBlock(Map.GetIntVector3(intersectionPos)); }
+        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { PlacePlayer(Map.GetIntVector3(intersectionPos)); }
+    }
 
     void PlaceBlock(Vector3Int position)
     {
@@ -138,6 +112,12 @@ public class ObjectPlacer : MonoBehaviour
 
     void PlacePlayer(Vector3Int position)
     {
+        if (IsPositionOutOfBounds(position))
+        {
+            Debug.Log("player out of bounds");
+            return;
+        }
+
         if (currentPlacementType == objectType.redPlayer)
         {
             map.redPlayerSpawn = position;
@@ -171,9 +151,9 @@ public class ObjectPlacer : MonoBehaviour
         yLevelIntersectionPlane.SetNormalAndPosition(Vector3.up, new Vector3(0, yLevel, 0));
     }
 
-    enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
+    public enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
 
-    void RotateObjectPlacement(RotationDirection dir)
+    public void RotateObjectPlacement(RotationDirection dir)
     {
         Vector3 rotationAxis;
         float rotationAmount = 90;

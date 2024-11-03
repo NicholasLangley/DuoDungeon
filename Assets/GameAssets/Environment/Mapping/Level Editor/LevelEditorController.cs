@@ -15,10 +15,9 @@ public class LevelEditorController : MonoBehaviour
     [SerializeField]
     ObjectPlacer objectPlacer;
 
-    /////////////////
-    //TEMPORARY///////
-    //////////////////
-    [SerializeField] TextAsset temporaryLoadMap;
+    //Command Stacks
+    Stack<Command> undoCommands;
+    Stack<Command> redoCommands;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +26,9 @@ public class LevelEditorController : MonoBehaviour
         blockBuilder = new BlockBuilder(blockList);
         mapBuilder = new MapBuilder(blockBuilder, map);
         objectPlacer.map = map;
+
+        undoCommands = new Stack<Command>();
+        redoCommands = new Stack<Command>();
     }
 
     // Update is called once per frame

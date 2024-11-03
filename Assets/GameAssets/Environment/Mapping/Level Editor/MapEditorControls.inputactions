@@ -1,0 +1,154 @@
+{
+    "name": "MapEditorControls",
+    "maps": [
+        {
+            "name": "ObjectPlacerControls",
+            "id": "6634e2b5-3053-4503-b0a2-761ba929d4f6",
+            "actions": [
+                {
+                    "name": "PlaceBlock",
+                    "type": "Button",
+                    "id": "56259b58-3715-49c4-8775-3dece9ccb63b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateObjectForward",
+                    "type": "Button",
+                    "id": "44b15f93-4469-4aa1-b10c-e17fc461fc37",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateObjectBack",
+                    "type": "Button",
+                    "id": "c603ac66-7dfe-45cb-ae06-0a90694d56e9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateObjectLeft",
+                    "type": "Button",
+                    "id": "2bafdcfc-10a5-470d-b93b-679f208002a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateObjectRight",
+                    "type": "Button",
+                    "id": "4299a4c8-48e8-4bb7-bb14-1eb44b4f859c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RollObjectLeft",
+                    "type": "Button",
+                    "id": "b3cdd18c-5549-4b92-82cd-1cc124935c7f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RollObjectRight",
+                    "type": "Button",
+                    "id": "4fcf1888-5fa7-48cf-84eb-2ef97e4f3096",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "3749a794-2798-4f7f-a9cc-29f748ca52cf",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55579136-c9b6-417b-b44c-769356bc66ca",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateObjectForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d7a6763-f662-4e77-afa3-36929b15f8a8",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateObjectBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "45f2e9cd-0969-454c-be62-abd5fc9a7705",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateObjectLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "11c48ad3-7bba-4618-afeb-fd37206b8d8c",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateObjectRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a7cb89f7-bf74-48ee-9db1-6c2178024f2a",
+                    "path": "<Keyboard>/u",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RollObjectLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76de6789-a216-4bd4-99ac-38dad22e3e6b",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RollObjectRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
