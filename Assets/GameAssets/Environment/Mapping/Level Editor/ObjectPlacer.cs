@@ -21,6 +21,9 @@ public class ObjectPlacer : MonoBehaviour
     public enum objectType {none, block, redPlayer, bluePlayer, entity, environmentalEntity }
     objectType currentPlacementType;
 
+    [SerializeField]
+    BlockList blockList;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,53 +89,97 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementIndicator.gameObject.AddComponent<GridLines>();
     }
 
-    public void PlaceCurrentObject()
+    public Command PlaceCurrentObject()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) { return; }
-        
-        if (currentPlacementType == objectType.block && currentBlock != null) { PlaceBlock(Map.GetIntVector3(intersectionPos)); }
-        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { PlacePlayer(Map.GetIntVector3(intersectionPos)); }
+        if (EventSystem.current.IsPointerOverGameObject()) { return null; }
+
+        Command cmd = null;
+
+        if (currentPlacementType == objectType.block && currentBlock != null) { cmd = GetPlaceBlockCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentBlockID); }
+        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { cmd = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
+
+        if (cmd != null) { cmd.Execute(); }
+        return cmd;
     }
 
-    void PlaceBlock(Vector3Int position)
+    Command GetPlaceBlockCommand(Vector3Int position, Quaternion rotation, int id)
     {
         if (IsPositionOutOfBounds(position)) 
         {
             Debug.Log("block out of bounds");
+            return null;
+        }
+
+        Block preExistingBlock = map.GetBlock(position);
+        PlaceBlockCommand cmd;
+        if(preExistingBlock != null)
+        {
+            cmd = new PlaceBlockCommand(this, position, currentBlockID, rotation, preExistingBlock.blockID, preExistingBlock.gameObject.transform.rotation);
+        }
+        else
+        {
+            cmd = new PlaceBlockCommand(this, position, currentBlockID, rotation);
+        }
+        return cmd;
+    }
+
+    public void PlaceBlock(Vector3Int position, Quaternion rotation, int blockID)
+    {
+        if(blockID == -1)
+        {
+            map.RemoveBlock(position);
             return;
         }
 
-        GameObject newBlockObject = Instantiate(currentBlock, mapTransform.transform);
+        GameObject newBlockObject = Instantiate(blockList.getBlock(blockID), mapTransform.transform);
         Block newBlock = newBlockObject.GetComponent<Block>();
-        newBlock.blockID = currentBlockID;
+        newBlock.blockID = blockID;
         newBlockObject.transform.position = position;
-        newBlockObject.transform.rotation = objectPlacementIndicator.transform.rotation;
+        newBlockObject.transform.rotation = rotation;
         map.AddBlock(position, newBlock);
     }
 
-    void PlacePlayer(Vector3Int position)
+    Command GetPlacePlayerCommand(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
         if (IsPositionOutOfBounds(position))
         {
             Debug.Log("player out of bounds");
-            return;
+            return null;
         }
 
-        if (currentPlacementType == objectType.redPlayer)
+        Block preExistingBlock = map.GetBlock(position);
+        Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
+        Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
+        PlacePlayerCommand cmd;
+        if (preExistingBlock != null)
+        {
+            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot, preExistingBlock.blockID, preExistingBlock.gameObject.transform.rotation);
+        }
+        else
+        {
+            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot);
+        }
+        return cmd;
+    }
+
+    public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)
+    {
+        map.RemoveBlock(position);
+        if (isRedPlayer)
         {
             map.redPlayerSpawn = position;
             redPlayerPlacementIndicator.transform.position = position;
 
-            map.redPlayerSpawnRotation = objectPlacementIndicator.transform.rotation;
-            redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
+            map.redPlayerSpawnRotation = rotation;
+            redPlayerPlacementIndicator.transform.rotation = rotation;
         }
         else
         {
             map.bluePlayerSpawn = position;
             bluePlayerPlacementIndicator.transform.position = position;
 
-            map.bluePlayerSpawnRotation = objectPlacementIndicator.transform.rotation;
-            bluePlayerPlacementIndicator.transform.rotation = map.bluePlayerSpawnRotation;
+            map.bluePlayerSpawnRotation = rotation;
+            bluePlayerPlacementIndicator.transform.rotation = rotation;
         }
     }
 

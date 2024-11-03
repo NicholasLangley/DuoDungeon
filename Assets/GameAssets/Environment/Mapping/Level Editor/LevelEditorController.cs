@@ -34,19 +34,9 @@ public class LevelEditorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Insert))
+        if (Input.GetKeyDown(KeyCode.Home))
         {
-            map.SaveMapToFile("/Autotests/MovementBlockedPartialTestMap");
-            Debug.Log("map saved");
-        }
-        else if (Input.GetKeyDown(KeyCode.Home))
-        {
-            mapBuilder.LoadMap("/Autotests/MovementBlockedPartialTestMap" + ".json");
-            //TODO do this better
-            objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
-            objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
-            objectPlacer.bluePlayerPlacementIndicator.transform.position = map.bluePlayerSpawn;
-            objectPlacer.bluePlayerPlacementIndicator.transform.rotation = map.bluePlayerSpawnRotation;
+            Load();
         }
 
         //temporary player selection
@@ -58,5 +48,48 @@ public class LevelEditorController : MonoBehaviour
         {
             objectPlacer.SetPlayer(false);
         }
+    }
+
+    public void AddCommand(Command cmd)
+    {
+        if (cmd == null) { return; }
+        undoCommands.Push(cmd);
+        redoCommands.Clear();
+    }
+
+    public void Undo()
+    {
+        if (undoCommands.Count > 0)
+        {
+            Command undoneCommand = undoCommands.Pop();
+            undoneCommand.Undo();
+            redoCommands.Push(undoneCommand);
+        }
+    }
+
+    public void Redo()
+    {
+        if (redoCommands.Count > 0)
+        {
+            Command redoCommand = redoCommands.Pop();
+            redoCommand.Execute();
+            undoCommands.Push(redoCommand);
+        }
+    }
+
+    public void Save()
+    {
+        map.SaveMapToFile("/Autotests/MovementBlockedPartialTestMap");
+        Debug.Log("map saved");
+    }
+
+    public void Load()
+    {
+        mapBuilder.LoadMap("/Autotests/MovementBlockedPartialTestMap" + ".json");
+        //TODO do this better
+        objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
+        objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
+        objectPlacer.bluePlayerPlacementIndicator.transform.position = map.bluePlayerSpawn;
+        objectPlacer.bluePlayerPlacementIndicator.transform.rotation = map.bluePlayerSpawnRotation;
     }
 }

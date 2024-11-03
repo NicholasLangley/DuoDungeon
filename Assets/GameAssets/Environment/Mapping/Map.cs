@@ -36,6 +36,15 @@ public class Map
         currentBlocks.Add(position, block);
     }
 
+    public void RemoveBlock(Vector3Int position)
+    {
+        if (currentBlocks.ContainsKey(position))
+        {
+            GameObject.Destroy(currentBlocks[position].gameObject);
+            currentBlocks.Remove(position);
+        }
+    }
+
     public Block GetBlock(Vector3Int position)
     {
         if (currentBlocks.ContainsKey(position)) { return currentBlocks[position]; }

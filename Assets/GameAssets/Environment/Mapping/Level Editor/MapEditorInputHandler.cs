@@ -8,11 +8,17 @@ public class MapEditorInputHandler : MonoBehaviour
     [SerializeField]
     InputActionAsset inputActionMap;
 
+    [Header ("Action Map Names")]
     [SerializeField]
     string ObjectPlacerActionMapName;
+    [SerializeField]
+    string LevelEditorActionMapName, CameraControlsActionMapName;
 
     [SerializeField]
     ObjectPlacer objectPlacer;
+
+    [SerializeField]
+    LevelEditorController levelEditorController;
 
     //scene camera
 
@@ -31,6 +37,7 @@ public class MapEditorInputHandler : MonoBehaviour
     //LevelEditorController
     InputAction undoAction { get; set; }
     InputAction redoAction { get; set; }
+    InputAction saveAction { get; set; }
 
     void Awake()
     {
@@ -43,13 +50,22 @@ public class MapEditorInputHandler : MonoBehaviour
         RollLeftAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RollObjectLeft");
         RollRightAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RollObjectRight");
 
+        //LevelEditorController
+        undoAction = inputActionMap.FindActionMap(LevelEditorActionMapName).FindAction("Undo");
+        redoAction = inputActionMap.FindActionMap(LevelEditorActionMapName).FindAction("Redo");
+        saveAction = inputActionMap.FindActionMap(LevelEditorActionMapName).FindAction("Save");
+
         RegisterInputActions();
     }
 
     void RegisterInputActions()
     {
         //object Placer
-        placeAction.performed += context => objectPlacer.PlaceCurrentObject();
+        placeAction.performed += context =>
+        {
+            Command cmd = objectPlacer.PlaceCurrentObject();
+            if (cmd != null) { levelEditorController.AddCommand(cmd); }
+        };
         RotateForwardAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.FORWARD);
         RotateBackAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.BACK);
         RotateLeftAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.LEFT);
@@ -57,7 +73,9 @@ public class MapEditorInputHandler : MonoBehaviour
         RollLeftAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.LEFTROLL);
         RollRightAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.RIGHTROLL);
 
-
+        undoAction.performed += context => levelEditorController.Undo();
+        redoAction.performed += context => levelEditorController.Redo();
+        saveAction.performed += context => levelEditorController.Save();
     }
 
     private void OnEnable()
@@ -70,6 +88,11 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction.Enable();
         RollLeftAction.Enable();
         RollRightAction.Enable();
+
+        //Level Editor Controller
+        undoAction.Enable();
+        redoAction.Enable();
+        saveAction.Enable();
     }
 
     private void OnDisable()
@@ -82,6 +105,11 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction.Disable();
         RollLeftAction.Disable();
         RollRightAction.Disable();
+
+        //Level Editor Controller
+        undoAction.Disable();
+        redoAction.Disable();
+        saveAction.Disable();
     }
 
 }
