@@ -171,7 +171,17 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     public bool IsDestinationOccupied(Vector3 destinationToCheck)
     {
         Block destinationBlock = map.GetBlock(Map.GetIntVector3(destinationToCheck));
-        if (destinationBlock != null && !destinationBlock.canEntityEnter(this)) { return true; }
+        if (destinationBlock != null)
+        {
+            if (!destinationBlock.canEntityEnter(this)) { return true; }
+            if(destinationBlock.MidBlockHeight > 0.25)
+            {
+                Vector3 headCheckPos = destinationToCheck;
+                headCheckPos.y += 1;
+                Block headCheckBlock = map.GetBlock(Map.GetIntVector3(headCheckPos));
+                if (headCheckBlock != null) { return true; }
+            }
+        }
 
         if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
         {
