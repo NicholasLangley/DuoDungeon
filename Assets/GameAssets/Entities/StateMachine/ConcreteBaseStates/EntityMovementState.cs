@@ -24,6 +24,7 @@ public class EntityMovementState : EntityState
 
     public override void EnterState()
     {
+        inSrcBlock = true;
         movementLerpTimer = 0;
         _entity.busy = true;
  
@@ -52,9 +53,17 @@ public class EntityMovementState : EntityState
 
         //If moving into a partial block and able to climb down (not fall)
         if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(_entity.transform.position.y)) - (destBlockEnterHeight+ destBlock.transform.position.y)) <= _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
-        else { destPosition.y = halfwayPosition.y; }
-
-        inSrcBlock = true;
+        else {
+            destPosition.y = halfwayPosition.y;
+            //check for small step down to full block
+            if (destBlock == null)
+            {
+                Vector3 belowDestPos = destPosition;
+                belowDestPos.y -= 1;
+                Block belowDestBlock = _entity.GetBlockFromMap(belowDestPos);
+                if (belowDestBlock != null && belowDestBlock.MidBlockHeight == 1.0f) { destPosition.y = Mathf.FloorToInt(destPosition.y); }
+            }
+        }
     }
 
     public override void ExitState()

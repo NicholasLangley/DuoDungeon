@@ -109,13 +109,15 @@ public class PlayerController : ICommandable
         bool blueBlocked = bluePlayer.IsDestinationOccupied(nextBluePos);
 
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
-        if(redBlocked && !blueBlocked && nextRedPos == bluePlayer.transform.position)
+        if (redBlocked && !blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())
         {
             redBlocked = false;
         }
-        else if (blueBlocked && !redBlocked && nextBluePos == redPlayer.transform.position)
+        else if (blueBlocked && !redBlocked /*&& nextBluePos == redPlayer.GetCurrentBlockPosition()*/)
         {
-            blueBlocked = false;
+            Debug.Log("nextBluePos: " + nextBluePos);
+            Debug.Log("redPos: " + redPlayer.GetCurrentBlockPosition());
+            if (nextBluePos == redPlayer.GetCurrentBlockPosition()) { blueBlocked = false; }
         }
 
         //red player takes precedence if both try to move to same location

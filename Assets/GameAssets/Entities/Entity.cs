@@ -22,7 +22,12 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     public Vector3Int projectedDestinationBlock {get; set;}
 
-
+    public Vector3Int GetCurrentBlockPosition() 
+    { 
+        Vector3 currentVec3 = transform.position;
+        currentVec3.y = Mathf.FloorToInt(currentVec3.y);
+        return Map.GetIntVector3(currentVec3); 
+    }
 
 
     //ICommandable variables
@@ -149,6 +154,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             if(belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
+                nextPos.y += belowDestBlock.MidBlockHeight;
             }
         }
         //block exists and is full (player will try to climb ontop of it if possible)
@@ -162,6 +168,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             }
         }
 
+        nextPos.y = Mathf.FloorToInt(nextPos.y);
         projectedDestinationBlock = Map.GetIntVector3(nextPos);
     }
 
@@ -172,6 +179,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     public bool IsDestinationOccupied(Vector3Int destinationToCheck)
     {
+        //block collision
         Block destinationBlock = map.GetBlock(destinationToCheck);
         if (destinationBlock != null)
         {
@@ -185,7 +193,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             }
         }
 
-        if(Physics.Raycast(transform.position, destinationToCheck - transform.position, 1f, movementCollisionMask))
+        if (Physics.Raycast(transform.position, destinationToCheck - GetCurrentBlockPosition(), 1f, movementCollisionMask))
         {
             return true;
         }
