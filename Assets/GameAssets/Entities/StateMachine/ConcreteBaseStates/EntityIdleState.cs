@@ -17,6 +17,7 @@ public class EntityIdleState : EntityState
     public override void EnterState()
     {
         _entity.busy = false;
+        _entity.projectedDestinationBlock = Map.GetIntVector3(_entity.transform.position);
     }
 
     public override void ExitState()

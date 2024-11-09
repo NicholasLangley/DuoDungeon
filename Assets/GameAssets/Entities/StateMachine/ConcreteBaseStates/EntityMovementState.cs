@@ -29,7 +29,8 @@ public class EntityMovementState : EntityState
  
         srcPosition = _entity.transform.position;
         //projected grid position, need to add block height if a block occupies the position
-        destPosition = _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
+        _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
+        destPosition = _entity.projectedDestinationBlock;
 
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);

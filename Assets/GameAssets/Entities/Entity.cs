@@ -20,6 +20,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     public float degreesToRotate { get; set; }
 
+    public Vector3Int projectedDestinationBlock {get; set;}
+
 
 
 
@@ -105,7 +107,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         return (map.GetBlock(Map.GetIntVector3(gridPosition)));
     }
 
-    public Vector3 GetProjectedDestinationBlockPosition(MovementDirection dir)
+    public void GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
         Vector3 nextPos = transform.position;
 
@@ -160,7 +162,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             }
         }
 
-        return nextPos;
+        projectedDestinationBlock = Map.GetIntVector3(nextPos);
     }
 
     public Block GetBlockFromMap(Vector3 pos)
@@ -168,9 +170,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         return map.GetBlock(pos);
     }
 
-    public bool IsDestinationOccupied(Vector3 destinationToCheck)
+    public bool IsDestinationOccupied(Vector3Int destinationToCheck)
     {
-        Block destinationBlock = map.GetBlock(Map.GetIntVector3(destinationToCheck));
+        Block destinationBlock = map.GetBlock(destinationToCheck);
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }

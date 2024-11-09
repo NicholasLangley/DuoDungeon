@@ -21,7 +21,8 @@ public class EntityMovementBlockedState : EntityState
     {
         movementLerpTimer = 0;
         srcPosition = _entity.transform.position;
-        Vector3 attemptedDestination = _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
+        _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
+        Vector3 attemptedDestination = _entity.projectedDestinationBlock;
         bumpDest = Vector3.Lerp(srcPosition, attemptedDestination, 0.5f);
         
         Block srcBlock = _entity.GetCurrentlyOccupiedBlock();

@@ -35,6 +35,8 @@ public interface IMoveable
 
     float degreesToRotate { get; set; }
 
+    public Vector3Int projectedDestinationBlock { get; set; }
+
     public void MoveTo(MovementDirection dir);
 
     public void FailToMoveTo(MovementDirection dir);
@@ -43,5 +45,5 @@ public interface IMoveable
 
     public void Fall(Vector3 srcPosition);
 
-    public Vector3 GetProjectedDestinationBlockPosition(MovementDirection dir);
+    public void GetProjectedDestinationBlockPosition(MovementDirection dir);
 }

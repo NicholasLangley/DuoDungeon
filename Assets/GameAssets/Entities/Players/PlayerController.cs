@@ -99,8 +99,10 @@ public class PlayerController : ICommandable
         }
         else { return null; }
 
-        Vector3 nextRedPos = redPlayer.GetProjectedDestinationBlockPosition(movementDir);
-        Vector3 nextBluePos = bluePlayer.GetProjectedDestinationBlockPosition(movementDir);
+        redPlayer.GetProjectedDestinationBlockPosition(movementDir);
+        bluePlayer.GetProjectedDestinationBlockPosition(movementDir);
+        Vector3Int nextRedPos = redPlayer.projectedDestinationBlock;
+        Vector3Int nextBluePos = bluePlayer.projectedDestinationBlock;
 
         //check if space is occupied
         bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
