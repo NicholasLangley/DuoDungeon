@@ -10,10 +10,14 @@ public class PlayerController : ICommandable
 
     public bool busy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public PlayerController(PlayerEntity red, PlayerEntity blue, PlayerInputHandler inputHandler)
+    public PlayerController(PlayerEntity red, PlayerEntity blue, PlayerInputHandler inputHandler, GameController gameController)
     {
         redPlayer = red;
+        redPlayer.gameController = gameController;
+
         bluePlayer = blue;
+        bluePlayer.gameController = gameController;
+
         playerInputHandler = inputHandler;
     }
 
@@ -108,16 +112,17 @@ public class PlayerController : ICommandable
         bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
         bool blueBlocked = bluePlayer.IsDestinationOccupied(nextBluePos);
 
+        //Debug.Log("nextBluePos: " + nextBluePos);
+        //Debug.Log("nextRedPos: " + nextRedPos);
+
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
         if (redBlocked && !blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())
         {
             redBlocked = false;
         }
-        else if (blueBlocked && !redBlocked /*&& nextBluePos == redPlayer.GetCurrentBlockPosition()*/)
+        else if (blueBlocked && !redBlocked && nextBluePos == redPlayer.GetCurrentBlockPosition())
         {
-            Debug.Log("nextBluePos: " + nextBluePos);
-            Debug.Log("redPos: " + redPlayer.GetCurrentBlockPosition());
-            if (nextBluePos == redPlayer.GetCurrentBlockPosition()) { blueBlocked = false; }
+            blueBlocked = false;
         }
 
         //red player takes precedence if both try to move to same location
@@ -162,5 +167,12 @@ public class PlayerController : ICommandable
     {
         redPlayer.currentlyUndoing = false;
         bluePlayer.currentlyUndoing = false;
+    }
+
+    public PlayerEntity GetPlayerAtPosition(Vector3Int destinationToCheck)
+    {
+        if (redPlayer.GetCurrentBlockPosition() == destinationToCheck) { return redPlayer; }
+        if (bluePlayer.GetCurrentBlockPosition() == destinationToCheck) { return bluePlayer; }
+        return null;
     }
 }

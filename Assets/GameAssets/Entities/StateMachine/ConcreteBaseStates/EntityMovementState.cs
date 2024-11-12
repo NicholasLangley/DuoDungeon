@@ -52,8 +52,10 @@ public class EntityMovementState : EntityState
         else { halfwayPosition.y = srcPosition.y; }
 
         //If moving into a partial block and able to climb down (not fall)
-        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(_entity.transform.position.y)) - (destBlockEnterHeight+ destBlock.transform.position.y)) <= _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
-        else {
+        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(_entity.transform.position.y)) - (destBlockEnterHeight + destBlock.transform.position.y)) <= _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
+        else if (destBlock == null && Mathf.FloorToInt(destPosition.y) - Mathf.FloorToInt(halfwayPosition.y) > 0) { return; } //climbing up to a null block
+        else
+        {
             destPosition.y = halfwayPosition.y;
             //check for small step down to full block
             if (destBlock == null)

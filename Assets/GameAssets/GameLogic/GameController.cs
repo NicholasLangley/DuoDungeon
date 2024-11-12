@@ -46,10 +46,12 @@ public class GameController : MonoBehaviour
     [SerializeField]
     Entity Evironment1Prefab;
 
+    float gameSpeedMultiplier { get; set; } //multiplies all game speeds for testing purposes
+
     // Start is called before the first frame update
     void Start()
     {
-        playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler);
+        playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
         _enivornmentalEntities = new List<Entity>();
@@ -62,6 +64,8 @@ public class GameController : MonoBehaviour
 
         //initialize map
         LoadLevel("/saveTEST" + ".json");
+
+        gameSpeedMultiplier = 1.0f;
     }
 
     // Update is called once per frame
@@ -74,7 +78,7 @@ public class GameController : MonoBehaviour
 
         //no need to check for turn logic if entities are performing an action
         if (checkForBusyEntities() == true) { return; }
-        if (!undoingTurn &&Time.timeScale != 1.0f) { Time.timeScale = 1.0f; }
+        if (!undoingTurn &&Time.timeScale != 1.0f) { Time.timeScale = 1.0f * gameSpeedMultiplier; }
 
         //interrupt infinite loops or long sequences if the player chooses
         if (undoCommandIsBuffered == true)
@@ -244,7 +248,7 @@ public class GameController : MonoBehaviour
             undoingTurn = true;
             currentlyUndoingTurn = previousTurns.Pop();
             currentUndoLayer = currentlyUndoingTurn.TurnActions.Count - 1;
-            Time.timeScale = 2.0f;
+            Time.timeScale = 2.0f * gameSpeedMultiplier;
         }
     }
 
@@ -291,5 +295,26 @@ public class GameController : MonoBehaviour
         }
         return false;
     }
-     
+
+    public Entity GetEntityAtPosition(Vector3Int destinationToCheck)
+    {
+        //check players
+        Entity playerEntity = playerController.GetPlayerAtPosition(destinationToCheck);
+        if (playerEntity != null) { return playerEntity; }
+        
+        //check enemies
+        foreach(Entity enemy in _enemies)
+        {
+            if (enemy.GetCurrentBlockPosition() == destinationToCheck) { return enemy; }
+        }
+
+        return null;
+    }
+
+    public void SetTimeScaleMultiplier(float m)
+    {
+        Time.timeScale /= gameSpeedMultiplier;
+        gameSpeedMultiplier = m;
+        Time.timeScale *= gameSpeedMultiplier;
+    }
 }

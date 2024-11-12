@@ -5,6 +5,7 @@ using UnityEngine;
 public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable
 {
     public Map map { get; set; }
+    public GameController gameController { get; set; }
 
     //IMoveable variables
     public MovementDirection movementDirection { get; set; }
@@ -163,8 +164,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform.position);
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
             { 
-                Block potentialNextBlock = GetBlockFromMap(nextPos + transform.up);
-                if (potentialNextBlock != null) { nextPos += transform.up; }
+                 nextPos += transform.up;
             }
         }
 
@@ -193,10 +193,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             }
         }
 
-        if (Physics.Raycast(transform.position, destinationToCheck - GetCurrentBlockPosition(), 1f, movementCollisionMask))
-        {
-            return true;
-        }
+        //check for entities
+        Entity blockingEntity = gameController.GetEntityAtPosition(destinationToCheck);
+        if (blockingEntity != null) { return true; }
 
         return false;
     }
