@@ -55,7 +55,7 @@ public class EntityFallingState : EntityState
         Vector3 movePos = Vector3.Lerp(startPos, fallDestination, fallingLerpTimer / modifiedFallLerpDuration);
         _entity.transform.position = movePos;
 
-        if (fallingLerpTimer >= _entity.fallLerpDuration) 
+        if (fallingLerpTimer >= modifiedFallLerpDuration) 
         {
             //if player is still midair a new command will be genereated by the player controller
             _stateMachine.changeState(_entity.idleState);

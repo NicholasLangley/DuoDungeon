@@ -79,13 +79,13 @@ public class LevelEditorController : MonoBehaviour
 
     public void Save()
     {
-        map.SaveMapToFile("/Autotests/PlayerPassthroughCollisionTestMap");
+        map.SaveMapToFile("/Autotests/PlayerWallOrientationTestMap");
         Debug.Log("map saved");
     }
 
     public void Load()
     {
-        mapBuilder.LoadMap("/Autotests/PlayerPassthroughCollisionTestMap" + ".json");
+        mapBuilder.LoadMap("/Autotests/PlayerWallOrientationTestMap" + ".json");
         //TODO do this better
         objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
         objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
