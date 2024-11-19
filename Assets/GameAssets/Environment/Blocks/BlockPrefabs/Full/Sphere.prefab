@@ -96,7 +96,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockID: 1
-  blocksMovement: 0
+  MidBlockHeight: 0
+  forwardEdgeHeight: 0
+  backwardEdgeHeight: 0
+  rightEdgeHeight: 0
+  leftEdgeHeight: 0
+  topSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  leftSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  rightSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  bottomSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  frontSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  backSide:
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 0
+    type: 1
+  blocksAllMovement: 0
+  isGround: 0
   blocksProjectiles: 0
   isInbetweenBlock: 0

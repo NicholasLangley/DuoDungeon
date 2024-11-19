@@ -2,7 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BLOCK_TYPE { DEFAULT, STAIR }
+[System.Serializable]
+public class BlockSide
+{
+    public enum edgeEnterType { WALK, HOP, NONE }
+    public enum centerType { GROUND, NOT_GROUND }
+
+    [Header("CenterType")]
+    public centerType type;
+    public float centerHeight;
+
+    [Header("Forward")]
+    public edgeEnterType forwardEdgeType;
+    public float forwardEdgeHeight;
+
+    [Header("Backward")]
+    public edgeEnterType backwardEdgeType;
+    public float backwardEdgeHeight;
+
+    [Header("Left")]
+    public edgeEnterType leftEdgeType;
+    public float leftEdgeHeight;
+
+    [Header("Right")]
+    public edgeEnterType rightEdgeType;
+    public float rightEdgeHeight;
+}
 
 public class Block : MonoBehaviour
 {
@@ -11,18 +36,19 @@ public class Block : MonoBehaviour
     //The height in the middle of the block the player will stop at, if = 1, player is simply atop it, but in the space ablove
     [SerializeField] public float MidBlockHeight;
 
-    //The height on each edge of the stair, used for entering/exiting the stair block
+    //The height on each edges of the block, used for entering/exiting the stair block
     [SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
 
     [SerializeField]
-    public bool blocksAllMovement, isGround, blocksProjectiles, isInbetweenBlock;
+    public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
 
-    protected BLOCK_TYPE blockType;
+    [SerializeField]
+    public bool blocksAllMovement, isGround;
 
     // Start is called before the first frame update
     void Awake()
     {
-        blockType = BLOCK_TYPE.DEFAULT;
+
     }
 
     // Update is called once per frame
@@ -34,11 +60,6 @@ public class Block : MonoBehaviour
     public void Initialize()
     {
 
-    }
-
-    public BLOCK_TYPE GetBlockType()
-    {
-        return blockType;
     }
 
     //entering from same level as block

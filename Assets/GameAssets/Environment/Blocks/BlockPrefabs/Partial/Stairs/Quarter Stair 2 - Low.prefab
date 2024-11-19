@@ -264,10 +264,74 @@ MonoBehaviour:
   backwardEdgeHeight: 0.375
   rightEdgeHeight: 0.25
   leftEdgeHeight: 0.5
+  topSide:
+    type: 0
+    centerHeight: 0.375
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0.375
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0.375
+    leftEdgeType: 0
+    leftEdgeHeight: 0.5
+    rightEdgeType: 0
+    rightEdgeHeight: 0.25
+  leftSide:
+    type: 1
+    centerHeight: 0
+    forwardEdgeType: 2
+    forwardEdgeHeight: 0
+    backwardEdgeType: 2
+    backwardEdgeHeight: 0
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 2
+    rightEdgeHeight: 0
+  rightSide:
+    type: 1
+    centerHeight: 0
+    forwardEdgeType: 2
+    forwardEdgeHeight: 0
+    backwardEdgeType: 2
+    backwardEdgeHeight: 0
+    leftEdgeType: 2
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  bottomSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  frontSide:
+    type: 1
+    centerHeight: 0
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 2
+    backwardEdgeHeight: 0
+    leftEdgeType: 2
+    leftEdgeHeight: 0
+    rightEdgeType: 2
+    rightEdgeHeight: 0
+  backSide:
+    type: 1
+    centerHeight: 0
+    forwardEdgeType: 2
+    forwardEdgeHeight: 0
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 2
+    leftEdgeHeight: 0
+    rightEdgeType: 2
+    rightEdgeHeight: 0
   blocksAllMovement: 0
   isGround: 1
-  blocksProjectiles: 0
-  isInbetweenBlock: 0
 --- !u!1 &5953435095730909338
 GameObject:
   m_ObjectHideFlags: 0
