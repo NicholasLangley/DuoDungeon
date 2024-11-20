@@ -66,12 +66,14 @@ public class EntityFallingState : EntityState
     {
         startPos = _entity.transform.position;
         Vector3 baseBlockPosition = _entity.transform.position;
+        baseBlockPosition.x = Mathf.Floor(baseBlockPosition.x);
         baseBlockPosition.y = Mathf.Floor(baseBlockPosition.y);
+        baseBlockPosition.z = Mathf.Floor(baseBlockPosition.z);
         //fallDestination = _entity.transform.position;
         if (_entity.currentlyUndoing) 
         {
             fallDestination = _entity.fallSrcPosition;
-            modifiedFallLerpDuration = (fallDestination.y - startPos.y) * modifiedFallLerpDuration;
+            modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
             return;
         }
 
@@ -79,21 +81,70 @@ public class EntityFallingState : EntityState
         Block destBlock;
         fallDestination = baseBlockPosition;
 
+        DownDirection downDir = _entity.GetCurrentDownDirection();
+
         if (startingBlock != null && startingBlock.isGround)
         {
             destBlock = startingBlock;
         }
         else
         {
-            fallDestination.y -= 1;
+            switch (downDir)
+            {
+                //YDown
+                default:
+                    fallDestination.y -= 1;
+                    break;
+                case DownDirection.Yup:
+                    fallDestination.y += 1;
+                    break;
+
+                case DownDirection.Xright:
+                    fallDestination.x += 1;
+                    break;
+                case DownDirection.Xleft:
+                    fallDestination.x -= 1;
+                    break;
+
+                case DownDirection.Zforward:
+                    fallDestination.z += 1;
+                    break;
+                case DownDirection.Zback:
+                    fallDestination.z -= 1;
+                    break;
+            }
+            
             destBlock = _entity.GetBlockFromMap(fallDestination);
         }
         
         if (destBlock != null)
         {
-            fallDestination.y += destBlock.MidBlockHeight;
+            switch (downDir)
+            {
+                //YDown
+                default:
+                    fallDestination.y += destBlock.MidBlockHeight;
+                    break;
+                case DownDirection.Yup:
+                    fallDestination.y -= destBlock.MidBlockHeight;
+                    break;
+
+                case DownDirection.Xright:
+                    fallDestination.x -= destBlock.MidBlockHeight;
+                    break;
+                case DownDirection.Xleft:
+                    fallDestination.x += destBlock.MidBlockHeight;
+                    break;
+
+                case DownDirection.Zforward:
+                    fallDestination.z -= destBlock.MidBlockHeight;
+                    break;
+                case DownDirection.Zback:
+                    fallDestination.z += destBlock.MidBlockHeight;
+                    break;
+            }
             //stops lesser falls from being slower
-            modifiedFallLerpDuration = (startPos.y - fallDestination.y) * modifiedFallLerpDuration;
+            modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
         }
 
         

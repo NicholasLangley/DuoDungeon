@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum MovementDirection { NONE, FORWARD, BACKWARD, LEFT, RIGHT }
+public enum DownDirection { Ydown, Yup, Xleft, Xright, Zforward, Zback }
 
 public interface IMoveable
 {
@@ -48,4 +49,6 @@ public interface IMoveable
     public void GetProjectedDestinationBlockPosition(MovementDirection dir);
 
     public Vector3Int GetCurrentBlockPosition();
+
+    public DownDirection GetCurrentDownDirection();
 }

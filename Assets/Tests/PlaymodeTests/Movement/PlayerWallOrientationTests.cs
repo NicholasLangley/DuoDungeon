@@ -156,14 +156,14 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
         //Fall
         yield return PressThenRelease(keyboard.sKey, 1.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos - redPlayer.transform.forward - redPlayer.transform.up, redPlayer.transform.localPosition), 0.1f);
-        Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.forward - 0.8f * bluePlayer.transform.up, bluePlayer.transform.localPosition), 0.1f);
+        Assert.LessOrEqual(Vector3.Distance(blueStartPos - bluePlayer.transform.forward - 1.2f * bluePlayer.transform.up, bluePlayer.transform.localPosition), 0.1f);
 
         ////////////
         ///UNDOING//
         ///////////
 
         //undo fall
-        yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
+        yield return PressThenRelease(keyboard.backspaceKey, 1.5f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
