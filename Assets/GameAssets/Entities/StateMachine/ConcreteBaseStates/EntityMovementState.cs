@@ -39,31 +39,148 @@ public class EntityMovementState : EntityState
         Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
         Block destBlock = _entity.GetBlockFromMap(destPosition);
 
-        float srcBlockExitHeight = srcBlock != null ? srcBlock.CalculateAttemptedExitEdgeHeight(destPosition) : 0;
-        float destBlockEnterHeight = destBlock != null ? destBlock.CalculateAttemptedEntryEdgeHeight(srcPosition) : 0;
+        DownDirection downDir = _entity.GetCurrentDownDirection();
 
-        //function doesnt care about y differences
+        float srcBlockExitHeight = srcBlock != null ? srcBlock.CalculateAttemptedExitEdgeHeight(destPosition, _entity.transform.up, downDir) : 0;
+        float destBlockEnterHeight = destBlock != null ? destBlock.CalculateAttemptedEntryEdgeHeight(_entity.transform, downDir) : 0;
+
+        //function doesnt care about height differences
         if (srcBlock != null) 
         {
             //if entity is not grounded it was undoing from a fall, so there is no ground to enter(into)
-            if (_entity.isEntityGrounded()) { halfwayPosition.y = srcBlock.transform.position.y + srcBlockExitHeight; }
-            else { halfwayPosition.y = destBlockEnterHeight; }
+            if (_entity.isEntityGrounded()) 
+            {
+                switch (downDir)
+                {
+                    case DownDirection.Ydown:
+                        halfwayPosition.y = srcBlock.transform.position.y + srcBlockExitHeight;
+                        break;
+                    case DownDirection.Yup:
+                        halfwayPosition.y = srcBlock.transform.position.y - srcBlockExitHeight;
+                        break;
+                    case DownDirection.Xleft:
+                        halfwayPosition.x = srcBlock.transform.position.x + srcBlockExitHeight;
+                        break;
+                    case DownDirection.Xright:
+                        halfwayPosition.x = srcBlock.transform.position.x - srcBlockExitHeight;
+                        break;
+                    case DownDirection.Zforward:
+                        halfwayPosition.x = srcBlock.transform.position.z - srcBlockExitHeight;
+                        break;
+                    case DownDirection.Zback:
+                        halfwayPosition.x = srcBlock.transform.position.z + srcBlockExitHeight;
+                        break;
+                }
+            }
+            else 
+            {
+                switch (downDir)
+                {
+                    case DownDirection.Ydown:
+                    case DownDirection.Yup:
+                        halfwayPosition.y = destBlockEnterHeight;
+                        break;
+                    case DownDirection.Xleft:
+                    case DownDirection.Xright:
+                        halfwayPosition.x = destBlockEnterHeight;
+                        break;
+                    case DownDirection.Zforward:
+                    case DownDirection.Zback:
+                        halfwayPosition.y = destBlockEnterHeight;
+                        break;
+                }
+            }
         }
-        else { halfwayPosition.y = srcPosition.y; }
+        //src block == null
+        else 
+        {
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                case DownDirection.Yup:
+                    halfwayPosition.y = srcPosition.y;
+                    break;
+                case DownDirection.Xleft:
+                case DownDirection.Xright:
+                    halfwayPosition.x = srcPosition.x;
+                    break;
+                case DownDirection.Zforward:
+                case DownDirection.Zback:
+                    halfwayPosition.z = srcPosition.z;
+                    break;
+            }
+        }
 
         //If moving into a partial block and able to climb down (not fall)
-        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(_entity.transform.position.y)) - (destBlockEnterHeight + destBlock.transform.position.y)) <= _entity.maxStairClimbHeight) { destPosition.y += destBlock.MidBlockHeight; }
-        else if (destBlock == null && Mathf.FloorToInt(destPosition.y) - Mathf.FloorToInt(halfwayPosition.y) > 0) { return; } //climbing up to a null block
+        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(_entity.transform.position, downDir))) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.transform.position, downDir))) <= _entity.maxStairClimbHeight)
+        {
+            Debug.Log("climbdown within partial");
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                    destPosition.y = destBlock.transform.position.y + destBlock.GetMidBlockHeight(downDir);
+                    break;
+                case DownDirection.Yup:
+                    destPosition.y = destBlock.transform.position.y - destBlock.GetMidBlockHeight(downDir);
+                    break;
+                case DownDirection.Xleft:
+                    destPosition.x = destBlock.transform.position.x + destBlock.GetMidBlockHeight(downDir);
+                    break;
+                case DownDirection.Xright:
+                    destPosition.x = destBlock.transform.position.x - destBlock.GetMidBlockHeight(downDir);
+                    break;
+                case DownDirection.Zforward:
+                    destPosition.x = destBlock.transform.position.z - destBlock.GetMidBlockHeight(downDir);
+                    break;
+                case DownDirection.Zback:
+                    destPosition.x = destBlock.transform.position.z + destBlock.GetMidBlockHeight(downDir);
+                    break;
+            }
+        }
+        //climbing up to a null block
+        else if (destBlock == null && Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir)) - Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(halfwayPosition, downDir)) > 0) { Debug.Log("climb up to null"); return; }
         else
         {
-            destPosition.y = halfwayPosition.y;
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                case DownDirection.Yup:
+                    destPosition.y = halfwayPosition.y;
+                    break;
+                case DownDirection.Xleft:
+                case DownDirection.Xright:
+                    destPosition.x = halfwayPosition.x;
+                    break;
+                case DownDirection.Zforward:
+                case DownDirection.Zback:
+                    destPosition.z = halfwayPosition.z;
+                    break;
+            }
             //check for small step down to full block
             if (destBlock == null)
             {
                 Vector3 belowDestPos = destPosition;
-                belowDestPos.y -= 1;
+                belowDestPos -= _entity.transform.up;
                 Block belowDestBlock = _entity.GetBlockFromMap(belowDestPos);
-                if (belowDestBlock != null && belowDestBlock.MidBlockHeight == 1.0f) { destPosition.y = Mathf.FloorToInt(destPosition.y); }
+                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(downDir) == 1.0f) 
+                {
+                    Debug.Log("small step down to full");
+                    switch (downDir)
+                    {
+                        case DownDirection.Ydown:
+                        case DownDirection.Yup:
+                            destPosition.y = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            break;
+                        case DownDirection.Xleft:
+                        case DownDirection.Xright:
+                            destPosition.x = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            break;
+                        case DownDirection.Zforward:
+                        case DownDirection.Zback:
+                            destPosition.z = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            break;
+                    }
+                }
             }
         }
     }

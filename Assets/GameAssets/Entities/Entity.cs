@@ -167,40 +167,85 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
                 break;
         }
 
-        //logical center of current block
-        nextPos.y = Mathf.Floor(nextPos.y);
+        DownDirection downDir = GetCurrentDownDirection();
 
-        //if in a partial block find exit height (if height >= 1 then the player has gone up a y level and we'll check for collision there)
+        //remove height to get logical center of current block
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+            case DownDirection.Yup:
+                nextPos.y = Mathf.Floor(nextPos.y);
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                nextPos.x = Mathf.Floor(nextPos.x);
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                nextPos.z = Mathf.Floor(nextPos.z);
+                break;
+        } 
+
+
+        //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
         Block currentBlock = GetCurrentlyOccupiedBlock();
-        float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos) : 0;
-        nextPos.y += exitHeight;
-        nextPos.y = Mathf.Floor(nextPos.y);
+        float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos, transform.up, GetCurrentDownDirection()) : 0;
+        nextPos += transform.up * exitHeight;
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+            case DownDirection.Yup:
+                nextPos.y = Mathf.Floor(nextPos.y);
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                nextPos.x = Mathf.Floor(nextPos.x);
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                nextPos.z = Mathf.Floor(nextPos.z);
+                break;
+        }
 
         //check for stairs going down
         Block straightForwardDestBlock = GetBlockFromMap(nextPos);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
         if(straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
         {
-            Vector3 belowDest = nextPos;
-            belowDest.y -= 1;
+            Vector3 belowDest = nextPos - transform.up;
+            
             Block belowDestBlock = GetBlockFromMap(belowDest);
             if(belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
-                nextPos.y += belowDestBlock.MidBlockHeight;
+                nextPos += transform.up * belowDestBlock.MidBlockHeight;
             }
         }
         //block exists and is full (player will try to climb ontop of it if possible)
         else if(straightForwardDestBlock != null && exitHeight < 1.0f)
         {
-            float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform.position);
+            float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform, GetCurrentDownDirection());
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
             { 
                  nextPos += transform.up;
             }
         }
 
-        nextPos.y = Mathf.FloorToInt(nextPos.y);
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+            case DownDirection.Yup:
+                nextPos.y = Mathf.Floor(nextPos.y);
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                nextPos.x = Mathf.Floor(nextPos.x);
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                nextPos.z = Mathf.Floor(nextPos.z);
+                break;
+        }
         projectedDestinationBlock = Map.GetIntVector3(nextPos);
     }
 
@@ -212,15 +257,15 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     public bool IsDestinationOccupied(Vector3Int destinationToCheck)
     {
         //block collision
-        Block destinationBlock = map.GetBlock(destinationToCheck);
+        Block destinationBlock = GetBlockFromMap(destinationToCheck);
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
-            if(destinationBlock.MidBlockHeight > 0.25)
+            if(destinationBlock.GetMidBlockHeight(GetCurrentDownDirection()) > 0.25)
             {
                 Vector3 headCheckPos = destinationToCheck;
-                headCheckPos.y += 1;
-                Block headCheckBlock = map.GetBlock(Map.GetIntVector3(headCheckPos));
+                headCheckPos += transform.up;
+                Block headCheckBlock = GetBlockFromMap(Map.GetIntVector3(headCheckPos));
                 if (headCheckBlock != null) { return true; }
             }
         }
@@ -228,7 +273,6 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         //check for entities
         Entity blockingEntity = gameController.GetEntityAtPosition(destinationToCheck);
         if (blockingEntity != null) { return true; }
-
         return false;
     }
 

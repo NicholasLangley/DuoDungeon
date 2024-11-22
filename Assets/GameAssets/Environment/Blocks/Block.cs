@@ -67,44 +67,94 @@ public class Block : MonoBehaviour
     {
         if (blocksAllMovement) { return false; }
 
-        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform.position) + transform.position.y;
+        DownDirection downDir = e.GetCurrentDownDirection();
+
+        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(transform.position, downDir);
 
         Block entityCurrentBlock = e.GetCurrentlyOccupiedBlock();
-        float entityExitY;
+        float entityExitHeight;
         if (entityCurrentBlock != null)
         {
-            entityExitY = entityCurrentBlock.transform.position.y + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(transform.position);
+            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.transform.position, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(transform.position, e.transform.up, downDir);
         }
-        else { entityExitY = e.transform.position.y; }
+        else { entityExitHeight = GetPositionsDownOrientedHeight(e.transform.position, downDir); }
 
         //if player climbing up a level and still has to climb this block
-        if (transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
+        if (IsEntityClimbingStackedBlock(transform.position, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
         {
-            float maxClimb = (e.maxStairClimbHeight + entityExitY);
+            float maxClimb = (e.maxStairClimbHeight + entityExitHeight);
             float climbNeeded = enteringEdgeHeight;
             if (climbNeeded <= maxClimb) { return true; }
         }
         //same height or greater entry
-        else if (transform.position.y >= Mathf.Floor(e.transform.position.y))
+        else if (IsEntityClimbingOrStayingSameHeight(transform.position, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
         {
-            if (enteringEdgeHeight <= e.maxStairClimbHeight + entityExitY) { return true; }
+            if (enteringEdgeHeight <= e.maxStairClimbHeight + entityExitHeight) { return true; }
         }
         //entering from above
         else
         {
-            if (entityExitY - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
+            if (entityExitHeight - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
         }
         
 
         return false;
     }
 
-    public float CalculateAttemptedEntryEdgeHeight(Vector3 entryPoint)
+    public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection downDir)
     {
-        Vector3 relativeDirection = transform.InverseTransformPoint(entryPoint);
-        relativeDirection.y = 0;
+        Vector3 entryPoint = entityTransform.position;
 
-        Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
+        //find forward, normal and relative direction vectors of entity
+        Vector3 relativeDirection = transform.InverseTransformPoint(entryPoint);
+        Vector3 forwardVector;
+        Vector3 normalVector = entityTransform.up;
+        switch (downDir)
+        {
+            default:
+            case DownDirection.Yup:
+                relativeDirection.y = 0;
+                forwardVector = transform.forward;
+
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                relativeDirection.x = 0;
+                forwardVector = transform.forward;
+                break;
+            case DownDirection.Zforward:
+                relativeDirection.z = 0;
+                forwardVector = transform.up;
+                break;
+            case DownDirection.Zback:
+                relativeDirection.z = 0;
+                forwardVector = transform.forward * -1f;
+                break;
+        }
+
+        float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
+
+        BlockSide side = GetOrientedTopSide(downDir);
+
+        //forward
+        if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
+        {
+            return side.forwardEdgeHeight;
+        }
+        //right
+        if(angleFromForwardVector >= 10f && angleFromForwardVector <= 120f)
+        {
+            return side.rightEdgeHeight;
+        }
+        //back
+        if (angleFromForwardVector >= 120f || angleFromForwardVector <= -120f)
+        {
+            return side.backwardEdgeHeight;
+        }
+        //left
+        return side.leftEdgeHeight;
+
+        /*Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
 
         if(relativeInts.x == 1)
         {
@@ -121,15 +171,61 @@ public class Block : MonoBehaviour
         else
         {
             return backwardEdgeHeight;
-        }
+        }*/
     }
 
-    public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint)
+    public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection downDir)
     {
+        //find forward, normal and relative direction vectors of entity
         Vector3 relativeDirection = transform.InverseTransformPoint(exitPoint);
-        relativeDirection.y = 0;
+        Vector3 forwardVector;
+        Vector3 normalVector = entityUpVector;
+        switch (downDir)
+        {
+            default:
+            case DownDirection.Yup:
+                relativeDirection.y = 0;
+                forwardVector = transform.forward;
 
-        Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                relativeDirection.x = 0;
+                forwardVector = transform.forward;
+                break;
+            case DownDirection.Zforward:
+                relativeDirection.z = 0;
+                forwardVector = transform.up;
+                break;
+            case DownDirection.Zback:
+                relativeDirection.z = 0;
+                forwardVector = transform.forward * -1f;
+                break;
+        }
+
+        float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
+
+        BlockSide side = GetOrientedTopSide(downDir);
+
+        //forward
+        if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
+        {
+            return side.forwardEdgeHeight;
+        }
+        //right
+        if (angleFromForwardVector >= 10f && angleFromForwardVector <= 120f)
+        {
+            return side.rightEdgeHeight;
+        }
+        //back
+        if (angleFromForwardVector >= 120f || angleFromForwardVector <= -120f)
+        {
+            return side.backwardEdgeHeight;
+        }
+        //left
+        return side.leftEdgeHeight;
+
+        /*Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
 
         if (relativeInts.x == 1)
         {
@@ -146,6 +242,85 @@ public class Block : MonoBehaviour
         else
         {
             return backwardEdgeHeight;
+        }*/
+    }
+
+    public float GetMidBlockHeight(DownDirection downDir)
+    {
+        switch(downDir)
+        {
+            default:
+                return topSide.centerHeight;
+            case DownDirection.Yup:
+                return bottomSide.centerHeight;
+            case DownDirection.Xleft:
+                return rightSide.centerHeight;
+            case DownDirection.Xright:
+                return leftSide.centerHeight;
+            case DownDirection.Zforward:
+                return backSide.centerHeight;
+            case DownDirection.Zback:
+                return frontSide.centerHeight;
         }
+    }
+
+    ///////////
+    //HELPERS///
+    ////////////
+    BlockSide GetOrientedTopSide(DownDirection downDir)
+    {
+        switch (downDir)
+        {
+            default:
+                return topSide;
+            case DownDirection.Yup:
+                return bottomSide;
+            case DownDirection.Xleft:
+                return rightSide;
+            case DownDirection.Xright:
+                return leftSide;
+            case DownDirection.Zforward:
+                return backSide;
+            case DownDirection.Zback:
+                return frontSide;
+        }
+    }
+
+    public static float GetPositionsDownOrientedHeight(Vector3 pos, DownDirection downDir)
+    {
+        switch (downDir)
+        {
+            default:
+                return pos.y;
+            case DownDirection.Yup:
+                return pos.y * -1f;
+            case DownDirection.Xleft:
+                return pos.x;
+            case DownDirection.Xright:
+                return pos.x * -1f;
+            case DownDirection.Zforward:
+                return pos.z * -1f;
+            case DownDirection.Zback:
+                return pos.z;
+        }
+    }
+
+    bool IsEntityClimbingStackedBlock(Vector3 blockPos, Vector3 entityPos, DownDirection downDir)
+    {
+        float blockDownOrientedHeight = GetPositionsDownOrientedHeight(blockPos, downDir);
+        float entityDownOrientedHeight = GetPositionsDownOrientedHeight(entityPos, downDir);
+        
+        if (blockDownOrientedHeight - Mathf.Floor(entityDownOrientedHeight) >= 0.99f) { return true; }
+        return false;
+    }
+
+    bool IsEntityClimbingOrStayingSameHeight(Vector3 blockPos, Vector3 entityPos, DownDirection downDir)
+    {
+        float blockDownOrientedHeight = GetPositionsDownOrientedHeight(blockPos, downDir);
+        float entityDownOrientedHeight = GetPositionsDownOrientedHeight(entityPos, downDir);
+
+        //transform.position.y >= Mathf.Floor(e.transform.position.y))
+        if (blockDownOrientedHeight >= Mathf.Floor(entityDownOrientedHeight)) { return true; }
+        return false;
     }
 }

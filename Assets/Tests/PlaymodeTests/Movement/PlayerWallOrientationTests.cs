@@ -111,13 +111,13 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
         Vector3 redStartPos = redPlayer.transform.localPosition;
         Vector3 blueStartPos = bluePlayer.transform.localPosition;
 
-        //PlayerCollision
-        yield return PressThenRelease(keyboard.dKey, 0.7f);
+        //left player/wall collision
+        yield return PressThenRelease(keyboard.aKey, 1f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
-        //WallCollision
-        yield return PressThenRelease(keyboard.aKey, 0.7f);
+        //right wall/player collision
+        yield return PressThenRelease(keyboard.dKey, 1f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
@@ -125,12 +125,12 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
         ///UNDOING//
         ///////////
 
-        //undo player collide
+        //undo right collide
         yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
-        //undo wall collide
+        //undo left collide
         yield return PressThenRelease(keyboard.backspaceKey, 0.7f);
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);

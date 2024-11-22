@@ -129,6 +129,8 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
         Assert.LessOrEqual(Vector3.Distance(redStartPos, redPlayer.transform.localPosition), 0.1f);
         Assert.LessOrEqual(Vector3.Distance(blueStartPos, bluePlayer.transform.localPosition), 0.1f);
 
+        Assert.True(false);
+
         yield return null;
     }
 

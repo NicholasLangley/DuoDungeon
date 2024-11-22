@@ -24,10 +24,47 @@ public class EntityMovementBlockedState : EntityState
         _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
         Vector3 attemptedDestination = _entity.projectedDestinationBlock;
         bumpDest = Vector3.Lerp(srcPosition, attemptedDestination, 0.5f);
-        
+
+        //modify dest height to match edge of srcblock
+        DownDirection downDir = _entity.GetCurrentDownDirection();
         Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
-        if (srcBlock != null) { bumpDest.y = srcBlock.transform.position.y + srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination); }
-        else { bumpDest.y = srcPosition.y; }
+        if (srcBlock != null) 
+        {
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                case DownDirection.Yup:
+                    bumpDest.y = srcBlock.transform.position.y + _entity.transform.up.y * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    break;
+                case DownDirection.Xleft:
+                case DownDirection.Xright:
+                    bumpDest.x = srcBlock.transform.position.x + _entity.transform.up.x * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    break;
+                case DownDirection.Zforward:
+                case DownDirection.Zback:
+                    bumpDest.z = srcBlock.transform.position.z + _entity.transform.up.z * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    break;
+            }
+             
+        }
+        else 
+        {
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                case DownDirection.Yup:
+                    bumpDest.y = srcPosition.y;
+                    break;
+                case DownDirection.Xleft:
+                case DownDirection.Xright:
+                    bumpDest.x = srcPosition.x;
+                    break;
+                case DownDirection.Zforward:
+                case DownDirection.Zback:
+                    bumpDest.z = srcPosition.z;
+                    break;
+            } 
+        }
 
         _entity.busy = true;
     }
