@@ -123,24 +123,24 @@ public class EntityFallingState : EntityState
             {
                 //YDown
                 default:
-                    fallDestination.y += destBlock.MidBlockHeight;
+                    fallDestination.y += destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Yup:
-                    fallDestination.y -= destBlock.MidBlockHeight;
+                    fallDestination.y -= destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
 
                 case DownDirection.Xright:
-                    fallDestination.x -= destBlock.MidBlockHeight;
+                    fallDestination.x -= destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Xleft:
-                    fallDestination.x += destBlock.MidBlockHeight;
+                    fallDestination.x += destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
 
                 case DownDirection.Zforward:
-                    fallDestination.z -= destBlock.MidBlockHeight;
+                    fallDestination.z -= destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Zback:
-                    fallDestination.z += destBlock.MidBlockHeight;
+                    fallDestination.z += destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
             }
             //stops lesser falls from being slower
