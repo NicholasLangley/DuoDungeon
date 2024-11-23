@@ -94,6 +94,7 @@ public class Block : MonoBehaviour
         //entering from above
         else
         {
+            //Debug.Log("exit - climb: " + (entityExitHeight - e.maxStairClimbHeight) + "\n enter: " + enteringEdgeHeight);
             if (entityExitHeight - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
         }
         
@@ -103,12 +104,10 @@ public class Block : MonoBehaviour
 
     public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection downDir)
     {
-        Vector3 entryPoint = entityTransform.position;
-
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = transform.InverseTransformPoint(entryPoint);
+        Vector3 relativeDirection = transform.position - entityTransform.position;
         Vector3 forwardVector;
-        Vector3 normalVector = entityTransform.up;
+        Vector3 normalVector = -entityTransform.up;
         switch (downDir)
         {
             default:
@@ -134,8 +133,8 @@ public class Block : MonoBehaviour
 
         float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
 
-        BlockSide side = GetOrientedTopSide(downDir);
-
+        BlockSide side = GetOrientedTopSide(normalVector);
+        if (MidBlockHeight < 0.4f) { Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector); }
         //forward
         if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
         {
@@ -153,33 +152,14 @@ public class Block : MonoBehaviour
         }
         //left
         return side.leftEdgeHeight;
-
-        /*Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
-
-        if(relativeInts.x == 1)
-        {
-            return rightEdgeHeight;
-        }
-        else if (relativeInts.x == -1)
-        {
-            return leftEdgeHeight;
-        }
-        else if (relativeInts.z == 1)
-        {
-            return forwardEdgeHeight;
-        }
-        else
-        {
-            return backwardEdgeHeight;
-        }*/
     }
 
     public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection downDir)
     {
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = transform.InverseTransformPoint(exitPoint);
+        Vector3 relativeDirection = transform.position - exitPoint;
         Vector3 forwardVector;
-        Vector3 normalVector = entityUpVector;
+        Vector3 normalVector = -entityUpVector;
         switch (downDir)
         {
             default:
@@ -205,7 +185,7 @@ public class Block : MonoBehaviour
 
         float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
 
-        BlockSide side = GetOrientedTopSide(downDir);
+        BlockSide side = GetOrientedTopSide(normalVector);
 
         //forward
         if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
@@ -224,64 +204,40 @@ public class Block : MonoBehaviour
         }
         //left
         return side.leftEdgeHeight;
-
-        /*Vector3 relativeInts = Map.GetIntVector3(relativeDirection.normalized);
-
-        if (relativeInts.x == 1)
-        {
-            return rightEdgeHeight;
-        }
-        else if (relativeInts.x == -1)
-        {
-            return leftEdgeHeight;
-        }
-        else if (relativeInts.z == 1)
-        {
-            return forwardEdgeHeight;
-        }
-        else
-        {
-            return backwardEdgeHeight;
-        }*/
     }
 
-    public float GetMidBlockHeight(DownDirection downDir)
+    public float GetMidBlockHeight(Vector3 entityDownVector)
     {
-        switch(downDir)
-        {
-            default:
-                return topSide.centerHeight;
-            case DownDirection.Yup:
-                return bottomSide.centerHeight;
-            case DownDirection.Xleft:
-                return rightSide.centerHeight;
-            case DownDirection.Xright:
-                return leftSide.centerHeight;
-            case DownDirection.Zforward:
-                return backSide.centerHeight;
-            case DownDirection.Zback:
-                return frontSide.centerHeight;
-        }
+        return GetOrientedTopSide(entityDownVector).centerHeight;
     }
 
     ///////////
     //HELPERS///
     ////////////
-    BlockSide GetOrientedTopSide(DownDirection downDir)
+    BlockSide GetOrientedTopSide(Vector3 entityDownVector)
     {
+        Vector3 blockOrientedDownVector = transform.InverseTransformDirection(entityDownVector);
+        DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
+
         switch (downDir)
         {
             default:
+                if (MidBlockHeight < 0.4f) { Debug.Log("top"); }
                 return topSide;
             case DownDirection.Yup:
+                if (MidBlockHeight < 0.4f) { Debug.Log("bottom"); }
                 return bottomSide;
             case DownDirection.Xleft:
+                if (MidBlockHeight < 0.4f) { Debug.Log("right"); }
                 return rightSide;
             case DownDirection.Xright:
+                if (MidBlockHeight < 0.4f) { Debug.Log("left"); }
                 return leftSide;
             case DownDirection.Zforward:
+                if (MidBlockHeight < 0.4f) { Debug.Log("back"); }
                 return backSide;
             case DownDirection.Zback:
+                if (MidBlockHeight < 0.4f) { Debug.Log("front"); }
                 return frontSide;
         }
     }

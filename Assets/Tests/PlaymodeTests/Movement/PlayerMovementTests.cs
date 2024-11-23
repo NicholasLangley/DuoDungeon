@@ -96,7 +96,7 @@ public class PlayerMovementTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
-        gameController.SetTimeScaleMultiplier(20.0f);
+        gameController.SetTimeScaleMultiplier(15.0f);
 
         GameObject redPlayer = GameObject.Find("RedPlayerPrefab(Clone)");
         GameObject bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)");
@@ -232,7 +232,7 @@ public class PlayerMovementTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
-        gameController.SetTimeScaleMultiplier(10.0f);
+        gameController.SetTimeScaleMultiplier(20.0f);
 
         GameObject redPlayer = GameObject.Find("RedPlayerPrefab(Clone)");
         GameObject bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)");

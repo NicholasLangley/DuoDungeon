@@ -118,22 +118,22 @@ public class EntityMovementState : EntityState
             switch (downDir)
             {
                 case DownDirection.Ydown:
-                    destPosition.y = destBlock.transform.position.y + destBlock.GetMidBlockHeight(downDir);
+                    destPosition.y = destBlock.transform.position.y + destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Yup:
-                    destPosition.y = destBlock.transform.position.y - destBlock.GetMidBlockHeight(downDir);
+                    destPosition.y = destBlock.transform.position.y - destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Xleft:
-                    destPosition.x = destBlock.transform.position.x + destBlock.GetMidBlockHeight(downDir);
+                    destPosition.x = destBlock.transform.position.x + destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Xright:
-                    destPosition.x = destBlock.transform.position.x - destBlock.GetMidBlockHeight(downDir);
+                    destPosition.x = destBlock.transform.position.x - destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Zforward:
-                    destPosition.x = destBlock.transform.position.z - destBlock.GetMidBlockHeight(downDir);
+                    destPosition.x = destBlock.transform.position.z - destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
                 case DownDirection.Zback:
-                    destPosition.x = destBlock.transform.position.z + destBlock.GetMidBlockHeight(downDir);
+                    destPosition.x = destBlock.transform.position.z + destBlock.GetMidBlockHeight(-_entity.transform.up);
                     break;
             }
         }
@@ -162,7 +162,7 @@ public class EntityMovementState : EntityState
                 Vector3 belowDestPos = destPosition;
                 belowDestPos -= _entity.transform.up;
                 Block belowDestBlock = _entity.GetBlockFromMap(belowDestPos);
-                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(downDir) == 1.0f) 
+                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_entity.transform.up) == 1.0f) 
                 {
                     Debug.Log("small step down to full");
                     switch (downDir)

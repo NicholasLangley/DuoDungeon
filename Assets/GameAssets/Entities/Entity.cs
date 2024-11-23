@@ -107,9 +107,13 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     public DownDirection GetCurrentDownDirection()
     {
-        Vector3 down = -1 * transform.up;
-        down = Map.GetIntVector3(down);
- 
+        return ConvertVectorToDownDirection(-1 * transform.up);
+    }
+
+    public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)
+    {
+        Vector3 down = Map.GetIntVector3(downVec);
+
         if (down.y == -1) { return DownDirection.Ydown; }
         if (down.y == 1) { return DownDirection.Yup; }
 
@@ -213,12 +217,12 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         if(straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
         {
             Vector3 belowDest = nextPos - transform.up;
-            
+
             Block belowDestBlock = GetBlockFromMap(belowDest);
             if(belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
-                nextPos += transform.up * belowDestBlock.MidBlockHeight;
+                nextPos += transform.up * belowDestBlock.GetMidBlockHeight(-transform.up);
             }
         }
         //block exists and is full (player will try to climb ontop of it if possible)
@@ -261,7 +265,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
-            if(destinationBlock.GetMidBlockHeight(GetCurrentDownDirection()) > 0.25)
+            if(destinationBlock.GetMidBlockHeight(-transform.up) > 0.25)
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
