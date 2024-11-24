@@ -133,16 +133,22 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         switch(downDir)
         {
             case DownDirection.Ydown:
-            case DownDirection.Yup:
                 gridPosition.y = Mathf.Floor(gridPosition.y);
                 break;
+            case DownDirection.Yup:
+                gridPosition.y = Mathf.Ceil(gridPosition.y);
+                break;
             case DownDirection.Xleft:
+                gridPosition.x = Mathf.Ceil(gridPosition.x);
+                break;
             case DownDirection.Xright:
                 gridPosition.x = Mathf.Floor(gridPosition.x);
                 break;
             case DownDirection.Zforward:
-            case DownDirection.Zback:
                 gridPosition.z = Mathf.Floor(gridPosition.z);
+                break;
+            case DownDirection.Zback:
+                gridPosition.z = Mathf.Ceil(gridPosition.z);
                 break;
         }
 
@@ -284,69 +290,19 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     {
         DownDirection downDir = GetCurrentDownDirection();
 
-        float downDirectionEntityHeight;
-
-        switch(downDir)
-        {
-            //YDown
-            default:
-                downDirectionEntityHeight = transform.position.y;
-                break;
-            case DownDirection.Yup:
-                downDirectionEntityHeight = -1f * transform.position.y;
-                break;
-
-            case DownDirection.Xright:
-                downDirectionEntityHeight = transform.position.x;
-                break;
-            case DownDirection.Xleft:
-                downDirectionEntityHeight = -1f * transform.position.x;
-                break;
-
-            case DownDirection.Zforward:
-                downDirectionEntityHeight = transform.position.z;
-                break;
-            case DownDirection.Zback:
-                downDirectionEntityHeight = -1f * transform.position.z;
-                break;
-        }
+        float downDirectionEntityHeight = Block.GetPositionsDownOrientedHeight(transform.position, downDir);
 
         Block currentBlock = GetCurrentlyOccupiedBlock();
         if (currentBlock != null && currentBlock.isGround) 
         {
-            float blockDownDirectionHeight;
-
-            switch (downDir)
-            {
-                //YDown
-                default:
-                    blockDownDirectionHeight = currentBlock.transform.position.y;
-                    break;
-                case DownDirection.Yup:
-                    blockDownDirectionHeight = -1f * currentBlock.transform.position.y;
-                    break;
-
-                case DownDirection.Xright:
-                    blockDownDirectionHeight = currentBlock.transform.position.x;
-                    break;
-                case DownDirection.Xleft:
-                    blockDownDirectionHeight = -1f * currentBlock.transform.position.x;
-                    break;
-
-                case DownDirection.Zforward:
-                    blockDownDirectionHeight = currentBlock.transform.position.z;
-                    break;
-                case DownDirection.Zback:
-                    blockDownDirectionHeight = -1f * currentBlock.transform.position.z;
-                    break;
-            }
+            float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.transform.position, downDir);
 
             //In block but floating above it and need to fall
-            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.MidBlockHeight > 0.01f) { return false; }
+            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.GetMidBlockHeight(-transform.up) > 0.01f) { Debug.Log("floating in block"); return false; }
             return true; 
         }
         //floating in empty block
-        else if (currentBlock == null && downDirectionEntityHeight > Mathf.Floor(downDirectionEntityHeight)) { return false; }
+        else if (currentBlock == null && downDirectionEntityHeight > Mathf.Floor(downDirectionEntityHeight)) { Debug.Log("fall"); return false; }
 
         //check if standing on a block below current one
         Vector3Int groundPos = Map.GetIntVector3(transform.position);
@@ -359,7 +315,6 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             case DownDirection.Yup:
                 groundPos.y += 1;
                 break;
-
             case DownDirection.Xright:
                 groundPos.x += 1;
                 break;
@@ -377,8 +332,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
         Block groundBlock = map.GetBlock(groundPos);
 
-        if (groundBlock == null || !groundBlock.isGround || groundBlock.MidBlockHeight < 0.99f) { return false; }
-
+        if (groundBlock == null || !groundBlock.isGround || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { Debug.Log("fall no block"); return false; }
+        
         return true;
     }
 

@@ -33,9 +33,6 @@ public class Block : MonoBehaviour
 {
     public int blockID { get; set; }
 
-    //The height in the middle of the block the player will stop at, if = 1, player is simply atop it, but in the space ablove
-    [SerializeField] public float MidBlockHeight;
-
     //The height on each edges of the block, used for entering/exiting the stair block
     [SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
 
@@ -134,7 +131,7 @@ public class Block : MonoBehaviour
         float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
 
         BlockSide side = GetOrientedTopSide(normalVector);
-        if (MidBlockHeight < 0.4f) { Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector); }
+        //if (MidBlockHeight < 0.4f) { Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector); }
         //forward
         if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
         {
@@ -222,22 +219,22 @@ public class Block : MonoBehaviour
         switch (downDir)
         {
             default:
-                if (MidBlockHeight < 0.4f) { Debug.Log("top"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("top"); }
                 return topSide;
             case DownDirection.Yup:
-                if (MidBlockHeight < 0.4f) { Debug.Log("bottom"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("bottom"); }
                 return bottomSide;
             case DownDirection.Xleft:
-                if (MidBlockHeight < 0.4f) { Debug.Log("right"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("right"); }
                 return rightSide;
             case DownDirection.Xright:
-                if (MidBlockHeight < 0.4f) { Debug.Log("left"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("left"); }
                 return leftSide;
             case DownDirection.Zforward:
-                if (MidBlockHeight < 0.4f) { Debug.Log("back"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("back"); }
                 return backSide;
             case DownDirection.Zback:
-                if (MidBlockHeight < 0.4f) { Debug.Log("front"); }
+                //if (MidBlockHeight < 0.4f) { Debug.Log("front"); }
                 return frontSide;
         }
     }

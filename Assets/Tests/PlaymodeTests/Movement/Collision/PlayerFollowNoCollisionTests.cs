@@ -174,7 +174,7 @@ public class PlayerFollowNoCollisionTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFolowTestMap.json");
         yield return new WaitForSeconds(1.0f);
-        gameController.SetTimeScaleMultiplier(20.0f);
+        gameController.SetTimeScaleMultiplier(15.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;
         Transform bluePlayer = GameObject.Find("BluePlayerPrefab(Clone)").transform;
