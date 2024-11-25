@@ -99,39 +99,53 @@ public class Block : MonoBehaviour
         return false;
     }
 
-    public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection downDir)
+    public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection entityDownDir)
     {
+        DownDirection blockDownDir = Entity.ConvertVectorToDownDirection(-transform.up);
+
         //find forward, normal and relative direction vectors of entity
         Vector3 relativeDirection = transform.position - entityTransform.position;
         Vector3 forwardVector;
         Vector3 normalVector = -entityTransform.up;
-        switch (downDir)
+        switch (entityDownDir)
         {
             default:
             case DownDirection.Yup:
                 relativeDirection.y = 0;
-                forwardVector = transform.forward;
-
                 break;
             case DownDirection.Xleft:
             case DownDirection.Xright:
                 relativeDirection.x = 0;
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                relativeDirection.z = 0;
+                break;
+        }
+
+        Vector3 blockOrientedDownVector = transform.InverseTransformDirection(normalVector);
+        DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
+
+        switch (downDir)
+        {
+            default:
+            case DownDirection.Yup:
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
                 forwardVector = transform.forward;
                 break;
             case DownDirection.Zforward:
-                relativeDirection.z = 0;
-                forwardVector = transform.up;
+                forwardVector = -transform.up;
                 break;
             case DownDirection.Zback:
-                relativeDirection.z = 0;
-                forwardVector = transform.forward * -1f;
+                forwardVector = transform.up;
                 break;
         }
 
         float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
 
         BlockSide side = GetOrientedTopSide(normalVector);
-        //if (MidBlockHeight < 0.4f) { Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector); }
+        //Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector);
         //forward
         if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
         {
@@ -151,32 +165,44 @@ public class Block : MonoBehaviour
         return side.leftEdgeHeight;
     }
 
-    public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection downDir)
+    public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection EntityDownDir)
     {
         //find forward, normal and relative direction vectors of entity
         Vector3 relativeDirection = transform.position - exitPoint;
         Vector3 forwardVector;
         Vector3 normalVector = -entityUpVector;
-        switch (downDir)
+        switch (EntityDownDir)
         {
             default:
             case DownDirection.Yup:
                 relativeDirection.y = 0;
-                forwardVector = transform.forward;
-
                 break;
             case DownDirection.Xleft:
             case DownDirection.Xright:
                 relativeDirection.x = 0;
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                relativeDirection.z = 0;
+                break;
+        }
+
+        Vector3 blockOrientedDownVector = transform.InverseTransformDirection(normalVector);
+        DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
+
+        switch (downDir)
+        {
+            default:
+            case DownDirection.Yup:
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
                 forwardVector = transform.forward;
                 break;
             case DownDirection.Zforward:
-                relativeDirection.z = 0;
-                forwardVector = transform.up;
+                forwardVector = -transform.up;
                 break;
             case DownDirection.Zback:
-                relativeDirection.z = 0;
-                forwardVector = transform.forward * -1f;
+                forwardVector = transform.up;
                 break;
         }
 
@@ -219,22 +245,22 @@ public class Block : MonoBehaviour
         switch (downDir)
         {
             default:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("top"); }
+                //Debug.Log("top");
                 return topSide;
             case DownDirection.Yup:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("bottom"); }
+                //Debug.Log("bottom");
                 return bottomSide;
             case DownDirection.Xleft:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("right"); }
+                //Debug.Log("right");
                 return rightSide;
             case DownDirection.Xright:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("left"); }
+                //Debug.Log("left");
                 return leftSide;
             case DownDirection.Zforward:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("back"); }
+                //Debug.Log("back");
                 return backSide;
             case DownDirection.Zback:
-                //if (MidBlockHeight < 0.4f) { Debug.Log("front"); }
+               // Debug.Log("front");
                 return frontSide;
         }
     }

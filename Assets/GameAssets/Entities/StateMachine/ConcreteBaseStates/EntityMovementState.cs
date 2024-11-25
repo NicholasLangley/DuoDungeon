@@ -38,6 +38,7 @@ public class EntityMovementState : EntityState
 
         Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
         Block destBlock = _entity.GetBlockFromMap(destPosition);
+        //if (destBlock == null) { Debug.Log(destPosition); }
 
         DownDirection downDir = _entity.GetCurrentDownDirection();
 
@@ -65,10 +66,10 @@ public class EntityMovementState : EntityState
                         halfwayPosition.x = srcBlock.transform.position.x - srcBlockExitHeight;
                         break;
                     case DownDirection.Zforward:
-                        halfwayPosition.x = srcBlock.transform.position.z - srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.transform.position.z - srcBlockExitHeight;
                         break;
                     case DownDirection.Zback:
-                        halfwayPosition.x = srcBlock.transform.position.z + srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.transform.position.z + srcBlockExitHeight;
                         break;
                 }
             }
@@ -114,26 +115,27 @@ public class EntityMovementState : EntityState
         //If moving into a partial block and able to climb down (not fall)
         if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(_entity.transform.position, downDir))) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.transform.position, downDir))) <= _entity.maxStairClimbHeight)
         {
-            Debug.Log("climbdown within partial");
+            float destBlockHeight = destBlock.GetMidBlockHeight(-_entity.transform.up);
+            Debug.Log("climbdown within partial: " + destBlockHeight);
             switch (downDir)
             {
                 case DownDirection.Ydown:
-                    destPosition.y = destBlock.transform.position.y + destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.y = destBlock.transform.position.y + destBlockHeight;
                     break;
                 case DownDirection.Yup:
-                    destPosition.y = destBlock.transform.position.y - destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.y = destBlock.transform.position.y - destBlockHeight;
                     break;
                 case DownDirection.Xleft:
-                    destPosition.x = destBlock.transform.position.x + destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.x = destBlock.transform.position.x + destBlockHeight;
                     break;
                 case DownDirection.Xright:
-                    destPosition.x = destBlock.transform.position.x - destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.x = destBlock.transform.position.x - destBlockHeight;
                     break;
                 case DownDirection.Zforward:
-                    destPosition.x = destBlock.transform.position.z - destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.z = destBlock.transform.position.z - destBlockHeight;
                     break;
                 case DownDirection.Zback:
-                    destPosition.x = destBlock.transform.position.z + destBlock.GetMidBlockHeight(-_entity.transform.up);
+                    destPosition.z = destBlock.transform.position.z + destBlockHeight;
                     break;
             }
         }
@@ -164,20 +166,25 @@ public class EntityMovementState : EntityState
                 Block belowDestBlock = _entity.GetBlockFromMap(belowDestPos);
                 if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_entity.transform.up) == 1.0f) 
                 {
-                    Debug.Log("small step down to full");
                     switch (downDir)
                     {
                         case DownDirection.Ydown:
+                            destPosition.y = Mathf.FloorToInt(destPosition.y + 0.01f);
+                            break;
                         case DownDirection.Yup:
-                            destPosition.y = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            destPosition.y = Mathf.CeilToInt(destPosition.y - 0.01f);
                             break;
                         case DownDirection.Xleft:
+                            destPosition.x = Mathf.FloorToInt(destPosition.x + 0.01f);
+                            break;
                         case DownDirection.Xright:
-                            destPosition.x = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            destPosition.x = Mathf.CeilToInt(destPosition.x - 0.01f);
+                            break;
+                        case DownDirection.Zback:
+                            destPosition.z = Mathf.FloorToInt(destPosition.z + 0.01f);
                             break;
                         case DownDirection.Zforward:
-                        case DownDirection.Zback:
-                            destPosition.z = Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir));
+                            destPosition.z = Mathf.CeilToInt(destPosition.z - 0.01f);
                             break;
                     }
                 }
