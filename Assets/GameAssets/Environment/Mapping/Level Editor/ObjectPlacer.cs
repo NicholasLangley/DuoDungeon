@@ -7,8 +7,15 @@ public class ObjectPlacer : MonoBehaviour
 {
     GameObject currentBlock;
     int currentBlockID;
+
+
     GameObject objectPlacementIndicator;
-    //MeshRenderer blockPlacementMesh;
+    Quaternion startRotation, destRotation;
+    float objectPlacementRotationTimer;
+    [SerializeField]
+    float objectPlacementRotationDuration = 0.5f;
+    public bool isRotating;
+
     Plane yLevelIntersectionPlane;
     public Map map;
     GameObject mapTransform;
@@ -24,12 +31,15 @@ public class ObjectPlacer : MonoBehaviour
     [SerializeField]
     BlockList blockList;
 
+
     // Start is called before the first frame update
     void Start()
     {
         currentPlacementType = objectType.none;
         currentBlock = null;
         objectPlacementIndicator = null;
+        objectPlacementRotationTimer = 0.0f;
+        isRotating = false;
         yLevelIntersectionPlane = new Plane(); 
         SetYIntersectionPlane(0);
         mapTransform = new GameObject();
@@ -54,7 +64,15 @@ public class ObjectPlacer : MonoBehaviour
             }
         }
         else { hideBlock(); }
-
+        if(isRotating)
+        {
+            objectPlacementRotationTimer += Time.deltaTime;
+            objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation, objectPlacementRotationTimer / objectPlacementRotationDuration);
+            if (objectPlacementRotationTimer > objectPlacementRotationDuration)
+            {
+                isRotating = false;
+            }
+        }
     }
 
     public void SetBlock(GameObject block, int id)
@@ -91,7 +109,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public Command PlaceCurrentObject()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) { return null; }
+        if (EventSystem.current.IsPointerOverGameObject() || isRotating) { return null; }
 
         Command cmd = null;
 
@@ -202,6 +220,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public void RotateObjectPlacement(RotationDirection dir)
     {
+        if (isRotating) { return; }
         Vector3 rotationAxis;
         float rotationAmount = 90;
 
@@ -235,7 +254,13 @@ public class ObjectPlacer : MonoBehaviour
                 break;
         }
 
+       
+        startRotation = objectPlacementIndicator.transform.rotation;
         objectPlacementIndicator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
+        destRotation = objectPlacementIndicator.transform.rotation;
+        objectPlacementIndicator.transform.rotation = startRotation;
+        objectPlacementRotationTimer = 0.0f;
+        isRotating = true;
     }
 
     bool IsPositionOutOfBounds(Vector3 pos)
