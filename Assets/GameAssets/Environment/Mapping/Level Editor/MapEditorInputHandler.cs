@@ -14,6 +14,7 @@ public class MapEditorInputHandler : MonoBehaviour
     [SerializeField]
     string LevelEditorActionMapName, CameraControlsActionMapName;
 
+
     [SerializeField]
     ObjectPlacer objectPlacer;
 
@@ -21,7 +22,13 @@ public class MapEditorInputHandler : MonoBehaviour
     LevelEditorController levelEditorController;
 
     //scene camera
+    InputAction cameraMoveAction { get; set; }
+    InputAction cameraAimAction { get; set; }
+    InputAction cameraEnableAimAction { get; set; }
 
+    public Vector3 cameraMoveInput;
+    public Vector2 cameraAimInput;
+    public bool cameraAimEnabledInput;
 
     //ObjectPlacer
     InputAction placeAction { get; set; }
@@ -41,6 +48,11 @@ public class MapEditorInputHandler : MonoBehaviour
 
     void Awake()
     {
+        //camera
+        cameraMoveAction = inputActionMap.FindActionMap(CameraControlsActionMapName).FindAction("MoveCamera");
+        cameraAimAction = inputActionMap.FindActionMap(CameraControlsActionMapName).FindAction("AimCamera");
+        cameraEnableAimAction = inputActionMap.FindActionMap(CameraControlsActionMapName).FindAction("EnableCameraAim");
+
         //object Placer
         placeAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("PlaceBlock");
         RotateForwardAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RotateObjectForward");
@@ -60,6 +72,17 @@ public class MapEditorInputHandler : MonoBehaviour
 
     void RegisterInputActions()
     {
+        //camera
+        cameraMoveAction.performed += context => cameraMoveInput = context.ReadValue<Vector3>();
+        cameraMoveAction.canceled += context => cameraMoveInput = Vector3.zero;
+
+        cameraAimAction.performed += context => cameraAimInput = context.ReadValue<Vector2>();
+        cameraAimAction.canceled += context => cameraAimInput = Vector3.zero;
+
+        cameraEnableAimAction.performed += context => cameraAimEnabledInput = true;
+        cameraEnableAimAction.canceled += context => cameraAimEnabledInput = false;
+
+
         //object Placer
         placeAction.performed += context =>
         {
@@ -73,6 +96,7 @@ public class MapEditorInputHandler : MonoBehaviour
         RollLeftAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.LEFTROLL);
         RollRightAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.RIGHTROLL);
 
+        //LevelEditorCOntroller
         undoAction.performed += context => levelEditorController.Undo();
         redoAction.performed += context => levelEditorController.Redo();
         saveAction.performed += context => levelEditorController.Save();
@@ -80,6 +104,11 @@ public class MapEditorInputHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        //camera
+        cameraMoveAction.Enable();
+        cameraAimAction.Enable();
+        cameraEnableAimAction.Enable();
+
         //object Placer
         placeAction.Enable();
         RotateForwardAction.Enable();
@@ -97,6 +126,11 @@ public class MapEditorInputHandler : MonoBehaviour
 
     private void OnDisable()
     {
+        //camera
+        cameraMoveAction.Disable();
+        cameraAimAction.Disable();
+        cameraEnableAimAction.Disable();
+
         //object Placer
         placeAction.Disable();
         RotateForwardAction.Disable();
