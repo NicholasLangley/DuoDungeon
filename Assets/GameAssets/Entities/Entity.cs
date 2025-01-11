@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable
+public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable, IDamageable
 {
     public Map map { get; set; }
     public GameController gameController { get; set; }
 
+    #region IMoveable Variables
     //IMoveable variables
     public MovementDirection movementDirection { get; set; }
 
@@ -29,10 +30,13 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         currentVec3.y = Mathf.FloorToInt(currentVec3.y);
         return Map.GetIntVector3(currentVec3); 
     }
+    #endregion
 
-
+    #region ICommandable variables
     //ICommandable variables
     [field: SerializeField] public bool busy { get; set; }
+
+    #endregion
 
     #region State Machine
 
@@ -46,11 +50,25 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     #endregion
 
+    #region IUndoable Variables
     //IUndoable
     public bool currentlyUndoing { get; set; }
 
+    #endregion
+
+    #region IClimabable Variables
+
     //IClimbable
     [field: SerializeField] public float maxStairClimbHeight { get; set; }
+
+    #endregion
+
+    #region IDamageable Variables
+    [field: SerializeField] public int maxHealth { get; set; }
+    public int currentHealth { get; set; }
+
+    #endregion
+
 
     protected void Awake()
     {
@@ -71,7 +89,12 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     {
         //ICommandable
         busy = false;
+
+        //IUndoable
         currentlyUndoing = false;
+
+        //IDamageable
+        currentHealth = maxHealth;
 
         #region Initialize State Machine
 
@@ -86,7 +109,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         stateMachine.currentState.StateUpdate();
     }
 
-
+    #region Movement
     public void MoveTo(MovementDirection dir)
     {
         movementDirection = dir;
@@ -103,56 +126,6 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     {
         fallSrcPosition = srcPos;
         stateMachine.changeState(fallingState);
-    }
-
-    public DownDirection GetCurrentDownDirection()
-    {
-        return ConvertVectorToDownDirection(-1 * transform.up);
-    }
-
-    public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)
-    {
-        Vector3 down = Map.GetIntVector3(downVec);
-
-        if (down.y == -1) { return DownDirection.Ydown; }
-        if (down.y == 1) { return DownDirection.Yup; }
-
-        if (down.x == -1) { return DownDirection.Xleft; }
-        if (down.x == 1) { return DownDirection.Xright; }
-
-        if (down.z == -1) { return DownDirection.Zback; }
-        return DownDirection.Zforward;
-    }
-
-    public Block GetCurrentlyOccupiedBlock ()
-    {
-        Vector3 gridPosition = transform.position;
-
-        DownDirection downDir = GetCurrentDownDirection();
-
-        switch(downDir)
-        {
-            case DownDirection.Ydown:
-                gridPosition.y = Mathf.Floor(gridPosition.y + 0.01f);
-                break;
-            case DownDirection.Yup:
-                gridPosition.y = Mathf.Ceil(gridPosition.y - 0.01f);
-                break;
-            case DownDirection.Xleft:
-                gridPosition.x = Mathf.Floor(gridPosition.x + 0.01f);
-                break;
-            case DownDirection.Xright:
-                gridPosition.x = Mathf.Ceil(gridPosition.x - 0.01f);
-                break;
-            case DownDirection.Zback:
-                gridPosition.z = Mathf.Floor(gridPosition.z + 0.01f);
-                break;
-            case DownDirection.Zforward:
-                gridPosition.z = Mathf.Ceil(gridPosition.z - 0.01f);
-                break;
-        }
-
-        return (map.GetBlock(Map.GetIntVector3(gridPosition)));
     }
 
     public void GetProjectedDestinationBlockPosition(MovementDirection dir)
@@ -277,11 +250,6 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         projectedDestinationBlock = Map.GetIntVector3(nextPos);
     }
 
-    public Block GetBlockFromMap(Vector3 pos)
-    {
-        return map.GetBlock(pos);
-    }
-
     public bool IsDestinationOccupied(Vector3Int destinationToCheck)
     {
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
@@ -378,6 +346,9 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         stateMachine.changeState(rotationState);
     }
 
+    #endregion
+
+    #region Commands
     //Active decisions by the entity such as to move or attack
     public Command GetCommand()
     {
@@ -402,4 +373,94 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     }
 
     public List<Command> GetCommands() { return null; }
+
+    #endregion
+
+    #region IDamageable
+
+    public void Damage(int dmg)
+    {
+        currentHealth -= dmg;
+        if(currentHealth <= 0)
+        {
+            Die();
+        }
+
+        //TODO animations
+    }
+
+    public void Heal(int heal)
+    {
+        currentHealth += heal;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+
+        //TODO animations
+    }
+
+    void Die()
+    {
+        //TODO
+        Debug.Log(gameObject.name + " has died");
+    }
+
+    #endregion
+
+    #region Helper Functions
+
+    public Block GetBlockFromMap(Vector3 pos)
+    {
+        return map.GetBlock(pos);
+    }
+
+    public DownDirection GetCurrentDownDirection()
+    {
+        return ConvertVectorToDownDirection(-1 * transform.up);
+    }
+
+    public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)
+    {
+        Vector3 down = Map.GetIntVector3(downVec);
+
+        if (down.y == -1) { return DownDirection.Ydown; }
+        if (down.y == 1) { return DownDirection.Yup; }
+
+        if (down.x == -1) { return DownDirection.Xleft; }
+        if (down.x == 1) { return DownDirection.Xright; }
+
+        if (down.z == -1) { return DownDirection.Zback; }
+        return DownDirection.Zforward;
+    }
+
+    public Block GetCurrentlyOccupiedBlock()
+    {
+        Vector3 gridPosition = transform.position;
+
+        DownDirection downDir = GetCurrentDownDirection();
+
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+                gridPosition.y = Mathf.Floor(gridPosition.y + 0.01f);
+                break;
+            case DownDirection.Yup:
+                gridPosition.y = Mathf.Ceil(gridPosition.y - 0.01f);
+                break;
+            case DownDirection.Xleft:
+                gridPosition.x = Mathf.Floor(gridPosition.x + 0.01f);
+                break;
+            case DownDirection.Xright:
+                gridPosition.x = Mathf.Ceil(gridPosition.x - 0.01f);
+                break;
+            case DownDirection.Zback:
+                gridPosition.z = Mathf.Floor(gridPosition.z + 0.01f);
+                break;
+            case DownDirection.Zforward:
+                gridPosition.z = Mathf.Ceil(gridPosition.z - 0.01f);
+                break;
+        }
+
+        return (map.GetBlock(Map.GetIntVector3(gridPosition)));
+    }
+
+    #endregion
 }
