@@ -55,6 +55,12 @@ MonoBehaviour:
   <fallLerpDuration>k__BackingField: 0.25
   <busy>k__BackingField: 0
   <maxStairClimbHeight>k__BackingField: 0.25
+  <maxHealth>k__BackingField: 3
+  attackRange: 5
+  attackDamage: 1
+  attackMask:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!136 &1141553472760462635
 CapsuleCollider:
   m_ObjectHideFlags: 0

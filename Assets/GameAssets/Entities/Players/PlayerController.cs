@@ -37,22 +37,20 @@ public class PlayerController : ICommandable
     public List<Command> GetCommands()
     {
         //Movement
-        if (playerInputHandler.MoveInput != Vector2.zero)
+        if (playerInputHandler.moveInput != Vector2.zero)
         {
             return AttemptMovement();
         }
 
         //rotation
-        else if (playerInputHandler.RotateInput < 0) { return RotatePlayers(-90f); }
-        else if (playerInputHandler.RotateInput > 0) { return RotatePlayers(90f); }
+        else if (playerInputHandler.rotateInput < 0) { return RotatePlayers(-90f); }
+        else if (playerInputHandler.rotateInput > 0) { return RotatePlayers(90f); }
 
         //Attack
+        else if (playerInputHandler.attackInput) { /*TODO COMMAND*/ redPlayer.Attack(); bluePlayer.Attack(); }
 
-
-        //Interact
-
-
-
+        //Interact TODO
+        else if (playerInputHandler.interactInput) { }
 
         return null;
     }
@@ -85,19 +83,19 @@ public class PlayerController : ICommandable
         MovementDirection movementDir;
 
         //get next position for each player
-        if (playerInputHandler.MoveInput.y > 0)
+        if (playerInputHandler.moveInput.y > 0)
         {
             movementDir = MovementDirection.FORWARD;
         }
-        else if (playerInputHandler.MoveInput.y < 0)
+        else if (playerInputHandler.moveInput.y < 0)
         {
             movementDir = MovementDirection.BACKWARD;
         }
-        else if (playerInputHandler.MoveInput.x > 0)
+        else if (playerInputHandler.moveInput.x > 0)
         {
             movementDir = MovementDirection.RIGHT;
         }
-        else if (playerInputHandler.MoveInput.x < 0)
+        else if (playerInputHandler.moveInput.x < 0)
         {
             movementDir = MovementDirection.LEFT;
         }

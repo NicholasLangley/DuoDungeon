@@ -381,7 +381,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     public void Damage(int dmg)
     {
         currentHealth -= dmg;
-        if(currentHealth <= 0)
+        Debug.Log(gameObject.name + " has " + currentHealth + " hp");
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -402,6 +403,12 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         //TODO
         Debug.Log(gameObject.name + " has died");
     }
+
+    #endregion
+
+    #region Attacking
+
+    public virtual void Attack() { Debug.Log("This entity has not overriden the default attack"); }
 
     #endregion
 

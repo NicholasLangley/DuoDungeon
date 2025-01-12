@@ -71,7 +71,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerInputHandler.UndoInput && !undoingTurn)
+        if (playerInputHandler.undoInput && !undoingTurn)
         {
             undoCommandIsBuffered = true;
         }
