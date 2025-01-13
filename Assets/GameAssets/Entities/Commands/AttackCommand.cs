@@ -2,24 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupCommand : Command
+public class AttackCommand : Command
 {
-    Pickup pickup;
     Entity entity;
 
-    public PickupCommand(Pickup p, Entity e)
+    public AttackCommand(Entity e)
     {
-        pickup = p;
         entity = e;
     }
 
     public override void Execute()
     {
-        pickup.Activate(entity);
+        entity.Attack();
     }
 
     public override void Undo()
     {
-        pickup.Deactivate(entity);
+        //entity will know it is undoing and change logic accordingly
+        entity.Attack();
     }
 }

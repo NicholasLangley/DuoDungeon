@@ -57,6 +57,7 @@ MonoBehaviour:
   <maxStairClimbHeight>k__BackingField: 0.25
   <maxHealth>k__BackingField: 3
   attackRange: 5
+  attackDuration: 0.25
   attackDamage: 1
   attackMask:
     serializedVersion: 2

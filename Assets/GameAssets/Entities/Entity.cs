@@ -47,6 +47,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     public EntityMovementBlockedState movementBlockedState;
     public EntityRotationState rotationState;
     public EntityFallingState fallingState;
+    //unique entites may override this
+    public EntityAttackState attackState;
 
     #endregion
 
@@ -69,8 +71,21 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     #endregion
 
+    #region Attacking Variables
 
-    protected void Awake()
+    [SerializeField]
+    protected float attackRange;
+    [SerializeField] 
+    public float attackDuration;
+    [SerializeField]
+    protected int attackDamage;
+
+    [SerializeField]
+    protected LayerMask attackMask;
+
+    #endregion
+
+    protected virtual void Awake()
     {
         #region Create State Machine and states
         stateMachine = new EntityStateMachine();
@@ -80,6 +95,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
         rotationState = new EntityRotationState(this, stateMachine);
         fallingState = new EntityFallingState(this, stateMachine);
+        //unique entities may override this
+        attackState = new EntityAttackState(this, stateMachine);
 
         #endregion
     }

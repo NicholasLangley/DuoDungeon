@@ -4,20 +4,12 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
-    [SerializeField]
-    float attackRange;
-    [SerializeField]
-    int attackDamage;
-
-    [SerializeField]
-    LayerMask attackMask;
-
-    /*private void Awake()
+    protected override void Awake()
     {
         base.Awake();
     }
 
-    
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -32,13 +24,20 @@ public class PlayerEntity : Entity
 
     public override void Attack()
     {
+        
+
+        stateMachine.changeState(attackState);
+
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, attackRange, attackMask))
         {
             IDamageable damageable = hit.collider.gameObject.GetComponent<IDamageable>();
             if(damageable != null)
             {
-                damageable.Damage(attackDamage);
+                //heal damage if player is undoing attack
+                if (currentlyUndoing) { damageable.Heal(attackDamage); }
+                else { damageable.Damage(attackDamage); }
+
             }
         }
     }

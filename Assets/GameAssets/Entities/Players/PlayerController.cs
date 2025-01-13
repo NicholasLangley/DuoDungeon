@@ -47,7 +47,7 @@ public class PlayerController : ICommandable
         else if (playerInputHandler.rotateInput > 0) { return RotatePlayers(90f); }
 
         //Attack
-        else if (playerInputHandler.attackInput) { /*TODO COMMAND*/ redPlayer.Attack(); bluePlayer.Attack(); }
+        else if (playerInputHandler.attackInput) { return AttackWithPlayers(); }
 
         //Interact TODO
         else if (playerInputHandler.interactInput) { }
@@ -149,6 +149,23 @@ public class PlayerController : ICommandable
         //return command based on if space is occupied or not
         cmdRed = new RotationCommand(redPlayer, degrees);
         cmdBlue = new RotationCommand(bluePlayer, degrees);
+
+        commands.Add(cmdRed);
+        commands.Add(cmdBlue);
+
+        return commands;
+    }
+
+    List<Command> AttackWithPlayers()
+    {
+        List<Command> commands = new List<Command>();
+
+        Command cmdRed;
+        Command cmdBlue;
+
+        //return command based on if space is occupied or not
+        cmdRed = new AttackCommand(redPlayer);
+        cmdBlue = new AttackCommand(bluePlayer);
 
         commands.Add(cmdRed);
         commands.Add(cmdBlue);
