@@ -41,4 +41,10 @@ public class PlayerEntity : Entity
             }
         }
     }
+
+    public override Command GetPassiveCommand()
+    {
+        //checks for falling currently
+        return base.GetPassiveCommand();
+    }
 }

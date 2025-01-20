@@ -37,14 +37,9 @@ public class GameController : MonoBehaviour
     PlayerEntity bluePlayerPrefab;
 
     List<Entity> _enemies;
-    [Header("Enemy Prefabs")]
-    [SerializeField]
-    Entity enemy1Prefab;
 
-    List<Entity> _enivornmentalEntities;
-    [Header("Environmental Entity Prefabs")]
     [SerializeField]
-    Entity Evironment1Prefab;
+    List<EnvironmentObject> _enivornmentObjects;
 
     float gameSpeedMultiplier { get; set; } //multiplies all game speeds for testing purposes
 
@@ -54,7 +49,7 @@ public class GameController : MonoBehaviour
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
-        _enivornmentalEntities = new List<Entity>();
+        //_enivornmentObjects = new List<EnvironmentObject>();
 
         takingTurn = false;
         undoingTurn = false;
@@ -192,9 +187,9 @@ public class GameController : MonoBehaviour
     {
         List<Command> triggeredCommands = new List<Command>();
 
-        foreach (Entity environmentalEntity in _enivornmentalEntities)
+        foreach (EnvironmentObject environmentObject in _enivornmentObjects)
         {
-            Command cmd = environmentalEntity.GetCommand();
+            Command cmd = environmentObject.GetCommand();
             if (cmd != null)
             {
                 cmd.Execute();
@@ -234,6 +229,19 @@ public class GameController : MonoBehaviour
             }
         }
 
+        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        {
+            if (!envObj.busy)
+            {
+                Command cmd = envObj.GetPassiveCommand();
+                if (cmd != null)
+                {
+                    cmd.Execute();
+                    foundCommands.Add(cmd);
+                }
+            }
+        }
+
         return foundCommands;
     }
 
@@ -260,6 +268,11 @@ public class GameController : MonoBehaviour
         {
             enemy.currentlyUndoing = true;
         }
+
+        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        {
+            envObj.currentlyUndoing = true;
+        }
     }
 
     void UnsetEntitiesFromUndo()
@@ -269,6 +282,10 @@ public class GameController : MonoBehaviour
         foreach (Entity enemy in _enemies)
         {
             enemy.currentlyUndoing = false;
+        }
+        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        {
+            envObj.currentlyUndoing = false;
         }
     }
 
@@ -289,9 +306,9 @@ public class GameController : MonoBehaviour
         {
             if (enemy.busy == true) { return true; }
         }
-        foreach (Entity environmentalEntity in _enivornmentalEntities)
+        foreach (EnvironmentObject environmentObject in _enivornmentObjects)
         {
-            if (environmentalEntity.busy == true) { return true; }
+            if (environmentObject.busy == true) { return true; }
         }
         return false;
     }

@@ -69,6 +69,7 @@ public class PlayerController : ICommandable
     }
 
     public Command GetCommand() { return null; }
+    public Command GetPassiveCommand() { return null; }
 
     public bool CheckIfBusy()
     {

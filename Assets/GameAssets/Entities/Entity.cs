@@ -373,7 +373,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     }
 
     //commands that arise from the enemies current environment (sliding on ice, or falling in a hole for example)
-    public Command GetPassiveCommand()
+    public virtual Command GetPassiveCommand()
     {
         Command cmd = null;
 
@@ -390,6 +390,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
     }
 
     public List<Command> GetCommands() { return null; }
+
+    public List<Command> GetPassiveCommands() { return null; }
 
     #endregion
 

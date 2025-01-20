@@ -15,11 +15,11 @@ public class PickupCommand : Command
 
     public override void Execute()
     {
-        pickup.Activate(entity);
+        pickup.CollectPickup(entity);
     }
 
     public override void Undo()
     {
-        pickup.Deactivate(entity);
+        pickup.UncollectPickup(entity);
     }
 }

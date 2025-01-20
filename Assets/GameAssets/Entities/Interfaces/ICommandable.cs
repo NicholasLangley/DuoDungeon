@@ -11,6 +11,11 @@ public interface ICommandable
     //the logic each entity does each turn, returns null if no action is taken
     public Command GetCommand();
 
+    //at end of turn, ie falling
+    public Command GetPassiveCommand();
+
     public List<Command> GetCommands();
+
+    public List<Command> GetPassiveCommands();
 
 }
