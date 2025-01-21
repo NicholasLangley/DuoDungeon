@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
+using log4net.Util;
+using UnityEditorInternal;
 using UnityEngine;
 
-public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimbable, IDamageable
+public class Pushable : EnvironmentObject, IMoveable
 {
     public Map map { get; set; }
     public GameController gameController { get; set; }
@@ -22,134 +25,59 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
 
     public float degreesToRotate { get; set; }
 
-    public Vector3Int projectedDestinationBlock {get; set;}
+    public Vector3Int projectedDestinationBlock { get; set; }
 
-    public Vector3Int GetCurrentBlockPosition() 
-    { 
+    public Vector3Int GetCurrentBlockPosition()
+    {
         Vector3 currentVec3 = transform.position;
         currentVec3.y = Mathf.FloorToInt(currentVec3.y);
-        return Map.GetIntVector3(currentVec3); 
+        return Map.GetIntVector3(currentVec3);
     }
     #endregion
 
-    #region ICommandable variables
-    //ICommandable variables
-    [field: SerializeField] public bool busy { get; set; }
 
-    #endregion
-
-    #region State Machine
-
-    public EntityStateMachine stateMachine;
-
-    public EntityIdleState idleState;
-    public EntityMovementState movementState;
-    public EntityMovementBlockedState movementBlockedState;
-    public EntityRotationState rotationState;
-    public EntityFallingState fallingState;
-    //unique entites may override this
-    public EntityAttackState attackState;
-
-    #endregion
-
-    #region IUndoable Variables
-    //IUndoable
-    public bool currentlyUndoing { get; set; }
-
-    #endregion
-
-    #region IClimabable Variables
-
-    //IClimbable
-    [field: SerializeField] public float maxStairClimbHeight { get; set; }
-
-    #endregion
-
-    #region IDamageable Variables
-    [field: SerializeField] public int maxHealth { get; set; }
-    public int currentHealth { get; set; }
-
-    #endregion
-
-    #region Attacking Variables
-
-    [SerializeField]
-    protected float attackRange;
-    [SerializeField] 
-    public float attackDuration;
-    [SerializeField]
-    protected int attackDamage;
-
-    [SerializeField]
-    protected LayerMask attackMask;
-
-    #endregion
-
-    protected virtual void Awake()
-    {
-        #region Create State Machine and states
-        stateMachine = new EntityStateMachine();
-
-        idleState = new EntityIdleState(this, stateMachine);
-        movementState = new EntityMovementState(this, stateMachine);
-        movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
-        rotationState = new EntityRotationState(this, stateMachine);
-        fallingState = new EntityFallingState(this, stateMachine);
-        //unique entities may override this
-        attackState = new EntityAttackState(this, stateMachine);
-
-        #endregion
-    }
 
     // Start is called before the first frame update
-    protected void Start()
+    void Start()
     {
-        //ICommandable
-        busy = false;
-
-        //IUndoable
-        currentlyUndoing = false;
-
-        //IDamageable
-        currentHealth = maxHealth;
-
-        #region Initialize State Machine
-
-        stateMachine.Initialize(idleState);
-
-        #endregion
+        
     }
 
     // Update is called once per frame
-    protected void Update()
+    void Update()
     {
-        stateMachine.currentState.StateUpdate();
+        
     }
 
     #region Movement
     public void MoveTo(MovementDirection dir)
     {
         movementDirection = dir;
-        stateMachine.changeState(movementState);
+        //stateMachine.changeState(movementState);
     }
 
     public void FailToMoveTo(MovementDirection dir)
     {
         movementDirection = dir;
-        stateMachine.changeState(movementBlockedState);
+        //stateMachine.changeState(movementBlockedState);
     }
 
     public void Fall(Vector3 srcPos)
     {
         fallSrcPosition = srcPos;
-        stateMachine.changeState(fallingState);
+        //stateMachine.changeState(fallingState);
+    }
+
+    public DownDirection GetCurrentDownDirection()
+    {
+        return Entity.ConvertVectorToDownDirection(-1 * transform.up);
     }
 
     public void GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
         Vector3 nextPos = transform.position;
 
-        switch(dir)
+        switch (dir)
         {
             case MovementDirection.FORWARD:
                 nextPos += transform.forward;
@@ -166,7 +94,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             default:
                 break;
         }
-        
+
         DownDirection downDir = GetCurrentDownDirection();
 
         //remove height to get logical center of current block
@@ -191,6 +119,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
         }
+        /*
         //Debug.Log(nextPos);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
@@ -222,24 +151,24 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         //check for stairs going down
         Block straightForwardDestBlock = map.GetBlock(nextPos);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
-        if(straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
+        if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
         {
             Vector3 belowDest = nextPos - transform.up;
 
             Block belowDestBlock = map.GetBlock(belowDest);
-            if(belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
+            if (belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
                 nextPos += transform.up * belowDestBlock.GetMidBlockHeight(-transform.up);
             }
         }
         //block exists and is full (player will try to climb ontop of it if possible)
-        else if(straightForwardDestBlock != null && exitHeight < 1.0f)
+        else if (straightForwardDestBlock != null && exitHeight < 1.0f)
         {
             float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform, GetCurrentDownDirection());
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
-            { 
-                 nextPos += transform.up;
+            {
+                nextPos += transform.up;
             }
         }
 
@@ -263,7 +192,7 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             case DownDirection.Zforward:
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
-        }
+        }*/
         projectedDestinationBlock = Map.GetIntVector3(nextPos);
     }
 
@@ -274,8 +203,8 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         Block destinationBlock = map.GetBlock(destinationToCheck);
         if (destinationBlock != null)
         {
-            if (!destinationBlock.canEntityEnter(this)) { return true; }
-            if(destinationBlock.GetMidBlockHeight(-transform.up) > 0.25)
+            //if (!destinationBlock.canEntityEnter(this)) { return true; }
+            if (destinationBlock.GetMidBlockHeight(-transform.up) > 0.25)
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
@@ -353,34 +282,31 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         Block groundBlock = map.GetBlock(groundPos);
 
         if (groundBlock == null || !groundBlock.isGround || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
-        
+
         return true;
     }
 
     public void RotateBy(float degrees)
     {
         degreesToRotate = degrees;
-        stateMachine.changeState(rotationState);
+        //stateMachine.changeState(rotationState);
     }
 
     #endregion
 
     #region Commands
     //Active decisions by the entity such as to move or attack
-    public Command GetCommand()
-    {
-        return stateMachine.currentState.StateGetCommand();
-    }
+    public override Command GetCommand() { return null; }
 
-    //commands that arise from the enemies current environment (sliding on ice, or falling in a hole for example)
-    public virtual Command GetPassiveCommand()
+    //commands that arise from the current environment (sliding on ice, or falling in a hole for example)
+    public override Command GetPassiveCommand()
     {
         Command cmd = null;
 
         //check for falling
-        if(affectedByGravity)
+        if (affectedByGravity)
         {
-            if(!isEntityGrounded())
+            if (!isEntityGrounded())
             {
                 cmd = new FallCommand(this, transform.position);
             }
@@ -389,68 +315,5 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         return cmd;
     }
 
-    public List<Command> GetCommands() { return null; }
-
-    public List<Command> GetPassiveCommands() { return null; }
-
-    #endregion
-
-    #region IDamageable
-
-    public void Damage(int dmg)
-    {
-        currentHealth -= dmg;
-        Debug.Log(gameObject.name + " has " + currentHealth + " hp");
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-
-        //TODO animations
-    }
-
-    public void Heal(int heal)
-    {
-        currentHealth += heal;
-        currentHealth = Mathf.Min(currentHealth, maxHealth);
-
-        //TODO animations
-    }
-
-    void Die()
-    {
-        //TODO
-        Debug.Log(gameObject.name + " has died");
-    }
-
-    #endregion
-
-    #region Attacking
-
-    public virtual void Attack() { Debug.Log("This entity has not overriden the default attack"); }
-
-    #endregion
-
-    #region Helper Functions
-
-    public DownDirection GetCurrentDownDirection()
-    {
-        return ConvertVectorToDownDirection(-1 * transform.up);
-    }
-
-    public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)
-    {
-        Vector3 down = Map.GetIntVector3(downVec);
-
-        if (down.y == -1) { return DownDirection.Ydown; }
-        if (down.y == 1) { return DownDirection.Yup; }
-
-        if (down.x == -1) { return DownDirection.Xleft; }
-        if (down.x == 1) { return DownDirection.Xright; }
-
-        if (down.z == -1) { return DownDirection.Zback; }
-        return DownDirection.Zforward;
-    }
-
-    #endregion
+     #endregion
 }

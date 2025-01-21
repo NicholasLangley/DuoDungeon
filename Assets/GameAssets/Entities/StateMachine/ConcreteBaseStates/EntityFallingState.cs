@@ -77,7 +77,7 @@ public class EntityFallingState : EntityState
             return;
         }
 
-        Block startingBlock = _entity.GetBlockFromMap(baseBlockPosition);
+        Block startingBlock = _entity.map.GetBlock(baseBlockPosition);
         Block destBlock;
         fallDestination = baseBlockPosition;
 
@@ -114,7 +114,7 @@ public class EntityFallingState : EntityState
                     break;
             }
             
-            destBlock = _entity.GetBlockFromMap(fallDestination);
+            destBlock = _entity.map.GetBlock(fallDestination);
         }
         
         if (destBlock != null)

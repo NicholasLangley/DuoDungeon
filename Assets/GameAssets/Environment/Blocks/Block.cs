@@ -68,7 +68,7 @@ public class Block : MonoBehaviour
 
         float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(transform.position, downDir);
 
-        Block entityCurrentBlock = e.GetCurrentlyOccupiedBlock();
+        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.transform.position, e.GetCurrentDownDirection());
         float entityExitHeight;
         if (entityCurrentBlock != null)
         {

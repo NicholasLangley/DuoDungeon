@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Codice.Client.BaseCommands;
 
 public class Map
 {
@@ -55,6 +56,33 @@ public class Map
     public Block GetBlock(Vector3 position)
     {
         return (GetBlock(Map.GetIntVector3(position)));
+    }
+
+    public Block GetCurrentlyOccupiedBlock(Vector3 gridPosition, DownDirection downDir)
+    {
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+                gridPosition.y = Mathf.Floor(gridPosition.y + 0.01f);
+                break;
+            case DownDirection.Yup:
+                gridPosition.y = Mathf.Ceil(gridPosition.y - 0.01f);
+                break;
+            case DownDirection.Xleft:
+                gridPosition.x = Mathf.Floor(gridPosition.x + 0.01f);
+                break;
+            case DownDirection.Xright:
+                gridPosition.x = Mathf.Ceil(gridPosition.x - 0.01f);
+                break;
+            case DownDirection.Zback:
+                gridPosition.z = Mathf.Floor(gridPosition.z + 0.01f);
+                break;
+            case DownDirection.Zforward:
+                gridPosition.z = Mathf.Ceil(gridPosition.z - 0.01f);
+                break;
+        }
+
+        return (GetBlock(GetIntVector3(gridPosition)));
     }
 
     public static Vector3Int GetIntVector3(Vector3 floatVector)

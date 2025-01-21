@@ -36,8 +36,8 @@ public class EntityMovementState : EntityState
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
-        Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
-        Block destBlock = _entity.GetBlockFromMap(destPosition);
+        Block srcBlock = _entity.map.GetCurrentlyOccupiedBlock(_entity.transform.position, _entity.GetCurrentDownDirection());
+        Block destBlock = _entity.map.GetBlock(destPosition);
         //if (destBlock == null) { Debug.Log(destPosition); }
 
         DownDirection downDir = _entity.GetCurrentDownDirection();
@@ -163,7 +163,7 @@ public class EntityMovementState : EntityState
             {
                 Vector3 belowDestPos = destPosition;
                 belowDestPos -= _entity.transform.up;
-                Block belowDestBlock = _entity.GetBlockFromMap(belowDestPos);
+                Block belowDestBlock = _entity.map.GetBlock(belowDestPos);
                 if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_entity.transform.up) == 1.0f) 
                 {
                     switch (downDir)

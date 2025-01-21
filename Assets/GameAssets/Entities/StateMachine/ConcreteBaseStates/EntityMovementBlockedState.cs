@@ -27,7 +27,7 @@ public class EntityMovementBlockedState : EntityState
 
         //modify dest height to match edge of srcblock
         DownDirection downDir = _entity.GetCurrentDownDirection();
-        Block srcBlock = _entity.GetCurrentlyOccupiedBlock();
+        Block srcBlock = _entity.map.GetCurrentlyOccupiedBlock(_entity.transform.position, _entity.GetCurrentDownDirection());
         if (srcBlock != null) 
         {
             switch (downDir)
