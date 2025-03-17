@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2290919314355579303
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7243080156204247318}
+  m_Layer: 6
+  m_Name: RedCameraTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7243080156204247318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2290919314355579303}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8811824755443933770}
+  m_Father: {fileID: 7817288134987447592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4756124172056621888
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,11 +164,11 @@ Transform:
   m_GameObject: {fileID: 6456436484282813983}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 0.4, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7817288134987447592}
+  m_Father: {fileID: 7243080156204247318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &306861625254783972
 Camera:
@@ -312,8 +344,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 8811824755443933770}
   - {fileID: 8452059515798872316}
+  - {fileID: 7243080156204247318}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &475656349081761589
@@ -331,7 +363,7 @@ MonoBehaviour:
   <movementCollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 448
-  <movementLerpDuration>k__BackingField: 0.5
+  <movementLerpDuration>k__BackingField: 0.25
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
   <busy>k__BackingField: 0
@@ -343,6 +375,14 @@ MonoBehaviour:
   attackMask:
     serializedVersion: 2
     m_Bits: 192
+  _cameraBaseTransform: {fileID: 7243080156204247318}
+  _cameraTransform: {fileID: 8811824755443933770}
+  mouseSensitivityX: 0.1
+  mouseSensitivityY: 0.1
+  maxMouseAngleX: 45
+  maxMouseAngleY: 90
+  invertMouseX: 0
+  invertMouseY: 0
 --- !u!136 &7126966075119309994
 CapsuleCollider:
   m_ObjectHideFlags: 0

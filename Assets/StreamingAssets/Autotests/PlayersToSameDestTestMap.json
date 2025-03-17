@@ -1,0 +1,448 @@
+{
+"metadata": "EMPTY",
+"players": {
+"red": {
+"position": {
+"x": -3,
+"y": 0,
+"z": -10
+},
+"rotation": {
+"w": -0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+
+},
+"blue": {
+"position": {
+"x": -5,
+"y": 1,
+"z": -10
+},
+"rotation": {
+"w": -0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+}
+},
+"blocks": [
+{
+"type": 0,
+"info": {
+"block_id": 2,
+"position": {
+"x": -4,
+"y": 0,
+"z": -10
+},
+"rotation": {
+"w": -1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 0,
+"z": -10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": -1,
+"z": -10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": -1,
+"z": -22
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 2,
+"position": {
+"x": -3,
+"y": -1,
+"z": -11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": -1,
+"z": -11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 2,
+"position": {
+"x": -5,
+"y": 0,
+"z": -11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": -1,
+"z": -9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": -1,
+"z": -9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": -1,
+"z": -9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": -1,
+"z": -8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -4,
+"y": -1,
+"z": -8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 9,
+"position": {
+"x": -3,
+"y": -1,
+"z": -8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -3,
+"y": -1,
+"z": -7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": -1,
+"z": -7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": -1,
+"z": -7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": -1,
+"z": -6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": -1,
+"z": -6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -3,
+"y": -1,
+"z": -6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 7,
+"position": {
+"x": -4,
+"y": 0,
+"z": -6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -3,
+"y": -1,
+"z": -5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -4,
+"y": -1,
+"z": -5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 10,
+"position": {
+"x": -5,
+"y": -1,
+"z": -5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+
+]
+}

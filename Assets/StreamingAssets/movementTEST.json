@@ -1,0 +1,5380 @@
+{
+"metadata": "EMPTY",
+"players": {
+"red": {
+"position": {
+"x": -7,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": 0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+
+},
+"blue": {
+"position": {
+"x": -5,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": -0.7071068,
+"x": 0,
+"y": 0.7071068,
+"z": 0
+}
+}
+},
+"blocks": [
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -7,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -6,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -7,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -6,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -6,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -7,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -8,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -8,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -8,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 21
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 22
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 23
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 0,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 0,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 0,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 0,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 0,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 0,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -8,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -7,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -6,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -8,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -7,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -6,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -5,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -4,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 12
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 13
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 15
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 17
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 1,
+"z": 20
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 19
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 18
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -9,
+"y": 1,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -11,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -12,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -13,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -14,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -15,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -16,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -17,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 5
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 6
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -19,
+"y": 1,
+"z": 7
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 8
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 9
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 10
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -18,
+"y": 1,
+"z": 11
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 21
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 22
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 23
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 21
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 22
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 23
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 1,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 1,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 1,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 1,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 1,
+"z": 24
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -3,
+"y": 1,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -2,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": -1,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 0,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 1,
+"y": 1,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 2,
+"y": 1,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 3,
+"y": 1,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 4,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 5,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 6,
+"y": 1,
+"z": 28
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 27
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 0,
+"position": {
+"x": 7,
+"y": 1,
+"z": 25
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 2,
+"position": {
+"x": -2,
+"y": 1,
+"z": 26
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"block_id": 2,
+"position": {
+"x": -10,
+"y": 1,
+"z": 6
+},
+"rotation": {
+"w": 0,
+"x": 0,
+"y": 1,
+"z": 0
+}
+}
+}
+
+]
+}

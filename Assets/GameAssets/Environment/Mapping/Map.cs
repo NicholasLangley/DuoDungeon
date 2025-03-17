@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using Codice.Client.BaseCommands;
 
 public class Map
 {
@@ -116,7 +114,7 @@ public class Map
 
         Debug.Log(mapJSON);
         //save file to text
-        string filepath = Application.dataPath + "/levelsTEMP/" + filename + ".json";
+        string filepath = Application.streamingAssetsPath + "/" + filename + ".json";
 
         //overwrites file if it already exists
         File.WriteAllText(filepath, mapJSON);

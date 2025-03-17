@@ -191,4 +191,10 @@ public class PlayerController : ICommandable
         if (bluePlayer.GetCurrentBlockPosition() == destinationToCheck) { return bluePlayer; }
         return null;
     }
+
+    public void updatePlayerAim()
+    {
+        redPlayer.UpdateCameraAim(playerInputHandler.aimInput);
+        bluePlayer.UpdateCameraAim(playerInputHandler.aimInput);
+    }
 }

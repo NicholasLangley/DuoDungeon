@@ -22,7 +22,7 @@ public class MapBuilder
     public void LoadMap(string filename)
     {
         map.ClearMap();
-        string filepath = Application.dataPath + "/LevelsTEMP/" + filename;
+        string filepath = Application.streamingAssetsPath + "/" + filename;
         string mapJSON = File.ReadAllText(filepath);
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJSON);

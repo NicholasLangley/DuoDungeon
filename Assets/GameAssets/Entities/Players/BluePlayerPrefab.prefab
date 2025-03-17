@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2837533896220633769}
-  - {fileID: 7259324209497857467}
+  - {fileID: 2366937754811794750}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &721603250547316228
@@ -50,7 +50,7 @@ MonoBehaviour:
   <movementCollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 448
-  <movementLerpDuration>k__BackingField: 0.5
+  <movementLerpDuration>k__BackingField: 0.25
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
   <busy>k__BackingField: 0
@@ -62,6 +62,14 @@ MonoBehaviour:
   attackMask:
     serializedVersion: 2
     m_Bits: 192
+  _cameraBaseTransform: {fileID: 2366937754811794750}
+  _cameraTransform: {fileID: 7259324209497857467}
+  mouseSensitivityX: 0.1
+  mouseSensitivityY: 0.1
+  maxMouseAngleX: 45
+  maxMouseAngleY: 90
+  invertMouseX: 0
+  invertMouseY: 0
 --- !u!136 &1141553472760462635
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -300,12 +308,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5051804641859538124}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.79999995, z: -1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3512475195470900392}
+  m_Father: {fileID: 2366937754811794750}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3093482322959657781
 Camera:
@@ -366,3 +374,35 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5051804641859538124}
   m_Enabled: 0
+--- !u!1 &5384608409654060743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2366937754811794750}
+  m_Layer: 31
+  m_Name: BlueCameraTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2366937754811794750
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5384608409654060743}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7259324209497857467}
+  m_Father: {fileID: 3512475195470900392}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

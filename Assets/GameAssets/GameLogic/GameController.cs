@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     //Map loading
+    [SerializeField]
+    string mapFilename;
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
@@ -49,7 +52,7 @@ public class GameController : MonoBehaviour
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
-        //_enivornmentObjects = new List<EnvironmentObject>();
+        _enivornmentObjects = new List<EnvironmentObject>();
 
         takingTurn = false;
         undoingTurn = false;
@@ -58,7 +61,7 @@ public class GameController : MonoBehaviour
         previousTurns = new Stack<Turn>();
 
         //initialize map
-        LoadLevel("/saveTEST" + ".json");
+        LoadLevel("/" + mapFilename + ".json");
 
         gameSpeedMultiplier = 1.0f;
     }
@@ -66,6 +69,9 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //update player aim from mouse movement
+        playerController.updatePlayerAim();
+
         if (playerInputHandler.undoInput && !undoingTurn)
         {
             undoCommandIsBuffered = true;
@@ -121,7 +127,8 @@ public class GameController : MonoBehaviour
 
         else { checkForPlayerTakingTurn(); }
 
-
+        if (Input.GetKeyDown(KeyCode.R)) { SceneManager.LoadScene("FREE-MOVE"); }
+        else if (Input.GetKeyDown(KeyCode.G)) { SceneManager.LoadScene("GRID-MOVE"); }
     }
 
     ///////////////////

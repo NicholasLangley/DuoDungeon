@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class PlayerEntity : Entity
 {
+    [Header("Player aim")]
+    [SerializeField]
+    Transform _cameraBaseTransform;
+    [SerializeField]
+    Transform _cameraTransform;
+    [SerializeField]
+    public float mouseSensitivityX, mouseSensitivityY, maxMouseAngleX, maxMouseAngleY;
+    float currentAimXAngle, currentAimYAngle;
+    [SerializeField]
+    bool invertMouseX, invertMouseY;
+    
+
     protected override void Awake()
     {
         base.Awake();
@@ -46,5 +58,20 @@ public class PlayerEntity : Entity
     {
         //checks for falling currently
         return base.GetPassiveCommand();
+    }
+
+    public void UpdateCameraAim(Vector2 mouseMovementVector)
+    {
+        if (invertMouseX) { mouseMovementVector.x *= -1; }
+        if (invertMouseY) { mouseMovementVector.y *= -1; }
+
+        //_cameraBaseTransform.Rotate(_cameraBaseTransform.up, mouseMovementVector.x * mouseSensitivityX);
+        currentAimXAngle += mouseMovementVector.x * mouseSensitivityX;
+        currentAimXAngle = Mathf.Clamp(currentAimXAngle, -maxMouseAngleX, maxMouseAngleX);
+        _cameraBaseTransform.localRotation = Quaternion.Euler(0, currentAimXAngle, 0);
+
+        currentAimYAngle += mouseMovementVector.y * mouseSensitivityY;
+        currentAimYAngle = Mathf.Clamp(currentAimYAngle, -maxMouseAngleY, maxMouseAngleY);
+        _cameraTransform.localRotation = Quaternion.Euler(-currentAimYAngle, 0, 0);
     }
 }

@@ -12,20 +12,24 @@ public class PlayerInputHandler : MonoBehaviour
     string actionMapName;
 
     InputAction moveAction { get; set; }
+    InputAction aimAction { get; set; }
     InputAction rotateAction { get; set; }
     InputAction undoAction { get; set; }
     InputAction attackAction { get; set; }
     InputAction interactAction { get; set; }
 
     public Vector2 moveInput { get; private set; }
+    public Vector2 aimInput { get; private set; }
     public float rotateInput { get; private set; }
     public bool undoInput { get; private set; }
     public bool attackInput { get; private set; }
     public bool interactInput { get; private set; }
 
+
     void Awake()
     {
         moveAction = inputActionMap.FindActionMap(actionMapName).FindAction("Move");
+        aimAction = inputActionMap.FindActionMap(actionMapName).FindAction("Aim");
         rotateAction = inputActionMap.FindActionMap(actionMapName).FindAction("Rotate");
         undoAction = inputActionMap.FindActionMap(actionMapName).FindAction("Undo");
         attackAction = inputActionMap.FindActionMap(actionMapName).FindAction("Attack");
@@ -37,6 +41,9 @@ public class PlayerInputHandler : MonoBehaviour
     {
         moveAction.performed += context => moveInput = context.ReadValue<Vector2>();
         moveAction.canceled += context => moveInput = Vector2.zero;
+
+        aimAction.performed += context => aimInput = context.ReadValue<Vector2>();
+        aimAction.canceled += context => aimInput = Vector2.zero;
 
         rotateAction.performed += context => rotateInput = context.ReadValue<float>();
         rotateAction.canceled += context => rotateInput = 0f;
@@ -54,6 +61,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnEnable()
     {
         moveAction.Enable();
+        aimAction.Enable();
         rotateAction.Enable();
         undoAction.Enable();
         attackAction.Enable();
@@ -63,6 +71,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnDisable()
     {
         moveAction.Disable();
+        aimAction.Disable();
         rotateAction.Disable();
         undoAction.Disable();
         attackAction.Disable();

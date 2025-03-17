@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelBuilderScene.unity
     guid: b9dc551c5a3b54c43a93b77680150a39
+  - enabled: 1
+    path: Assets/AB-TEST/Scenes/FREE-MOVE.unity
+    guid: e08fb0171d8dd074b9ceedb6ccc46d9e
+  - enabled: 1
+    path: Assets/AB-TEST/Scenes/GRID-MOVE.unity
+    guid: 560792c2405add44ea87a3e8ae48cf7b
   m_configObjects: {}

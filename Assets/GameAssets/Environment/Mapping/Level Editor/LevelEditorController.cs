@@ -6,6 +6,8 @@ public class LevelEditorController : MonoBehaviour
 {
     //Map building
     [SerializeField]
+    string mapFilename;
+    [SerializeField]
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
@@ -79,13 +81,13 @@ public class LevelEditorController : MonoBehaviour
 
     public void Save()
     {
-        map.SaveMapToFile("/Autotests/FrontBackOrientationTestMap");
+        map.SaveMapToFile("/" + mapFilename);
         Debug.Log("map saved");
     }
 
     public void Load()
     {
-        mapBuilder.LoadMap("/Autotests/FrontBackOrientationTestMap" + ".json");
+        mapBuilder.LoadMap("/" + mapFilename + ".json");
         //TODO do this better
         objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
         objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
