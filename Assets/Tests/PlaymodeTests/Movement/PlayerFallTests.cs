@@ -30,6 +30,7 @@ public class PlayerFallTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
+        gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;
@@ -62,6 +63,7 @@ public class PlayerFallTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
+        gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;
@@ -94,6 +96,7 @@ public class PlayerFallTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
+        gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;
@@ -129,6 +132,7 @@ public class PlayerFallTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
+        gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;
@@ -164,6 +168,7 @@ public class PlayerFallTests : CustomInputTestFixture
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
+        gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
 
         Transform redPlayer = GameObject.Find("RedPlayerPrefab(Clone)").transform;

@@ -145,11 +145,11 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
         stateMachine.changeState(fallingState);
     }
 
-    public void GetProjectedDestinationBlockPosition(MovementDirection dir)
+    public Vector3 GetInitialNextDestinationBlock(MovementDirection dir)
     {
         Vector3 nextPos = transform.position;
 
-        switch(dir)
+        switch (dir)
         {
             case MovementDirection.FORWARD:
                 nextPos += transform.forward;
@@ -166,7 +166,14 @@ public class Entity : MonoBehaviour, IMoveable, ICommandable, IUndoable, IClimba
             default:
                 break;
         }
+        return nextPos;
+    }
+
+    public void GetProjectedDestinationBlockPosition(MovementDirection dir)
+    {
         
+        Vector3 nextPos = GetInitialNextDestinationBlock(dir);
+
         DownDirection downDir = GetCurrentDownDirection();
 
         //remove height to get logical center of current block

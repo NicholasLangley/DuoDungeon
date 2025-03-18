@@ -43,8 +43,8 @@ public class PlayerController : ICommandable
         }
 
         //rotation
-        else if (playerInputHandler.rotateInput < 0) { return RotatePlayers(-90f); }
-        else if (playerInputHandler.rotateInput > 0) { return RotatePlayers(90f); }
+        else if (playerInputHandler.rotateInput < 0 && redPlayer.getClassicDungeonCrawlerMode()) { return RotatePlayers(-90f); }
+        else if (playerInputHandler.rotateInput > 0 && redPlayer.getClassicDungeonCrawlerMode()) { return RotatePlayers(90f); }
 
         //Attack
         else if (playerInputHandler.attackInput) { return AttackWithPlayers(); }
@@ -81,29 +81,33 @@ public class PlayerController : ICommandable
     {
         List<Command> commands = new List<Command>();
 
-        MovementDirection movementDir;
+        MovementDirection initialMovementDir;
 
         //get next position for each player
         if (playerInputHandler.moveInput.y > 0)
         {
-            movementDir = MovementDirection.FORWARD;
+            initialMovementDir = MovementDirection.FORWARD;
         }
         else if (playerInputHandler.moveInput.y < 0)
         {
-            movementDir = MovementDirection.BACKWARD;
+            initialMovementDir = MovementDirection.BACKWARD;
         }
         else if (playerInputHandler.moveInput.x > 0)
         {
-            movementDir = MovementDirection.RIGHT;
+            initialMovementDir = MovementDirection.RIGHT;
         }
         else if (playerInputHandler.moveInput.x < 0)
         {
-            movementDir = MovementDirection.LEFT;
+            initialMovementDir = MovementDirection.LEFT;
         }
         else { return null; }
 
-        redPlayer.GetProjectedDestinationBlockPosition(movementDir);
-        bluePlayer.GetProjectedDestinationBlockPosition(movementDir);
+        MovementDirection redMovementDir = redPlayer.GetActualMovementDirectionBasedOnAimDirection(initialMovementDir);
+        MovementDirection blueMovementDir = bluePlayer.GetActualMovementDirectionBasedOnAimDirection(initialMovementDir);
+
+
+        redPlayer.GetProjectedDestinationBlockPosition(redMovementDir);
+        bluePlayer.GetProjectedDestinationBlockPosition(blueMovementDir);
         Vector3Int nextRedPos = redPlayer.projectedDestinationBlock;
         Vector3Int nextBluePos = bluePlayer.projectedDestinationBlock;
 
@@ -131,8 +135,8 @@ public class PlayerController : ICommandable
         Command cmdBlue;
 
         //return command based on if space is occupied or not
-        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, movementDir) : new MoveCommand(redPlayer, movementDir);
-        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, movementDir) : new MoveCommand(bluePlayer, movementDir);
+        cmdRed = redBlocked ? new MovementBlockedCommand(redPlayer, redMovementDir) : new MoveCommand(redPlayer, redMovementDir);
+        cmdBlue = blueBlocked ? new MovementBlockedCommand(bluePlayer, blueMovementDir) : new MoveCommand(bluePlayer, blueMovementDir);
 
         commands.Add(cmdRed);
         commands.Add(cmdBlue);
@@ -192,9 +196,30 @@ public class PlayerController : ICommandable
         return null;
     }
 
+    #region camera settings
     public void updatePlayerAim()
     {
         redPlayer.UpdateCameraAim(playerInputHandler.aimInput);
         bluePlayer.UpdateCameraAim(playerInputHandler.aimInput);
     }
+
+    public void setMouseSensitivity(Vector2 sense)
+    {
+        redPlayer.setMouseSensitivity(sense);
+        bluePlayer.setMouseSensitivity(sense);
+    }
+
+    public void setMouseInversion(bool xInvert, bool yInvert)
+    {
+        redPlayer.setMouseInversion(xInvert, yInvert);
+        bluePlayer.setMouseInversion(xInvert, yInvert);
+    }
+
+    public void setClassicDungeonCrawlerMode(bool modeSetting)
+    {
+        redPlayer.setClassicDungeonCrawlerMode(modeSetting);
+        bluePlayer.setClassicDungeonCrawlerMode(modeSetting);
+    }
+
+    #endregion
 }

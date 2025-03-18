@@ -134,6 +134,7 @@ public class GameController : MonoBehaviour
     ///////////////////
     ///Level Loading///
     ///////////////////
+    #region Level Loading
     public void LoadLevel(string filename)
     {
         if (map != null) { map.ClearMap(); }
@@ -148,12 +149,12 @@ public class GameController : MonoBehaviour
         playerController.SpawnPlayers(map);
 
     }
-    
+    #endregion
 
     /////////////////
     //Taking Turn ///
     ////////////////
-    
+    #region Taking Turn
     //StartTurn on player input
     void checkForPlayerTakingTurn()
     {
@@ -251,10 +252,12 @@ public class GameController : MonoBehaviour
 
         return foundCommands;
     }
+    #endregion
 
     /////////////////
     /// Undo Turn ///
     /////////////////
+    #region Undo Turn
     void BeginUndoingTurn()
     {
         if (previousTurns.Count > 0)
@@ -301,11 +304,13 @@ public class GameController : MonoBehaviour
         UnsetEntitiesFromUndo();
         undoingTurn = false;
     }
+    #endregion
 
 
     ////////////////////////
     /// Helper Functions ///
     ////////////////////////
+    #region Helper Functions
     bool checkForBusyEntities()
     {
         if (playerController.CheckIfBusy() == true) { return true; }
@@ -341,4 +346,15 @@ public class GameController : MonoBehaviour
         gameSpeedMultiplier = m;
         Time.timeScale *= gameSpeedMultiplier;
     }
+    #endregion
+
+
+    #region temporary?
+
+    public void SetPlayerClassicDungeonCrawlerMode(bool mode)
+    {
+        playerController.setClassicDungeonCrawlerMode(mode);
+    }
+
+    #endregion
 }
