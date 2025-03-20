@@ -102,8 +102,8 @@ public class PlayerController : ICommandable
         }
         else { return null; }
 
-        MovementDirection redMovementDir = redPlayer.GetActualMovementDirectionBasedOnAimDirection(initialMovementDir);
-        MovementDirection blueMovementDir = bluePlayer.GetActualMovementDirectionBasedOnAimDirection(initialMovementDir);
+        MovementDirection redMovementDir = redPlayer.GetFinalMovementDirection(initialMovementDir);
+        MovementDirection blueMovementDir = bluePlayer.GetFinalMovementDirection(initialMovementDir);
 
 
         redPlayer.GetProjectedDestinationBlockPosition(redMovementDir);

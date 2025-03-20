@@ -60,7 +60,7 @@ public class Block : MonoBehaviour
     }
 
     //entering from same level as block
-    public bool canEntityEnter(Entity e)
+    public bool canEntityEnter(FullGridMoveable e)
     {
         if (blocksAllMovement) { return false; }
 

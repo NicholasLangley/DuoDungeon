@@ -36,7 +36,7 @@ public class PlayerEntity : Entity
         base.Update();
     }*/
     //playerEntity ovverides this to account for direction being faced (non classic dungeoncrawler mode)
-    public MovementDirection GetActualMovementDirectionBasedOnAimDirection(MovementDirection dir)
+    public override MovementDirection GetFinalMovementDirection(MovementDirection dir)
     {
         if (classicDungeonCrawlerControlsEnabled) { return dir; }
 
