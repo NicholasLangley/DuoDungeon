@@ -9,7 +9,7 @@ public class EntityFallingState : EntityState
     Vector3 startPos;
     Vector3 fallDestination;
 
-    public EntityFallingState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityFallingState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
         
     }

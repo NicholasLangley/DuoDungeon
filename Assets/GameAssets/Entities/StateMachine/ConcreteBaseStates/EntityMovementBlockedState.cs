@@ -8,7 +8,7 @@ public class EntityMovementBlockedState : EntityState
     Vector3 srcPosition;
     Vector3 bumpDest;
 
-    public EntityMovementBlockedState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityMovementBlockedState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
     }
 

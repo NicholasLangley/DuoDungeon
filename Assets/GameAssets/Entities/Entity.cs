@@ -36,7 +36,7 @@ public class Entity : FullGridMoveable, IDamageable
     protected override void Awake()
     {
         #region Create State Machine and states
-        stateMachine = new EntityStateMachine();
+        stateMachine = new StateMachine();
 
         idleState = new EntityIdleState(this, stateMachine);
         movementState = new EntityMovementState(this, stateMachine);
@@ -50,7 +50,7 @@ public class Entity : FullGridMoveable, IDamageable
     }
 
     // Start is called before the first frame update
-    protected void Start()
+    protected override void Start()
     {
         //ICommandable
         busy = false;

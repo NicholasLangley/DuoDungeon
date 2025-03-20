@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntityIdleState : EntityState
 {
-    public EntityIdleState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityIdleState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
 
     }

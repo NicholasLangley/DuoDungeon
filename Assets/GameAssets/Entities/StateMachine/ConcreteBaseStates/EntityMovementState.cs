@@ -13,7 +13,7 @@ public class EntityMovementState : EntityState
     float movementLerpTimer;
 
     bool inSrcBlock;
-    public EntityMovementState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityMovementState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
     }
 

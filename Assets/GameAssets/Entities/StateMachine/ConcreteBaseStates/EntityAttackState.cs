@@ -7,7 +7,7 @@ public class EntityAttackState : EntityState
     float attackTimer, attackDuration;
     Vector3 srcPosition;
 
-    public EntityAttackState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityAttackState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
     }
 

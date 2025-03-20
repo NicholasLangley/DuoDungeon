@@ -9,7 +9,7 @@ public class EntityRotationState : EntityState
     Quaternion destinationRotation;
 
 
-    public EntityRotationState(Entity entity, EntityStateMachine stateMachine) : base(entity, stateMachine)
+    public EntityRotationState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
     {
     }
 

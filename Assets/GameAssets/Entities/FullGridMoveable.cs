@@ -50,7 +50,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
     #region State Machine
 
-    public EntityStateMachine stateMachine;
+    public StateMachine stateMachine;
 
     public EntityIdleState idleState;
     public EntityMovementState movementState;
@@ -63,7 +63,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     ///////////////////////////////////////////////
     // Start is called before the first frame update
     protected abstract void Awake();
-
+    protected abstract void Start();
     // Update is called once per frame
     protected virtual void Update()
     {
