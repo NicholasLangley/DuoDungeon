@@ -42,7 +42,9 @@ public class GameController : MonoBehaviour
     List<Entity> _enemies;
 
     [SerializeField]
-    List<StaticEnvironmentObject> _enivornmentObjects;
+    List<StaticEnvironmentObject> _staticEnvironmentObjects;
+    [SerializeField]
+    List<Pushable> _pushableObjects;
 
     float gameSpeedMultiplier { get; set; } //multiplies all game speeds for testing purposes
 
@@ -54,7 +56,10 @@ public class GameController : MonoBehaviour
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
-        _enivornmentObjects = new List<StaticEnvironmentObject>();
+        _staticEnvironmentObjects = new List<StaticEnvironmentObject>();
+        //_moveableEnvironmentObjects = new List<FullGridMoveable>();
+
+        
 
         takingTurn = false;
         undoingTurn = false;
@@ -64,6 +69,13 @@ public class GameController : MonoBehaviour
 
         //initialize map
         LoadLevel("/" + mapFilename + ".json");
+
+        //TEMP FOR TESTING, eventually these will be loaded properly//
+        foreach (FullGridMoveable fgm in _pushableObjects)
+        {
+            fgm.map = map;
+            fgm.gameController = this;
+        }
 
         gameSpeedMultiplier = 1.0f;
     }
@@ -175,6 +187,7 @@ public class GameController : MonoBehaviour
             currentTurn.AddCommand(cmd);
         }
 
+        ExecutePlayerInteractedObjectsCommands();
         enemiesTakeTurn();
     }
 
@@ -192,12 +205,30 @@ public class GameController : MonoBehaviour
         }
     }
 
+    //anything the player interacts with during their action
+    //such as apushing an object or interacting with a switch
+    void ExecutePlayerInteractedObjectsCommands()
+    {
+        List<Command> interactionCommands = new List<Command>();
+
+        foreach (Pushable pushable in _pushableObjects)
+        {
+            Command cmd = pushable.GetCommand();
+            if (cmd != null)
+            {
+                cmd.Execute();
+                currentTurn.AddCommand(cmd);
+            }
+        }
+    }
+
+
     //environmental active triggers such as traps
     List<Command> ActiveEnvironmentalTurn()
     {
         List<Command> triggeredCommands = new List<Command>();
 
-        foreach (StaticEnvironmentObject environmentObject in _enivornmentObjects)
+        foreach (StaticEnvironmentObject environmentObject in _staticEnvironmentObjects)
         {
             Command cmd = environmentObject.GetCommand();
             if (cmd != null)
@@ -239,7 +270,21 @@ public class GameController : MonoBehaviour
             }
         }
 
-        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
+        //pushables
+        foreach (Pushable pushable in _pushableObjects)
+        {
+            if (!pushable.busy)
+            {
+                Command cmd = pushable.GetPassiveCommand();
+                if (cmd != null)
+                {
+                    cmd.Execute();
+                    foundCommands.Add(cmd);
+                }
+            }
+        }
+
+        foreach (StaticEnvironmentObject envObj in _staticEnvironmentObjects)
         {
             if (!envObj.busy)
             {
@@ -281,7 +326,12 @@ public class GameController : MonoBehaviour
             enemy.currentlyUndoing = true;
         }
 
-        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
+        foreach (Pushable pushable in _pushableObjects)
+        {
+            pushable.currentlyUndoing = true;
+        }
+
+        foreach (StaticEnvironmentObject envObj in _staticEnvironmentObjects)
         {
             envObj.currentlyUndoing = true;
         }
@@ -295,7 +345,13 @@ public class GameController : MonoBehaviour
         {
             enemy.currentlyUndoing = false;
         }
-        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
+
+        foreach (Pushable pushable in _pushableObjects)
+        {
+            pushable.currentlyUndoing = false;
+        }
+
+        foreach (StaticEnvironmentObject envObj in _staticEnvironmentObjects)
         {
             envObj.currentlyUndoing = false;
         }
@@ -320,14 +376,14 @@ public class GameController : MonoBehaviour
         {
             if (enemy.busy == true) { return true; }
         }
-        foreach (StaticEnvironmentObject environmentObject in _enivornmentObjects)
+        foreach (StaticEnvironmentObject environmentObject in _staticEnvironmentObjects)
         {
             if (environmentObject.busy == true) { return true; }
         }
         return false;
     }
 
-    public Entity GetEntityAtPosition(Vector3Int destinationToCheck)
+    public FullGridMoveable GetFGMAtPosition(Vector3Int destinationToCheck)
     {
         //check players
         Entity playerEntity = playerController.GetPlayerAtPosition(destinationToCheck);
@@ -337,6 +393,11 @@ public class GameController : MonoBehaviour
         foreach(Entity enemy in _enemies)
         {
             if (enemy.GetCurrentBlockPosition() == destinationToCheck) { return enemy; }
+        }
+
+        foreach (FullGridMoveable fgm in _pushableObjects)
+        {
+            if (fgm.GetCurrentBlockPosition() == destinationToCheck) { return fgm; }
         }
 
         return null;

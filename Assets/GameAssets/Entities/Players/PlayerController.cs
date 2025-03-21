@@ -7,18 +7,20 @@ public class PlayerController : ICommandable
     PlayerEntity redPlayer;
     PlayerEntity bluePlayer;
     PlayerInputHandler playerInputHandler;
+    GameController gameController;
 
     public bool busy { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    public PlayerController(PlayerEntity red, PlayerEntity blue, PlayerInputHandler inputHandler, GameController gameController)
+    public PlayerController(PlayerEntity red, PlayerEntity blue, PlayerInputHandler inputHandler, GameController gc)
     {
         redPlayer = red;
-        redPlayer.gameController = gameController;
+        redPlayer.gameController = gc;
 
         bluePlayer = blue;
-        bluePlayer.gameController = gameController;
+        bluePlayer.gameController = gc;
 
         playerInputHandler = inputHandler;
+        gameController = gc;
     }
 
     public void SpawnPlayers(Map map)
@@ -115,8 +117,27 @@ public class PlayerController : ICommandable
         bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
         bool blueBlocked = bluePlayer.IsDestinationOccupied(nextBluePos);
 
-        //Debug.Log("nextBluePos: " + nextBluePos);
-        //Debug.Log("nextRedPos: " + nextRedPos);
+        //check if blocking object is a pushable object
+        if (redBlocked)
+        {
+            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextRedPos);
+            if (blockingFGM != null && blockingFGM is Pushable) 
+            {
+                Pushable pushable = blockingFGM as Pushable;
+                bool pushing = pushable.AttemptPush(redPlayer.transform);
+                if (pushing) { redBlocked = false; }
+            }
+        }
+        if(blueBlocked)
+        {
+            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextBluePos);
+            if (blockingFGM != null && blockingFGM is Pushable)
+            {
+                Pushable pushable = blockingFGM as Pushable;
+                bool pushing = pushable.AttemptPush(bluePlayer.transform);
+                if (pushing) { blueBlocked = false; }
+            }
+        }
 
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
         if (redBlocked && !blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())

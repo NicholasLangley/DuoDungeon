@@ -52,20 +52,10 @@ public class Entity : FullGridMoveable, IDamageable
     // Start is called before the first frame update
     protected override void Start()
     {
-        //ICommandable
-        busy = false;
-
-        //IUndoable
-        currentlyUndoing = false;
+        base.Start();
 
         //IDamageable
         currentHealth = maxHealth;
-
-        #region Initialize State Machine
-
-        stateMachine.Initialize(idleState);
-
-        #endregion
     }
 
     // Update is called once per frame

@@ -63,7 +63,20 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     ///////////////////////////////////////////////
     // Start is called before the first frame update
     protected abstract void Awake();
-    protected abstract void Start();
+    protected virtual void Start()
+    {
+        //ICommandable
+        busy = false;
+
+        //IUndoable
+        currentlyUndoing = false;
+
+        #region Initialize State Machine
+
+        stateMachine.Initialize(idleState);
+
+        #endregion
+    }
     // Update is called once per frame
     protected virtual void Update()
     {
@@ -259,8 +272,8 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check for entities
-        Entity blockingEntity = gameController.GetEntityAtPosition(destinationToCheck);
-        if (blockingEntity != null) { return true; }
+        FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(destinationToCheck);
+        if (blockingFGM != null) { return true; }
         return false;
     }
 
