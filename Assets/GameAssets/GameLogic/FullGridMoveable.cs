@@ -52,11 +52,11 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
     public StateMachine stateMachine;
 
-    public EntityIdleState idleState;
-    public EntityMovementState movementState;
-    public EntityMovementBlockedState movementBlockedState;
-    public EntityRotationState rotationState;
-    public EntityFallingState fallingState;
+    public State idleState;
+    public State movementState;
+    public State movementBlockedState;
+    public State rotationState;
+    public State fallingState;
 
     #endregion
 

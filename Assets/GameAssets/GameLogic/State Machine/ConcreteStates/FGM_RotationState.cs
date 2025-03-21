@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityRotationState : EntityState
+public class FGM_RotationState : FullGridMoveableState
 {
     float rotationLerpTimer;
     Quaternion startingRotation;
     Quaternion destinationRotation;
 
 
-    public EntityRotationState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
+    public FGM_RotationState(FullGridMoveable fgm, StateMachine stateMachine) : base(fgm, stateMachine)
     {
     }
 
@@ -20,12 +20,12 @@ public class EntityRotationState : EntityState
 
     public override void EnterState()
     {
-        _entity.busy = true;
+        _fgm.busy = true;
 
         rotationLerpTimer = 0;
 
-        startingRotation = _entity.transform.rotation;
-        destinationRotation = Quaternion.Euler(startingRotation.eulerAngles.x, startingRotation.eulerAngles.y + _entity.degreesToRotate, startingRotation.eulerAngles.z);
+        startingRotation = _fgm.transform.rotation;
+        destinationRotation = Quaternion.Euler(startingRotation.eulerAngles.x, startingRotation.eulerAngles.y + _fgm.degreesToRotate, startingRotation.eulerAngles.z);
     }
 
     public override void ExitState()
@@ -51,8 +51,8 @@ public class EntityRotationState : EntityState
     public void Rotate()
     {
         rotationLerpTimer += Time.deltaTime;
-        _entity.transform.rotation = Quaternion.Lerp(startingRotation, destinationRotation, rotationLerpTimer / _entity.movementLerpDuration);
+        _fgm.transform.rotation = Quaternion.Lerp(startingRotation, destinationRotation, rotationLerpTimer / _fgm.movementLerpDuration);
 
-        if (rotationLerpTimer >= _entity.movementLerpDuration) { _stateMachine.changeState(_entity.idleState); }
+        if (rotationLerpTimer >= _fgm.movementLerpDuration) { _stateMachine.changeState(_fgm.idleState); }
     }
 }

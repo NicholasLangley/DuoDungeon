@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityMovementBlockedState : EntityState
+public class FGM_MovementBlockedState : FullGridMoveableState
 {
     float movementLerpTimer = 0;
     Vector3 srcPosition;
     Vector3 bumpDest;
 
-    public EntityMovementBlockedState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
+    public FGM_MovementBlockedState(FullGridMoveable fgm, StateMachine stateMachine) : base(fgm, stateMachine)
     {
     }
 
@@ -20,29 +20,29 @@ public class EntityMovementBlockedState : EntityState
     public override void EnterState()
     {
         movementLerpTimer = 0;
-        srcPosition = _entity.transform.position;
-        _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
-        Vector3 attemptedDestination = _entity.projectedDestinationBlock;
+        srcPosition = _fgm.transform.position;
+        _fgm.GetProjectedDestinationBlockPosition(_fgm.movementDirection);
+        Vector3 attemptedDestination = _fgm.projectedDestinationBlock;
         bumpDest = Vector3.Lerp(srcPosition, attemptedDestination, 0.5f);
 
         //modify dest height to match edge of srcblock
-        DownDirection downDir = _entity.GetCurrentDownDirection();
-        Block srcBlock = _entity.map.GetCurrentlyOccupiedBlock(_entity.transform.position, _entity.GetCurrentDownDirection());
+        DownDirection downDir = _fgm.GetCurrentDownDirection();
+        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.transform.position, _fgm.GetCurrentDownDirection());
         if (srcBlock != null) 
         {
             switch (downDir)
             {
                 case DownDirection.Ydown:
                 case DownDirection.Yup:
-                    bumpDest.y = srcBlock.transform.position.y + _entity.transform.up.y * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    bumpDest.y = srcBlock.transform.position.y + _fgm.transform.up.y * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Xleft:
                 case DownDirection.Xright:
-                    bumpDest.x = srcBlock.transform.position.x + _entity.transform.up.x * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    bumpDest.x = srcBlock.transform.position.x + _fgm.transform.up.x * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Zforward:
                 case DownDirection.Zback:
-                    bumpDest.z = srcBlock.transform.position.z + _entity.transform.up.z * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _entity.transform.up, _entity.GetCurrentDownDirection());
+                    bumpDest.z = srcBlock.transform.position.z + _fgm.transform.up.z * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
             }
              
@@ -66,7 +66,7 @@ public class EntityMovementBlockedState : EntityState
             } 
         }
 
-        _entity.busy = true;
+        _fgm.busy = true;
     }
 
     public override void ExitState()
@@ -94,17 +94,17 @@ public class EntityMovementBlockedState : EntityState
         movementLerpTimer += Time.deltaTime;
         Vector3 movePos;
         //move towards obstacle
-        if (movementLerpTimer <= 0.5f * _entity.movementLerpDuration)
+        if (movementLerpTimer <= 0.5f * _fgm.movementLerpDuration)
         {
-             movePos = Vector3.Lerp(srcPosition, bumpDest, movementLerpTimer / _entity.movementLerpDuration);
+             movePos = Vector3.Lerp(srcPosition, bumpDest, movementLerpTimer / _fgm.movementLerpDuration);
         }
         else
         {
-            movePos = Vector3.Lerp(bumpDest, srcPosition, movementLerpTimer / _entity.movementLerpDuration);
+            movePos = Vector3.Lerp(bumpDest, srcPosition, movementLerpTimer / _fgm.movementLerpDuration);
         }
-        
-        _entity.transform.position = movePos;
 
-        if (movementLerpTimer >= _entity.movementLerpDuration) { _stateMachine.changeState(_entity.idleState); }
+        _fgm.transform.position = movePos;
+
+        if (movementLerpTimer >= _fgm.movementLerpDuration) { _stateMachine.changeState(_fgm.idleState); }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickup : EnvironmentObject
+public class Pickup : StaticEnvironmentObject
 {
     bool currentlyColliding, isActive;
     PlayerEntity player;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityMovementState : EntityState
+public class FGM_MovementState : FullGridMoveableState
 {
     Vector3 srcPosition;
     Vector3 destPosition;
@@ -13,7 +13,7 @@ public class EntityMovementState : EntityState
     float movementLerpTimer;
 
     bool inSrcBlock;
-    public EntityMovementState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
+    public FGM_MovementState(FullGridMoveable fgm, StateMachine stateMachine) : base(fgm, stateMachine)
     {
     }
 
@@ -26,30 +26,30 @@ public class EntityMovementState : EntityState
     {
         inSrcBlock = true;
         movementLerpTimer = 0;
-        _entity.busy = true;
+        _fgm.busy = true;
  
-        srcPosition = _entity.transform.position;
+        srcPosition = _fgm.transform.position;
         //projected grid position, need to add block height if a block occupies the position
-        _entity.GetProjectedDestinationBlockPosition(_entity.movementDirection);
-        destPosition = _entity.projectedDestinationBlock;
+        _fgm.GetProjectedDestinationBlockPosition(_fgm.movementDirection);
+        destPosition = _fgm.projectedDestinationBlock;
 
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
-        Block srcBlock = _entity.map.GetCurrentlyOccupiedBlock(_entity.transform.position, _entity.GetCurrentDownDirection());
-        Block destBlock = _entity.map.GetBlock(destPosition);
+        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.transform.position, _fgm.GetCurrentDownDirection());
+        Block destBlock = _fgm.map.GetBlock(destPosition);
         //if (destBlock == null) { Debug.Log(destPosition); }
 
-        DownDirection downDir = _entity.GetCurrentDownDirection();
+        DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        float srcBlockExitHeight = srcBlock != null ? srcBlock.CalculateAttemptedExitEdgeHeight(destPosition, _entity.transform.up, downDir) : 0;
-        float destBlockEnterHeight = destBlock != null ? destBlock.CalculateAttemptedEntryEdgeHeight(_entity.transform, downDir) : 0;
+        float srcBlockExitHeight = srcBlock != null ? srcBlock.CalculateAttemptedExitEdgeHeight(destPosition, _fgm.transform.up, downDir) : 0;
+        float destBlockEnterHeight = destBlock != null ? destBlock.CalculateAttemptedEntryEdgeHeight(_fgm.transform, downDir) : 0;
 
         //function doesnt care about height differences
         if (srcBlock != null) 
         {
             //if entity is not grounded it was undoing from a fall, so there is no ground to enter(into)
-            if (_entity.isEntityGrounded()) 
+            if (_fgm.isEntityGrounded()) 
             {
                 switch (downDir)
                 {
@@ -113,9 +113,9 @@ public class EntityMovementState : EntityState
         }
 
         //If moving into a partial block and able to climb down (not fall)
-        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(_entity.transform.position, downDir))) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.transform.position, downDir))) <= _entity.maxStairClimbHeight)
+        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(_fgm.transform.position, downDir))) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.transform.position, downDir))) <= _fgm.maxStairClimbHeight)
         {
-            float destBlockHeight = destBlock.GetMidBlockHeight(-_entity.transform.up);
+            float destBlockHeight = destBlock.GetMidBlockHeight(-_fgm.transform.up);
             Debug.Log("climbdown within partial: " + destBlockHeight);
             switch (downDir)
             {
@@ -162,9 +162,9 @@ public class EntityMovementState : EntityState
             if (destBlock == null)
             {
                 Vector3 belowDestPos = destPosition;
-                belowDestPos -= _entity.transform.up;
-                Block belowDestBlock = _entity.map.GetBlock(belowDestPos);
-                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_entity.transform.up) == 1.0f) 
+                belowDestPos -= _fgm.transform.up;
+                Block belowDestBlock = _fgm.map.GetBlock(belowDestPos);
+                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_fgm.transform.up) == 1.0f) 
                 {
                     switch (downDir)
                     {
@@ -220,17 +220,17 @@ public class EntityMovementState : EntityState
         //leaving src block
         if(inSrcBlock)
         {
-            movePos = Vector3.Lerp(srcPosition, halfwayPosition, movementLerpTimer / (_entity.movementLerpDuration / 2.0f)); 
+            movePos = Vector3.Lerp(srcPosition, halfwayPosition, movementLerpTimer / (_fgm.movementLerpDuration / 2.0f)); 
         }
         //entering destBlock
         else 
         {
-            movePos = Vector3.Lerp(halfwayPosition, destPosition, movementLerpTimer / (_entity.movementLerpDuration / 2.0f));
+            movePos = Vector3.Lerp(halfwayPosition, destPosition, movementLerpTimer / (_fgm.movementLerpDuration / 2.0f));
         }
 
-        _entity.transform.position = movePos;
+        _fgm.transform.position = movePos;
 
-        if (movementLerpTimer >= _entity.movementLerpDuration/ 2.0f ) 
+        if (movementLerpTimer >= _fgm.movementLerpDuration/ 2.0f ) 
         { 
             if(inSrcBlock)
             {
@@ -238,7 +238,7 @@ public class EntityMovementState : EntityState
                 inSrcBlock = false;
                 return;
             }
-            _stateMachine.changeState(_entity.idleState); 
+            _stateMachine.changeState(_fgm.idleState); 
         }
     }
 }

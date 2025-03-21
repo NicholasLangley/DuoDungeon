@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
     List<Entity> _enemies;
 
     [SerializeField]
-    List<EnvironmentObject> _enivornmentObjects;
+    List<StaticEnvironmentObject> _enivornmentObjects;
 
     float gameSpeedMultiplier { get; set; } //multiplies all game speeds for testing purposes
 
@@ -54,7 +54,7 @@ public class GameController : MonoBehaviour
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
-        _enivornmentObjects = new List<EnvironmentObject>();
+        _enivornmentObjects = new List<StaticEnvironmentObject>();
 
         takingTurn = false;
         undoingTurn = false;
@@ -197,7 +197,7 @@ public class GameController : MonoBehaviour
     {
         List<Command> triggeredCommands = new List<Command>();
 
-        foreach (EnvironmentObject environmentObject in _enivornmentObjects)
+        foreach (StaticEnvironmentObject environmentObject in _enivornmentObjects)
         {
             Command cmd = environmentObject.GetCommand();
             if (cmd != null)
@@ -239,7 +239,7 @@ public class GameController : MonoBehaviour
             }
         }
 
-        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
         {
             if (!envObj.busy)
             {
@@ -281,7 +281,7 @@ public class GameController : MonoBehaviour
             enemy.currentlyUndoing = true;
         }
 
-        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
         {
             envObj.currentlyUndoing = true;
         }
@@ -295,7 +295,7 @@ public class GameController : MonoBehaviour
         {
             enemy.currentlyUndoing = false;
         }
-        foreach (EnvironmentObject envObj in _enivornmentObjects)
+        foreach (StaticEnvironmentObject envObj in _enivornmentObjects)
         {
             envObj.currentlyUndoing = false;
         }
@@ -320,7 +320,7 @@ public class GameController : MonoBehaviour
         {
             if (enemy.busy == true) { return true; }
         }
-        foreach (EnvironmentObject environmentObject in _enivornmentObjects)
+        foreach (StaticEnvironmentObject environmentObject in _enivornmentObjects)
         {
             if (environmentObject.busy == true) { return true; }
         }

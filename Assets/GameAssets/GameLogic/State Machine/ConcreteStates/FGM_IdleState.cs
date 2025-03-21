@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityIdleState : EntityState
+public class FGM_IdleState : FullGridMoveableState
 {
-    public EntityIdleState(Entity entity, StateMachine stateMachine) : base(entity, stateMachine)
+    public FGM_IdleState(FullGridMoveable fgm, StateMachine stateMachine) : base(fgm, stateMachine)
     {
 
     }
@@ -16,8 +16,8 @@ public class EntityIdleState : EntityState
 
     public override void EnterState()
     {
-        _entity.busy = false;
-        _entity.projectedDestinationBlock = Map.GetIntVector3(_entity.transform.position);
+        _fgm.busy = false;
+        _fgm.projectedDestinationBlock = Map.GetIntVector3(_fgm.transform.position);
     }
 
     public override void ExitState()

@@ -2,48 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pushable : EnvironmentObject, IMoveable
+public class Pushable : FullGridMoveable
 {
-    public Map map { get; set; }
-    public GameController gameController { get; set; }
 
-    #region IMoveable Variables
-    //IMoveable variables
-    public MovementDirection movementDirection { get; set; }
-
-    [field: SerializeField] public LayerMask movementCollisionMask { get; set; }
-
-    [field: SerializeField] public float movementLerpDuration { get; set; }
-
-    [field: SerializeField] public bool affectedByGravity { get; set; }
-    [field: SerializeField] public float fallLerpDuration { get; set; }
-
-    public Vector3 fallSrcPosition { get; set; }
-
-    public float degreesToRotate { get; set; }
-
-    public Vector3Int projectedDestinationBlock { get; set; }
-
-    public Vector3Int GetCurrentBlockPosition()
+    protected override void Awake()
     {
-        Vector3 currentVec3 = transform.position;
-        currentVec3.y = Mathf.FloorToInt(currentVec3.y);
-        return Map.GetIntVector3(currentVec3);
+        #region Create State Machine and states
+        stateMachine = new StateMachine();
+
+        idleState = new FGM_IdleState(this, stateMachine);
+        movementState = new FGM_MovementState(this, stateMachine);
+        movementBlockedState = new FGM_MovementBlockedState(this, stateMachine);
+        rotationState = new FGM_RotationState(this, stateMachine);
+        fallingState = new FGM_FallingState(this, stateMachine);
+        //unique entities may override this
+        #endregion
     }
-    #endregion
-
-
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
         
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        
+        base.Update();
     }
 
     #region Movement

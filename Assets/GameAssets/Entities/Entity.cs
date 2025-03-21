@@ -38,11 +38,11 @@ public class Entity : FullGridMoveable, IDamageable
         #region Create State Machine and states
         stateMachine = new StateMachine();
 
-        idleState = new EntityIdleState(this, stateMachine);
-        movementState = new EntityMovementState(this, stateMachine);
-        movementBlockedState = new EntityMovementBlockedState(this, stateMachine);
-        rotationState = new EntityRotationState(this, stateMachine);
-        fallingState = new EntityFallingState(this, stateMachine);
+        idleState = new FGM_IdleState(this, stateMachine);
+        movementState = new FGM_MovementState(this, stateMachine);
+        movementBlockedState = new FGM_MovementBlockedState(this, stateMachine);
+        rotationState = new FGM_RotationState(this, stateMachine);
+        fallingState = new FGM_FallingState(this, stateMachine);
         //unique entities may override this
         attackState = new EntityAttackState(this, stateMachine);
 
@@ -69,9 +69,9 @@ public class Entity : FullGridMoveable, IDamageable
     }
 
     // Update is called once per frame
-    protected void Update()
+    protected override void Update()
     {
-        stateMachine.currentState.StateUpdate();
+        base.Update();
     }
 
 

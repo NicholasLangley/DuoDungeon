@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnvironmentObject : MonoBehaviour, ICommandable, IUndoable
+//any environment object that doesn't need in depth movement
+//If the object is going to be moving on the full grid frrequently such as a pushable, use the FullGridMoveable class
+public abstract class StaticEnvironmentObject : MonoBehaviour, ICommandable, IUndoable
 {
     #region ICommandable variables
     //ICommandable variables
@@ -17,13 +19,13 @@ public abstract class EnvironmentObject : MonoBehaviour, ICommandable, IUndoable
     #endregion
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         
     }
