@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
         playerController = new PlayerController(Instantiate(redPlayerPrefab), Instantiate(bluePlayerPrefab), playerInputHandler, this);
 
         _enemies = new List<Entity>();
-        _staticEnvironmentObjects = new List<StaticEnvironmentObject>();
+        //_staticEnvironmentObjects = new List<StaticEnvironmentObject>();
         //_moveableEnvironmentObjects = new List<FullGridMoveable>();
 
         
@@ -375,6 +375,10 @@ public class GameController : MonoBehaviour
         foreach (Entity enemy in _enemies)
         {
             if (enemy.busy == true) { return true; }
+        }
+        foreach(Pushable pushable in _pushableObjects)
+        {
+            if (pushable.busy == true) { return true; }
         }
         foreach (StaticEnvironmentObject environmentObject in _staticEnvironmentObjects)
         {
