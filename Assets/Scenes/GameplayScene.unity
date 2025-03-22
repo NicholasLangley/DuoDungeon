@@ -444,9 +444,9 @@ MonoBehaviour:
   <movementCollisionMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 0
-  <movementLerpDuration>k__BackingField: 0.1
+  <movementLerpDuration>k__BackingField: 0.25
   <affectedByGravity>k__BackingField: 1
-  <fallLerpDuration>k__BackingField: 0.1
+  <fallLerpDuration>k__BackingField: 0.25
   <maxStairClimbHeight>k__BackingField: 0
   <busy>k__BackingField: 0
   toBePushedThisRound: 0

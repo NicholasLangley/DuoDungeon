@@ -31,10 +31,10 @@ public abstract class StaticEnvironmentObject : MonoBehaviour, ICommandable, IUn
     }
 
     #region Commands
-    //Active decisions by the entity such as to move or attack
+    //Active decisions by the object such as to move or attack
     public abstract Command GetCommand();
 
-    //commands that arise from the enemies current environment (sliding on ice, or falling in a hole for example)
+    //commands that arise from the objects current environment (sensing an entity for example)
     public abstract Command GetPassiveCommand();
 
     public List<Command> GetCommands() { return null; }
