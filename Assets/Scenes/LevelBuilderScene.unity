@@ -1696,6 +1696,7 @@ MonoBehaviour:
   isRotating: 0
   redPlayerModelPrefab: {fileID: 7555648649791987720, guid: eb96a80f52578234a9e2248a9b716e39, type: 3}
   bluePlayerModelPrefab: {fileID: 3410266864738606001, guid: 21a2ec40c7eb6ad4385463b0c7328910, type: 3}
+  placementArrow: {fileID: 3248029786735157320, guid: 4f3fad61b73f1c748b5da6eabfdd97f7, type: 3}
   redPlayerPlacementIndicator: {fileID: 0}
   bluePlayerPlacementIndicator: {fileID: 0}
   blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
