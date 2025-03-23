@@ -22,7 +22,7 @@ public class ObjectPlacer : MonoBehaviour
     Vector3 intersectionPos;
 
     [SerializeField]
-    GameObject redPlayerModelPrefab, bluePlayerModelPrefab;
+    GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
     public GameObject redPlayerPlacementIndicator, bluePlayerPlacementIndicator;
 
     public enum objectType {none, block, redPlayer, bluePlayer, entity, environmentalEntity }
@@ -31,6 +31,7 @@ public class ObjectPlacer : MonoBehaviour
     [SerializeField]
     BlockList blockList;
 
+    GameObject placementIndicatorArrow;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +47,7 @@ public class ObjectPlacer : MonoBehaviour
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
         intersectionPos = Vector3.negativeInfinity;
+        placementIndicatorArrow = Instantiate(placementArrow);
     }
 
     // Update is called once per frame
@@ -105,6 +107,8 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementIndicator = Instantiate(obj);
         objectPlacementIndicator.name = "Object Placement Indicator";
         objectPlacementIndicator.gameObject.AddComponent<GridLines>();
+
+        placementIndicatorArrow.transform.SetParent(objectPlacementIndicator.transform, false);
     }
 
     public Command PlaceCurrentObject()
@@ -244,11 +248,11 @@ public class ObjectPlacer : MonoBehaviour
                 rotationAmount = -90f;
                 break;
 
-            case RotationDirection.RIGHTROLL:
+            case RotationDirection.LEFTROLL:
                 rotationAxis = Vector3.forward;
                 break;
 
-            default: //LEFTROLL
+            default: //RIGHTROLL
                 rotationAxis = Vector3.forward;
                 rotationAmount = -90f;
                 break;
