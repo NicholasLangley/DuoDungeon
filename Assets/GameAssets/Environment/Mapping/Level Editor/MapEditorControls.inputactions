@@ -363,7 +363,7 @@
                 {
                     "name": "down",
                     "id": "9278480a-ca07-46c7-8a38-75e3021becff",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -259,7 +259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MidBlockHeight: 0.375
+  baseID: Quarter Stair - Low
+  varientID: blank
   forwardEdgeHeight: 0.375
   backwardEdgeHeight: 0.375
   rightEdgeHeight: 0.25

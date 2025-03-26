@@ -96,12 +96,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MidBlockHeight: 0
+  baseID: basicSphere
+  varientID: blank
   forwardEdgeHeight: 0
   backwardEdgeHeight: 0
   rightEdgeHeight: 0
   leftEdgeHeight: 0
   topSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -110,8 +113,9 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   leftSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -120,8 +124,9 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   rightSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -130,8 +135,9 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   bottomSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -140,8 +146,9 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   frontSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -150,8 +157,9 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   backSide:
+    type: 1
+    centerHeight: 0
     forwardEdgeType: 0
     forwardEdgeHeight: 0
     backwardEdgeType: 0
@@ -160,8 +168,5 @@ MonoBehaviour:
     leftEdgeHeight: 0
     rightEdgeType: 0
     rightEdgeHeight: 0
-    type: 1
   blocksAllMovement: 0
   isGround: 0
-  blocksProjectiles: 0
-  isInbetweenBlock: 0

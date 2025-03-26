@@ -31,6 +31,10 @@ public class BlockSide
 
 public class Block : MonoBehaviour
 {
+    //baseID identifieds the base block (eg full stairs)
+    //varientID identifies the version of that block (different materials, meshes, etc.)
+    [SerializeField]
+    public string baseID, varientID;
     public int blockID { get; set; }
 
     //The height on each edges of the block, used for entering/exiting the stair block
