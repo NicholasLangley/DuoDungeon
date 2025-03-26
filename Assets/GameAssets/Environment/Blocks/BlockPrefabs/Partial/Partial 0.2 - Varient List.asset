@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
+  m_Name: Partial 0.2 - Varient List
+  m_EditorClassIdentifier: 
+  baseID: Partial 0.2
+  blockVarients:
+  - {fileID: 342309540791871061, guid: 19207ae29717ce84bb9365d82776427b, type: 3}

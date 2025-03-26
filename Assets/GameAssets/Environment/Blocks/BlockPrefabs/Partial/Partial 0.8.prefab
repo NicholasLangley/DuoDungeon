@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseID: Partial 0.8
-  varientID: blank
+  <baseID>k__BackingField: Partial 0.8
+  <varientID>k__BackingField: blank
   forwardEdgeHeight: 0.8
   backwardEdgeHeight: 0.8
   rightEdgeHeight: 0.8

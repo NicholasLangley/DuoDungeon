@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
+  m_Name: Quarter Stair 1 Bottom - Varient List
+  m_EditorClassIdentifier: 
+  baseID: Quarter Stair 1 - Bottom
+  blockVarients:
+  - {fileID: 3776674435355326588, guid: 2dea39ad649767e4a8cf0b3fa61d1875, type: 3}
