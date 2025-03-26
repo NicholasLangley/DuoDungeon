@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
-    BlockList blockList;
+    BlockMasterList blockMasterList;
     BlockBuilder blockBuilder;
 
     //Turn variables
@@ -153,7 +153,7 @@ public class GameController : MonoBehaviour
     {
         if (map != null) { map.ClearMap(); }
         map = new Map();
-        blockBuilder = new BlockBuilder(blockList);
+        blockBuilder = new BlockBuilder(blockMasterList);
         mapBuilder = new MapBuilder(blockBuilder, map);
 
         //blocks only

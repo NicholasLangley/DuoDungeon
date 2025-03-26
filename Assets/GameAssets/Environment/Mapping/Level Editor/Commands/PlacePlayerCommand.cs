@@ -6,11 +6,11 @@ public class PlacePlayerCommand : Command
 {
     Vector3Int placementLocation, originalPlayerPosition;
     Quaternion playerRotation, originalPlayerRotation, originalBlockRotation;
-    int originalBlockID;
+    string originalBaseID, originalVarientID;
     bool isRedPlayer;
     ObjectPlacer objectPlacer;
 
-    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation, int oldBlockID = -1, Quaternion oldRotation = new Quaternion())
+    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation, string oldBaseID = "DELETE", string oldVarientID = "DELETE", Quaternion oldRotation = new Quaternion())
     {
         placementLocation = destination;
 
@@ -20,7 +20,8 @@ public class PlacePlayerCommand : Command
         originalPlayerPosition = oldPlayerPosition;
         originalPlayerRotation = oldPlayerRotation;
 
-        originalBlockID = oldBlockID;
+        originalBaseID = oldBaseID;
+        originalVarientID = oldVarientID;
         originalBlockRotation = oldRotation;
 
         objectPlacer = placer;
@@ -34,6 +35,6 @@ public class PlacePlayerCommand : Command
     public override void Undo()
     {
         objectPlacer.PlacePlayer(originalPlayerPosition, originalPlayerRotation, isRedPlayer);
-        if (originalBlockID != -1) { objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalBlockID); }
+        if (string.Compare(originalBaseID, "DELETE") != 0) { objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalBaseID, originalVarientID); }
     }
 }

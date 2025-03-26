@@ -7,18 +7,18 @@ using Newtonsoft.Json.Linq;
 
 public class BlockBuilder
 {
-    BlockList blockList;
+    BlockMasterList blockMasterList;
 
-    public BlockBuilder(BlockList list)
+    public BlockBuilder(BlockMasterList list)
     {
-        blockList = list;
+        blockMasterList = list;
     }
 
     public enum BlockType { Basic, Door, Ice }
 
     public GameObject BuildBlock(BlockType type, JToken blockEntry)
     {
-        GameObject newBlock = generatePrefab((int)blockEntry["block_id"]);
+        GameObject newBlock = generatePrefab((string)blockEntry["base_id"], (string)blockEntry["varient_id"]);
 
         setBlockPosition(newBlock, blockEntry["position"]);
         setBlockRotation(newBlock, blockEntry["rotation"]);
@@ -40,10 +40,9 @@ public class BlockBuilder
 
 
 
-    GameObject generatePrefab(int blockID)
+    GameObject generatePrefab(string baseID, string varientID)
     {
-        GameObject prefab = GameObject.Instantiate(blockList.getBlock(blockID));
-        prefab.GetComponent<Block>().blockID = blockID;
+        GameObject prefab = GameObject.Instantiate(blockMasterList.GetBlock(baseID, varientID));
         return prefab;
     }
 

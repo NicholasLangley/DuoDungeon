@@ -7,7 +7,6 @@ using TMPro;
 public class BlockSelectionButton : MonoBehaviour
 {
     public string blockName { get; set; }
-    public int blockId { get; set; }
 
     [SerializeField]
     TextMeshProUGUI text;
@@ -26,9 +25,8 @@ public class BlockSelectionButton : MonoBehaviour
         
     }
 
-    public void SetBlock(int id, GameObject B)
+    public void SetBlock(GameObject B)
     {
-        blockId = id;
         block = B;
         text.text = block.name;
     }

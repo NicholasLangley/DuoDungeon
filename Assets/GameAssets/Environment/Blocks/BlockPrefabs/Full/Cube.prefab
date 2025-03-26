@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseID: basicCube
-  varientID: blank
+  <baseID>k__BackingField: cube
+  <varientID>k__BackingField: blank
   forwardEdgeHeight: 1
   backwardEdgeHeight: 1
   rightEdgeHeight: 1

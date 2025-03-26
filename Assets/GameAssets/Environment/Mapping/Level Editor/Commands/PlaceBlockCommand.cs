@@ -5,18 +5,20 @@ using UnityEngine;
 public class PlaceBlockCommand : Command
 {
     Vector3Int placementLocation;
-    int newBlockID, originalBlockID;
+    string newBaseID, newVarientID, originalBaseID, originalVarientID;
     Quaternion newBlockRotation, originalBlockRotation;
     ObjectPlacer objectPlacer;
 
-    public PlaceBlockCommand(ObjectPlacer placer, Vector3Int destination, int blockID, Quaternion newRotation, int oldBlockID = -1, Quaternion oldRotation = new Quaternion())
+    public PlaceBlockCommand(ObjectPlacer placer, Vector3Int destination, string baseID, string varientID, Quaternion newRotation, string oldBaseID = "DELETE", string oldVarientID = "DELETE", Quaternion oldRotation = new Quaternion())
     {
         placementLocation = destination;
 
-        newBlockID = blockID;
+        newBaseID = baseID;
+        newVarientID = varientID;
         newBlockRotation = newRotation;
 
-        originalBlockID = oldBlockID;
+        originalBaseID = oldBaseID;
+        originalVarientID = oldVarientID;
         originalBlockRotation = oldRotation;
 
         objectPlacer = placer;
@@ -24,11 +26,11 @@ public class PlaceBlockCommand : Command
 
     public override void Execute()
     {
-        objectPlacer.PlaceBlock(placementLocation, newBlockRotation, newBlockID);
+        objectPlacer.PlaceBlock(placementLocation, newBlockRotation, newBaseID, newVarientID);
     }
 
     public override void Undo()
     {
-        objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalBlockID);
+        objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalBaseID, originalVarientID);
     }
 }

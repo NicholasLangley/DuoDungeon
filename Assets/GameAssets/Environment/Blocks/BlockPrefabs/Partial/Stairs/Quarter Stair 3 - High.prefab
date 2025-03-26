@@ -469,8 +469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseID: Quarter Stair - High
-  varientID: blank
+  <baseID>k__BackingField: Quarter Stair 3 - High
+  <varientID>k__BackingField: blank
   forwardEdgeHeight: 0.625
   backwardEdgeHeight: 0.625
   rightEdgeHeight: 0.5
