@@ -11,7 +11,7 @@ public class LevelEditorController : MonoBehaviour
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
-    BlockMasterList blockMasterList;
+    UltimateList ultimateList;
     [SerializeField]
     BlockSelector blockSelector;
     BlockBuilder blockBuilder;
@@ -27,15 +27,16 @@ public class LevelEditorController : MonoBehaviour
     void Start()
     {
         map = new Map();
-        blockBuilder = new BlockBuilder(blockMasterList);
+        blockBuilder = new BlockBuilder(ultimateList);
         mapBuilder = new MapBuilder(blockBuilder, map);
         objectPlacer.map = map;
-        objectPlacer.SetBlockList(blockMasterList);
+        objectPlacer.SetBlockList(ultimateList);
 
         undoCommands = new Stack<Command>();
         redoCommands = new Stack<Command>();
 
-        blockSelector.populateButtons(blockMasterList);
+        //TODO populate multiple lists
+        blockSelector.populateButtons(ultimateList.GetMasterList("Basic Block"));
     }
 
     // Update is called once per frame

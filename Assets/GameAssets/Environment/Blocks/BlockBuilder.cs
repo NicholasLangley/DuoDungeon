@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 
 
 public class BlockBuilder
 {
-    BlockMasterList blockMasterList;
+    UltimateList ultimateList;
 
-    public BlockBuilder(BlockMasterList list)
+    public BlockBuilder(UltimateList lists)
     {
-        blockMasterList = list;
+        ultimateList = lists;
     }
 
     public enum BlockType { Basic, Door, Ice }
 
     public GameObject BuildBlock(BlockType type, JToken blockEntry)
     {
-        GameObject newBlock = generatePrefab((string)blockEntry["base_id"], (string)blockEntry["varient_id"]);
+        GameObject newBlock = GeneratePrefab((string)blockEntry["list_id"], (string)blockEntry["base_id"], (string)blockEntry["varient_id"]);
 
         setBlockPosition(newBlock, blockEntry["position"]);
         setBlockRotation(newBlock, blockEntry["rotation"]);
@@ -40,9 +41,11 @@ public class BlockBuilder
 
 
 
-    GameObject generatePrefab(string baseID, string varientID)
+    GameObject GeneratePrefab(string listID, string baseID, string varientID)
     {
-        GameObject prefab = GameObject.Instantiate(blockMasterList.GetBlock(baseID, varientID));
+        BlockMasterList masterList = ultimateList.GetMasterList(listID);
+        GameObject prefab = GameObject.Instantiate(masterList.GetBlock(baseID, varientID));
+        prefab.GetComponent<IPlaceable>().listID = listID;
         return prefab;
     }
 

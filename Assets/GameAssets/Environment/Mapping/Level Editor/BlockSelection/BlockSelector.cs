@@ -22,13 +22,13 @@ public class BlockSelector : MonoBehaviour
             GameObject blockGameObject = varientList.GetBlock("blank");
             Block block = blockGameObject.GetComponent<Block>();
             blockButton.SetBlock(blockGameObject);
-            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, block.baseID, block.varientID));
+            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, block.baseID, block.varientID));
         }
     }
 
-    public void selectBlock(GameObject block, string baseID, string varientID)
+    public void selectBlock(GameObject block, string listID, string baseID, string varientID)
     {
-        blockPlacer.SetBlock(block, baseID, varientID);
+        blockPlacer.SetBlock(block, listID, baseID, varientID);
     }
 
 

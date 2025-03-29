@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b09a2f0cf617e145b0f78eec028dde3, type: 3}
   m_Name: BasicBlockMasterList
   m_EditorClassIdentifier: 
+  listID: Basic Block
   blockVarientLists:
   - {fileID: 11400000, guid: 7b9490956f1c5624ca1bf97164ee3eb1, type: 2}
   - {fileID: 11400000, guid: 735c2655b6a16544abb442ada45fa52e, type: 2}

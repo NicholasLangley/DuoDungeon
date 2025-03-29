@@ -6,11 +6,11 @@ public class PlacePlayerCommand : Command
 {
     Vector3Int placementLocation, originalPlayerPosition;
     Quaternion playerRotation, originalPlayerRotation, originalBlockRotation;
-    string originalBaseID, originalVarientID;
+    string originalListID, originalBaseID, originalVarientID;
     bool isRedPlayer;
     ObjectPlacer objectPlacer;
 
-    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation, string oldBaseID = "DELETE", string oldVarientID = "DELETE", Quaternion oldRotation = new Quaternion())
+    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation, string oldListID = "DELETE", string oldBaseID = "DELETE", string oldVarientID = "DELETE", Quaternion oldRotation = new Quaternion())
     {
         placementLocation = destination;
 
@@ -20,6 +20,7 @@ public class PlacePlayerCommand : Command
         originalPlayerPosition = oldPlayerPosition;
         originalPlayerRotation = oldPlayerRotation;
 
+        originalListID = oldListID;
         originalBaseID = oldBaseID;
         originalVarientID = oldVarientID;
         originalBlockRotation = oldRotation;
@@ -35,6 +36,6 @@ public class PlacePlayerCommand : Command
     public override void Undo()
     {
         objectPlacer.PlacePlayer(originalPlayerPosition, originalPlayerRotation, isRedPlayer);
-        if (string.Compare(originalBaseID, "DELETE") != 0) { objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalBaseID, originalVarientID); }
+        if (string.Compare(originalBaseID, "DELETE") != 0) { objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalListID, originalBaseID, originalVarientID); }
     }
 }

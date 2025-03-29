@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b09a2f0cf617e145b0f78eec028dde3, type: 3}
-  m_Name: PushableMasterList
+  m_Script: {fileID: 11500000, guid: 764628dab7cc8974aa04d5d4436c9f2e, type: 3}
+  m_Name: TheList
   m_EditorClassIdentifier: 
-  listID: Pushable
-  blockVarientLists:
-  - {fileID: 11400000, guid: ab2306bace095b7469d255bce3242577, type: 2}
+  ultimateList:
+  - {fileID: 11400000, guid: e51305395392ab040b91fc6f2f9646bf, type: 2}
+  - {fileID: 11400000, guid: bda584f1ab35e36418c445aea3f072b3, type: 2}
