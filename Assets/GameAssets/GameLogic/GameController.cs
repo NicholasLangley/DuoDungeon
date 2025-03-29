@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
 
         _enemies = new List<Entity>();
         //_staticEnvironmentObjects = new List<StaticEnvironmentObject>();
-        //_moveableEnvironmentObjects = new List<FullGridMoveable>();
+        //_pushableObjects = new List<Pushable>();
 
         
 
