@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5120083592163030910}
   - component: {fileID: 2403997296995281446}
   - component: {fileID: 3952088769895151470}
+  - component: {fileID: 4224905416663420537}
   m_Layer: 0
   m_Name: pushableTest
   m_TagString: Untagged
@@ -106,3 +107,89 @@ MonoBehaviour:
   <busy>k__BackingField: 0
   toBePushedThisRound: 0
   pushDirection: 0
+--- !u!114 &4224905416663420537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3743110162171882370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <baseID>k__BackingField: pushableTest
+  <varientID>k__BackingField: blank
+  forwardEdgeHeight: 1
+  backwardEdgeHeight: 1
+  rightEdgeHeight: 1
+  leftEdgeHeight: 1
+  topSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  leftSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  rightSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  bottomSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  frontSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  backSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  blocksAllMovement: 0
+  isGround: 1

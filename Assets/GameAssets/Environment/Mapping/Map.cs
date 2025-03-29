@@ -168,6 +168,7 @@ public class Map
         json += "\"info\": {\n";
 
         //blockID
+        json += "\"base_id\": \"" + "Basic Block" + "\",\n";
         json += "\"base_id\": \"" + b.baseID + "\",\n";
         json += "\"varient_id\": \"" + b.varientID + "\",\n";
         //deprecate this, remove once no longer used
