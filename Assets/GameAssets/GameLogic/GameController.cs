@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     Map map;
     MapBuilder mapBuilder;
     [SerializeField]
-    BlockMasterList blockMasterList;
+    UltimateList ultimateList;
     BlockBuilder blockBuilder;
 
     //Turn variables
@@ -43,7 +43,6 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     List<StaticEnvironmentObject> _staticEnvironmentObjects;
-    [SerializeField]
     List<Pushable> _pushableObjects;
 
     float gameSpeedMultiplier { get; set; } //multiplies all game speeds for testing purposes
@@ -57,9 +56,7 @@ public class GameController : MonoBehaviour
 
         _enemies = new List<Entity>();
         //_staticEnvironmentObjects = new List<StaticEnvironmentObject>();
-        //_moveableEnvironmentObjects = new List<FullGridMoveable>();
-
-        
+        _pushableObjects = new List<Pushable>();
 
         takingTurn = false;
         undoingTurn = false;
@@ -151,13 +148,27 @@ public class GameController : MonoBehaviour
     #region Level Loading
     public void LoadLevel(string filename)
     {
-        if (map != null) { map.ClearMap(); }
+        if (map != null) 
+        { 
+            map.ClearMap();
+            _pushableObjects = new List<Pushable>();
+        }
         map = new Map();
-        blockBuilder = new BlockBuilder(blockMasterList);
+        blockBuilder = new BlockBuilder(ultimateList);
         mapBuilder = new MapBuilder(blockBuilder, map);
 
         //blocks only
         mapBuilder.LoadMap(filename);
+
+        List<GameObject> moveableBlocks = map.GetMovableBlocks();
+        foreach (GameObject block in moveableBlocks)
+        {
+            Pushable pushableComponent = block.GetComponent<Pushable>();
+            if (block.GetComponent<Pushable>() != null)
+            {
+                _pushableObjects.Add(pushableComponent);
+            }
+        }
 
         //spawn Players
         playerController.SpawnPlayers(map);

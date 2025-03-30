@@ -489,7 +489,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e37866bc08636643b4448eb446a5e0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
   blockButtonPrefab: {fileID: 688900892853674121, guid: 0305f1babee38f8409f4e228947e520a, type: 3}
   blockButtonGrid: {fileID: 915050268}
   blockPlacer: {fileID: 1220146675}
@@ -1418,7 +1417,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapFilename: movementTEST
-  blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
+  ultimateList: {fileID: 11400000, guid: 4330b5eca20a3bc4e8e2c3f472a5a5f6, type: 2}
+  blockSelector: {fileID: 383731221}
   objectPlacer: {fileID: 1220146675}
 --- !u!4 &1137269225
 Transform:
@@ -1699,7 +1699,6 @@ MonoBehaviour:
   placementArrow: {fileID: 3248029786735157320, guid: 4f3fad61b73f1c748b5da6eabfdd97f7, type: 3}
   redPlayerPlacementIndicator: {fileID: 0}
   bluePlayerPlacementIndicator: {fileID: 0}
-  blockList: {fileID: 11400000, guid: 13e25e1df7277344aa9de69e504d8c99, type: 2}
 --- !u!4 &1220146676
 Transform:
   m_ObjectHideFlags: 0

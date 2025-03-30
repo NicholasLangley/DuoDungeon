@@ -10,6 +10,8 @@ public class MapBuilder
     Map map;
     BlockBuilder blockBuilder;
     GameObject mapParent;
+    //list IDs for blocks that aren't static in the grid
+    List<string> moveableBlockListIDs = new List<string> { "Pushable" };
 
     public MapBuilder(BlockBuilder bb, Map m)
     {
@@ -35,14 +37,14 @@ public class MapBuilder
         {
             GameObject newBlockObject = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
             Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
-            map.AddBlock(intPosition, newBlockObject.GetComponent<Block>());
+            Block block = newBlockObject.GetComponent<Block>();
+            if (moveableBlockListIDs.Contains(block.listID)) { map.AddMoveableBlock(newBlockObject); }
+            else { map.AddStaticBlock(intPosition, block); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 
         //readPlayers
         ReadPlayers((JObject)mapJson["players"]);
-
-        //map.SaveMapToFile("saveTEST");
     }
 
 

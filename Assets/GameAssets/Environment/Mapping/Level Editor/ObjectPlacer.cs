@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class ObjectPlacer : MonoBehaviour
 {
     GameObject currentBlock;
-    string currentBlockBaseID, currentBlockVarientID;
+    string currentListID, currentBlockBaseID, currentBlockVarientID;
 
     GameObject objectPlacementIndicator;
     Quaternion startRotation, destRotation;
@@ -29,7 +29,7 @@ public class ObjectPlacer : MonoBehaviour
     public enum objectType {none, block, redPlayer, bluePlayer, entity, environmentalEntity }
     objectType currentPlacementType;
 
-    BlockMasterList blockMasterList;
+    UltimateList ultimateList;
 
     GameObject placementIndicatorArrow;
 
@@ -77,14 +77,15 @@ public class ObjectPlacer : MonoBehaviour
         }
     }
 
-    public void SetBlockList(BlockMasterList list)
+    public void SetBlockList(UltimateList list)
     {
-        blockMasterList = list;
+        ultimateList = list;
     }
 
-    public void SetBlock(GameObject block, string baseID, string varientID)
+    public void SetBlock(GameObject block, string listID, string baseID, string varientID)
     {
         currentBlock = block;
+        currentListID = listID;
         currentBlockBaseID = baseID;
         currentBlockVarientID = varientID;
 
@@ -123,14 +124,14 @@ public class ObjectPlacer : MonoBehaviour
 
         Command cmd = null;
 
-        if (currentPlacementType == objectType.block && currentBlock != null) { cmd = GetPlaceBlockCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentBlockBaseID, currentBlockVarientID); }
+        if (currentPlacementType == objectType.block && currentBlock != null) { cmd = GetPlaceBlockCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
         else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { cmd = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
 
         if (cmd != null) { cmd.Execute(); }
         return cmd;
     }
 
-    Command GetPlaceBlockCommand(Vector3Int position, Quaternion rotation, string baseID, string varientID)
+    Command GetPlaceBlockCommand(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
         if (IsPositionOutOfBounds(position)) 
         {
@@ -138,20 +139,20 @@ public class ObjectPlacer : MonoBehaviour
             return null;
         }
 
-        Block preExistingBlock = map.GetBlock(position);
+        Block preExistingBlock = map.GetStaticBlock(position);
         PlaceBlockCommand cmd;
         if(preExistingBlock != null)
         {
-            cmd = new PlaceBlockCommand(this, position, baseID, varientID, rotation, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
         }
         else
         {
-            cmd = new PlaceBlockCommand(this, position, baseID, varientID, rotation);
+            cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
         }
         return cmd;
     }
 
-    public void PlaceBlock(Vector3Int position, Quaternion rotation, string baseID, string varientID)
+    public void PlaceBlock(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
         if(string.Compare(baseID, "DELETE") == 0)
         {
@@ -159,16 +160,17 @@ public class ObjectPlacer : MonoBehaviour
             return;
         }
 
-        GameObject newBlockObject = Instantiate(blockMasterList.GetBlock(baseID, varientID), mapTransform.transform);
+        GameObject newBlockObject = Instantiate(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), mapTransform.transform);
         Block newBlock = newBlockObject.GetComponent<Block>();
         newBlockObject.transform.position = position;
         newBlockObject.transform.rotation = rotation;
-        map.AddBlock(position, newBlock);
+        newBlock.listID = listID;
+        map.AddStaticBlock(position, newBlock);
     }
 
     public void RemoveBlock(Vector3Int position)
     {
-        map.RemoveBlock(position);
+        map.RemoveStaticBlock(position);
         return;
     }
 
@@ -180,13 +182,13 @@ public class ObjectPlacer : MonoBehaviour
             return null;
         }
 
-        Block preExistingBlock = map.GetBlock(position);
+        Block preExistingBlock = map.GetStaticBlock(position);
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
         PlacePlayerCommand cmd;
         if (preExistingBlock != null)
         {
-            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
         }
         else
         {
@@ -197,7 +199,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
-        map.RemoveBlock(position);
+        map.RemoveStaticBlock(position);
         if (isRedPlayer)
         {
             map.redPlayerSpawn = position;

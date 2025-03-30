@@ -6,6 +6,8 @@ using UnityEngine;
 public class BlockMasterList : ScriptableObject
 {
     [SerializeField]
+    public string listID;
+    [SerializeField]
     List<BlockVarientList> blockVarientLists;
 
     public Dictionary<string, BlockVarientList> blocksDictionary;
