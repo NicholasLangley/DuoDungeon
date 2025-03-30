@@ -33,6 +33,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
 "block_id": 0,
@@ -53,6 +54,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
 "block_id": 0,
@@ -73,6 +75,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Full Length Stair",
 "varient_id": "blank",
 "block_id": 2,
@@ -93,6 +96,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Full Length Stair",
 "varient_id": "blank",
 "block_id": 2,
@@ -113,6 +117,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.5",
 "varient_id": "blank",
 "block_id": 11,
@@ -133,6 +138,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.5",
 "varient_id": "blank",
 "block_id": 11,
@@ -153,6 +159,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.8",
 "varient_id": "blank",
 "block_id": 9,
@@ -173,6 +180,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
 "block_id": 10,
@@ -193,6 +201,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.5",
 "varient_id": "blank",
 "block_id": 11,
@@ -213,6 +222,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.5",
 "varient_id": "blank",
 "block_id": 11,
@@ -233,6 +243,7 @@
 {
 "type": 0,
 "info": {
+"list_id": "Basic Block",
 "base_id": "Partial 0.8",
 "varient_id": "blank",
 "block_id": 9,

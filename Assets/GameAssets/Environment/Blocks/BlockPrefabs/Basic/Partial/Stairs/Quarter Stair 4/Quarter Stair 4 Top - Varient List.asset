@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
   m_Name: Quarter Stair 4 Top - Varient List
   m_EditorClassIdentifier: 
+  BlockPropertiesAndScriptsObject: {fileID: 2011735003890710171, guid: d00a795c9a6fb70478a4132073a4b99a, type: 3}
   baseID: Quarter Stair 4 - Top
   blockVarients:
   - {fileID: 1254691149472500926, guid: a610b147b2ac62443807fc1b8e3bf7a2, type: 3}
