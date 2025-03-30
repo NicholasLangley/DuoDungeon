@@ -44,7 +44,7 @@ public class BlockBuilder
     GameObject GeneratePrefab(string listID, string baseID, string varientID)
     {
         BlockMasterList masterList = ultimateList.GetMasterList(listID);
-        GameObject prefab = GameObject.Instantiate(masterList.GetBlock(baseID, varientID));
+        GameObject prefab = masterList.GetBlock(baseID, varientID);
         prefab.GetComponent<IPlaceable>().listID = listID;
         return prefab;
     }

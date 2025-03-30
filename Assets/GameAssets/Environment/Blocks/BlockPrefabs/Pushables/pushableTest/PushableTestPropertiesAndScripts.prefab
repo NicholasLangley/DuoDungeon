@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7898028207437761554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4806913264170894360}
+  - component: {fileID: 9214073337690821204}
+  - component: {fileID: 945532316830909662}
+  m_Layer: 0
+  m_Name: PushableTestPropertiesAndScripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4806913264170894360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898028207437761554}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9214073337690821204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898028207437761554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2793b7c0ec87e7c489fd4052c43a8d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <movementCollisionMask>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 0
+  <movementLerpDuration>k__BackingField: 0.25
+  <affectedByGravity>k__BackingField: 1
+  <fallLerpDuration>k__BackingField: 0.25
+  <maxStairClimbHeight>k__BackingField: 0
+  <busy>k__BackingField: 0
+  toBePushedThisRound: 0
+  pushDirection: 0
+--- !u!114 &945532316830909662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898028207437761554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <baseID>k__BackingField: pushableTest
+  <varientID>k__BackingField: blank
+  forwardEdgeHeight: 1
+  backwardEdgeHeight: 1
+  rightEdgeHeight: 1
+  leftEdgeHeight: 1
+  topSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  leftSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  rightSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  bottomSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  frontSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  backSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  blocksAllMovement: 0
+  isGround: 1

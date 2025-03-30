@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6905587241281563644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8418856397847469985}
+  - component: {fileID: 254399742397761008}
+  m_Layer: 0
+  m_Name: QuarterStair3PropertiesAndScripts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8418856397847469985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905587241281563644}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &254399742397761008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905587241281563644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <baseID>k__BackingField: Quarter Stair 3 - High
+  <varientID>k__BackingField: blank
+  forwardEdgeHeight: 0.625
+  backwardEdgeHeight: 0.625
+  rightEdgeHeight: 0.5
+  leftEdgeHeight: 0.75
+  topSide:
+    type: 0
+    centerHeight: 0.625
+    forwardEdgeType: 0
+    forwardEdgeHeight: 0.625
+    backwardEdgeType: 0
+    backwardEdgeHeight: 0.625
+    leftEdgeType: 0
+    leftEdgeHeight: 0.75
+    rightEdgeType: 0
+    rightEdgeHeight: 0.5
+  leftSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 1
+    rightEdgeHeight: 1
+  rightSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 1
+    leftEdgeHeight: 0
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  bottomSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  frontSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 0
+    forwardEdgeHeight: 1
+    backwardEdgeType: 1
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  backSide:
+    type: 0
+    centerHeight: 1
+    forwardEdgeType: 1
+    forwardEdgeHeight: 1
+    backwardEdgeType: 0
+    backwardEdgeHeight: 1
+    leftEdgeType: 0
+    leftEdgeHeight: 1
+    rightEdgeType: 0
+    rightEdgeHeight: 1
+  blocksAllMovement: 0
+  isGround: 1

@@ -33,7 +33,7 @@ public class Block : MonoBehaviour, IPlaceable
 {
     //baseID identifieds the base block (eg full stairs)
     //varientID identifies the version of that block (different materials, meshes, etc.)
-    [field: SerializeField] public string listID { get; set; }
+    public string listID { get; set; }
     [field: SerializeField] public string baseID  { get; set; }
     [field: SerializeField] public string varientID { get; set; }
     public int blockID { get; set; }
