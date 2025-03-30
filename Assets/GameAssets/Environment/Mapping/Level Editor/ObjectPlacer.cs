@@ -139,7 +139,7 @@ public class ObjectPlacer : MonoBehaviour
             return null;
         }
 
-        Block preExistingBlock = map.GetBlock(position);
+        Block preExistingBlock = map.GetStaticBlock(position);
         PlaceBlockCommand cmd;
         if(preExistingBlock != null)
         {
@@ -165,12 +165,12 @@ public class ObjectPlacer : MonoBehaviour
         newBlockObject.transform.position = position;
         newBlockObject.transform.rotation = rotation;
         newBlock.listID = listID;
-        map.AddBlock(position, newBlock);
+        map.AddStaticBlock(position, newBlock);
     }
 
     public void RemoveBlock(Vector3Int position)
     {
-        map.RemoveBlock(position);
+        map.RemoveStaticBlock(position);
         return;
     }
 
@@ -182,7 +182,7 @@ public class ObjectPlacer : MonoBehaviour
             return null;
         }
 
-        Block preExistingBlock = map.GetBlock(position);
+        Block preExistingBlock = map.GetStaticBlock(position);
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
         PlacePlayerCommand cmd;
@@ -199,7 +199,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
-        map.RemoveBlock(position);
+        map.RemoveStaticBlock(position);
         if (isRedPlayer)
         {
             map.redPlayerSpawn = position;

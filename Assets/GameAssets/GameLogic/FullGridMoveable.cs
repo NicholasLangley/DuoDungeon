@@ -207,13 +207,13 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check for stairs going down
-        Block straightForwardDestBlock = map.GetBlock(nextPos);
+        Block straightForwardDestBlock = map.GetStaticBlock(nextPos);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
         if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
         {
             Vector3 belowDest = nextPos - transform.up;
 
-            Block belowDestBlock = map.GetBlock(belowDest);
+            Block belowDestBlock = map.GetStaticBlock(belowDest);
             if (belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
@@ -258,7 +258,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     {
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
         //block collision
-        Block destinationBlock = map.GetBlock(destinationToCheck);
+        Block destinationBlock = map.GetStaticBlock(destinationToCheck);
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
@@ -266,7 +266,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
-                Block headCheckBlock = map.GetBlock(Map.GetIntVector3(headCheckPos));
+                Block headCheckBlock = map.GetStaticBlock(Map.GetIntVector3(headCheckPos));
                 if (headCheckBlock != null) { return true; }
             }
         }
@@ -337,7 +337,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 break;
         }
 
-        Block groundBlock = map.GetBlock(groundPos);
+        Block groundBlock = map.GetStaticBlock(groundPos);
 
         if (groundBlock == null || !groundBlock.isGround || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 

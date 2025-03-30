@@ -4,57 +4,82 @@ using System.IO;
 
 public class Map
 {
-    Dictionary<Vector3Int, Block> currentBlocks;
+    Dictionary<Vector3Int, Block> currentStaticBlocks;
+    List<GameObject> currentMoveableBlocks;
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
 
     public Map()
     {
-        currentBlocks = new Dictionary<Vector3Int, Block>();
+        currentStaticBlocks = new Dictionary<Vector3Int, Block>();
+        currentMoveableBlocks = new List<GameObject>();
     }
 
     public void ClearMap()
     {
-        foreach (Block block in currentBlocks.Values)
+        foreach (Block block in currentStaticBlocks.Values)
         {
             GameObject.Destroy(block.gameObject);
         }
-        currentBlocks.Clear();
+        currentStaticBlocks.Clear();
+
+        foreach (GameObject obj in currentMoveableBlocks)
+        {
+            GameObject.Destroy(obj);
+        }
+        currentMoveableBlocks.Clear();
     }
 
-    public void AddBlock(Vector3Int position, Block block)
+
+    #region static blocks
+    public void AddStaticBlock(Vector3Int position, Block block)
     {
         //overwrite
-        if (currentBlocks.ContainsKey(position)) 
+        if (currentStaticBlocks.ContainsKey(position)) 
         {
-            GameObject.Destroy(currentBlocks[position].gameObject);
-            currentBlocks.Remove(position); 
+            GameObject.Destroy(currentStaticBlocks[position].gameObject);
+            currentStaticBlocks.Remove(position); 
         }
 
-        currentBlocks.Add(position, block);
+        currentStaticBlocks.Add(position, block);
     }
 
-    public void RemoveBlock(Vector3Int position)
+    public void RemoveStaticBlock(Vector3Int position)
     {
-        if (currentBlocks.ContainsKey(position))
+        if (currentStaticBlocks.ContainsKey(position))
         {
-            GameObject.Destroy(currentBlocks[position].gameObject);
-            currentBlocks.Remove(position);
+            GameObject.Destroy(currentStaticBlocks[position].gameObject);
+            currentStaticBlocks.Remove(position);
         }
     }
 
-    public Block GetBlock(Vector3Int position)
+    public Block GetStaticBlock(Vector3Int position)
     {
-        if (currentBlocks.ContainsKey(position)) { return currentBlocks[position]; }
+        if (currentStaticBlocks.ContainsKey(position)) { return currentStaticBlocks[position]; }
 
         return null;
     }
 
-    public Block GetBlock(Vector3 position)
+    public Block GetStaticBlock(Vector3 position)
     {
-        return (GetBlock(Map.GetIntVector3(position)));
+        return (GetStaticBlock(Map.GetIntVector3(position)));
     }
+    #endregion
+
+    #region movingBlocks
+
+    public List<GameObject> GetMovableBlocks()
+    {
+        return currentMoveableBlocks;
+    }
+
+    public void AddMoveableBlock(GameObject obj)
+    {
+        currentMoveableBlocks.Add(obj);
+    }
+
+    #endregion
 
     public Block GetCurrentlyOccupiedBlock(Vector3 gridPosition, DownDirection downDir)
     {
@@ -80,7 +105,7 @@ public class Map
                 break;
         }
 
-        return (GetBlock(GetIntVector3(gridPosition)));
+        return (GetStaticBlock(GetIntVector3(gridPosition)));
     }
 
     public static Vector3Int GetIntVector3(Vector3 floatVector)
@@ -129,7 +154,7 @@ public class Map
 
         bool firstBlock = true;
         //fill blocks array
-        foreach (Block block in currentBlocks.Values)
+        foreach (Block block in currentStaticBlocks.Values)
         {
             //add comma after previous block
             if (!firstBlock) { blocksListJSON += ",\n"; }
