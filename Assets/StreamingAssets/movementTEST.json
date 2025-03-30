@@ -6497,6 +6497,27 @@
 }
 }
 }
+,
+{
+"type": 0,
+"info": {
+"list_id": "Pushable",
+"base_id": "pushableTest",
+"varient_id": "blank",
+"block_id": 0,
+"position": {
+"x": -10,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
 
 ]
 }
