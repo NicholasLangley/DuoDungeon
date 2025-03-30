@@ -6480,14 +6480,14 @@
 {
 "type": 0,
 "info": {
-"list_id": "Pushable",
-"base_id": "pushableTest",
+"list_id": "Basic Block",
+"base_id": "sphere",
 "varient_id": "blank",
 "block_id": 0,
 "position": {
-"x": -10,
-"y": 1,
-"z": 16
+"x": -8,
+"y": 3,
+"z": 25
 },
 "rotation": {
 "w": 1,

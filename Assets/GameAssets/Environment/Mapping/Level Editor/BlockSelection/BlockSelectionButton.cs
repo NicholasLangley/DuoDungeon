@@ -25,10 +25,10 @@ public class BlockSelectionButton : MonoBehaviour
         
     }
 
-    public void SetBlock(GameObject B)
+    public void SetBlock(GameObject B, string name)
     {
         block = B;
-        text.text = block.name;
+        text.text = name;
     }
     
 }

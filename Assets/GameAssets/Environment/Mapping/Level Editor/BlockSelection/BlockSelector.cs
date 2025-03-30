@@ -21,7 +21,7 @@ public class BlockSelector : MonoBehaviour
             BlockSelectionButton blockButton = newButton.GetComponent<BlockSelectionButton>();
             GameObject blockGameObject = varientList.GetBlock("blank");
             Block block = blockGameObject.GetComponent<Block>();
-            blockButton.SetBlock(blockGameObject);
+            blockButton.SetBlock(blockGameObject, varientList.baseID);
             newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, block.baseID, block.varientID));
         }
     }
