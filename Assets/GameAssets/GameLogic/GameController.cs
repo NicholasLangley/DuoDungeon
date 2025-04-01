@@ -65,7 +65,9 @@ public class GameController : MonoBehaviour
         previousTurns = new Stack<Turn>();
 
         //initialize map
-        LoadLevel("/" + mapFilename + ".json");
+        string levelString = LevelManager.currentLevelPath;
+        if (levelString == null || string.Compare(levelString, "") == 0) { levelString = mapFilename; }
+        LoadLevel("/" + levelString + ".json");
 
         //TEMP FOR TESTING, eventually these will be loaded properly//
         foreach (FullGridMoveable fgm in _pushableObjects)

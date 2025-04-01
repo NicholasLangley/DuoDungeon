@@ -93,7 +93,9 @@ public class LevelEditorController : MonoBehaviour
 
     public void Load()
     {
-        mapBuilder.LoadMap("/" + mapFilename + ".json");
+        string levelString = LevelManager.currentLevelPath;
+        if (levelString == null || string.Compare(levelString, "") == 0) { levelString = mapFilename; }
+        mapBuilder.LoadMap("/" + levelString + ".json");
         //TODO do this better
         objectPlacer.redPlayerPlacementIndicator.transform.position = map.redPlayerSpawn;
         objectPlacer.redPlayerPlacementIndicator.transform.rotation = map.redPlayerSpawnRotation;
