@@ -6,12 +6,15 @@ public class Pushable : FullGridMoveable
 {
     public bool toBePushedThisRound;
     public MovementDirection pushDirection;
+    public ComplexBlock complexBlock;
     protected override void Awake()
     {
+        complexBlock = gameObject.GetComponent<ComplexBlock>();
+
         #region Create State Machine and states
         stateMachine = new StateMachine();
 
-        idleState = new FGM_IdleState(this, stateMachine);
+        idleState = new FGM_ComplexBlock_IdleState(this, stateMachine, complexBlock);
         movementState = new FGM_MovementState(this, stateMachine);
         movementBlockedState = new FGM_MovementBlockedState(this, stateMachine);
         rotationState = new FGM_RotationState(this, stateMachine);
@@ -26,6 +29,7 @@ public class Pushable : FullGridMoveable
         base.Start();
 
         toBePushedThisRound = false;
+        
     }
 
     // Update is called once per frame

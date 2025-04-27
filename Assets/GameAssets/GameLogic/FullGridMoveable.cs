@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditorInternal;
 using UnityEngine;
+using static BlockSide;
 
 public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, ICommandable, IUndoable
 {
@@ -181,7 +182,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         //Debug.Log(nextPos);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
-        Block currentBlock = map.GetCurrentlyOccupiedBlock(transform.position, GetCurrentDownDirection());
+        Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
         float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos, transform.up, GetCurrentDownDirection()) : 0;
         nextPos += transform.up * exitHeight;
         switch (downDir)
@@ -209,12 +210,12 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         //check for stairs going down
         Block straightForwardDestBlock = map.GetStaticBlock(nextPos);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
-        if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
+        if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && (straightForwardDestBlock.GetOrientedTopSide(-transform.up).type != centerType.GROUND))
         {
             Vector3 belowDest = nextPos - transform.up;
 
             Block belowDestBlock = map.GetStaticBlock(belowDest);
-            if (belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
+            if (belowDestBlock != null && (belowDestBlock.GetOrientedTopSide(-transform.up).type == centerType.GROUND) && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
                 nextPos += transform.up * belowDestBlock.GetMidBlockHeight(-transform.up);
@@ -259,6 +260,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
         //block collision
         Block destinationBlock = map.GetStaticBlock(destinationToCheck);
+        if (destinationBlock == null) { destinationBlock = map.CheckGridForComplexBlock(destinationToCheck, gameObject); }
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
@@ -283,8 +285,8 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         float downDirectionEntityHeight = Block.GetPositionsDownOrientedHeight(transform.position, downDir);
 
-        Block currentBlock = map.GetCurrentlyOccupiedBlock(transform.position, GetCurrentDownDirection());
-        if (currentBlock != null && currentBlock.isGround)
+        Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        if (currentBlock != null && (currentBlock.GetOrientedTopSide(-transform.up).type == centerType.GROUND))
         {
             float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.transform.position, downDir);
 
@@ -338,8 +340,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         Block groundBlock = map.GetStaticBlock(groundPos);
+        if (groundBlock == null) { groundBlock = map.CheckGridForComplexBlock(groundPos, gameObject); }
 
-        if (groundBlock == null || !groundBlock.isGround || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
+        if (groundBlock == null || (groundBlock.GetOrientedTopSide(-transform.up).type != centerType.GROUND) || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 
         return true;
     }

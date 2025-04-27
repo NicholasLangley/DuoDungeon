@@ -5,7 +5,7 @@ using System.IO;
 public class Map
 {
     Dictionary<Vector3Int, Block> currentStaticBlocks;
-    List<GameObject> currentMoveableBlocks;
+    List<ComplexBlock> currentComplexBlocks;
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
@@ -13,7 +13,7 @@ public class Map
     public Map()
     {
         currentStaticBlocks = new Dictionary<Vector3Int, Block>();
-        currentMoveableBlocks = new List<GameObject>();
+        currentComplexBlocks = new List<ComplexBlock>();
     }
 
     public void ClearMap()
@@ -24,11 +24,11 @@ public class Map
         }
         currentStaticBlocks.Clear();
 
-        foreach (GameObject obj in currentMoveableBlocks)
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
-            GameObject.Destroy(obj);
+            GameObject.Destroy(complexBlock.gameObject);
         }
-        currentMoveableBlocks.Clear();
+        currentComplexBlocks.Clear();
     }
 
 
@@ -67,33 +67,46 @@ public class Map
     }
     #endregion
 
-    #region movingBlocks
+    #region complexBlocks
 
-    public List<GameObject> GetMovableBlocksList()
+    public List<ComplexBlock> GetComplexBlocksList()
     {
-        return currentMoveableBlocks;
+        return currentComplexBlocks;
     }
 
-    public void AddMoveableBlock(GameObject obj)
+    public void AddComplexBlock(ComplexBlock complexBlock)
     {
-        currentMoveableBlocks.Add(obj);
+        currentComplexBlocks.Add(complexBlock);
     }
 
-    public GameObject CheckGridForDynamicBlock(Vector3 position)
+    public Block CheckGridForComplexBlock(Vector3 position, GameObject requestor)
     {
-        return CheckGridForDynamicBlock(Map.GetIntVector3(position));
+        return CheckGridForComplexBlock(Map.GetIntVector3(position), requestor);
     }
 
-    public GameObject CheckGridForDynamicBlock(Vector3Int positiom)
+    public Block CheckGridForComplexBlock(Vector3Int position, GameObject requestor)
     {
-
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        {
+            if (complexBlock.gameObject != requestor)
+            {
+                foreach (GridSplitBlock gridSplitBlock in complexBlock.GetGridBlocks())
+                {
+                    if (gridSplitBlock.gridPosition == position)
+                    {
+                        return gridSplitBlock.block;
+                    }
+                }
+            }
+        }
         return null;
     }
 
     #endregion
 
-    public Block GetCurrentlyOccupiedBlock(Vector3 gridPosition, DownDirection downDir)
+    public Block GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
+        Vector3 gridPosition = requestor.transform.position;
         switch (downDir)
         {
             case DownDirection.Ydown:
@@ -116,6 +129,8 @@ public class Map
                 break;
         }
 
+        Block complexBlock = CheckGridForComplexBlock(gridPosition, requestor);
+        if (complexBlock != null ) { return complexBlock; }
         return (GetStaticBlock(GetIntVector3(gridPosition)));
     }
 

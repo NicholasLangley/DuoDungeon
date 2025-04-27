@@ -47,7 +47,7 @@ public class Block : MonoBehaviour, IPlaceable
     public BlockSideDefinitions blockSides;
 
     [SerializeField]
-    public bool blocksAllMovement, isGround;
+    public bool blocksAllMovement;
 
     // Start is called before the first frame update
     void Awake()
@@ -75,7 +75,7 @@ public class Block : MonoBehaviour, IPlaceable
 
         float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(transform.position, downDir);
 
-        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.transform.position, e.GetCurrentDownDirection());
+        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
         float entityExitHeight;
         if (entityCurrentBlock != null)
         {
@@ -244,7 +244,7 @@ public class Block : MonoBehaviour, IPlaceable
     ///////////
     //HELPERS///
     ////////////
-    BlockSide GetOrientedTopSide(Vector3 entityDownVector)
+    public BlockSide GetOrientedTopSide(Vector3 entityDownVector)
     {
         Vector3 blockOrientedDownVector = transform.InverseTransformDirection(entityDownVector);
         DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);

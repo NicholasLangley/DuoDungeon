@@ -36,7 +36,7 @@ public class FGM_MovementState : FullGridMoveableState
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
-        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.transform.position, _fgm.GetCurrentDownDirection());
+        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
         Block destBlock = _fgm.map.GetStaticBlock(destPosition);
         //if (destBlock == null) { Debug.Log(destPosition); }
 

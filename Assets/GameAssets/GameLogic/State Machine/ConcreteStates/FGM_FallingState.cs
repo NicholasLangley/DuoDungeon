@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BlockSide;
 
 public class FGM_FallingState : FullGridMoveableState
 {
@@ -83,7 +84,7 @@ public class FGM_FallingState : FullGridMoveableState
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        if (startingBlock != null && startingBlock.isGround)
+        if (startingBlock != null && startingBlock.GetOrientedTopSide(-_fgm.transform.up).type == centerType.GROUND)
         {
             destBlock = startingBlock;
         }
