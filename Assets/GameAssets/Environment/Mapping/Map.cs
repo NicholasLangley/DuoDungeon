@@ -69,7 +69,7 @@ public class Map
 
     #region movingBlocks
 
-    public List<GameObject> GetMovableBlocks()
+    public List<GameObject> GetMovableBlocksList()
     {
         return currentMoveableBlocks;
     }
@@ -77,6 +77,17 @@ public class Map
     public void AddMoveableBlock(GameObject obj)
     {
         currentMoveableBlocks.Add(obj);
+    }
+
+    public GameObject CheckGridForDynamicBlock(Vector3 position)
+    {
+        return CheckGridForDynamicBlock(Map.GetIntVector3(position));
+    }
+
+    public GameObject CheckGridForDynamicBlock(Vector3Int positiom)
+    {
+
+        return null;
     }
 
     #endregion
@@ -197,7 +208,7 @@ public class Map
         json += "\"base_id\": \"" + b.baseID + "\",\n";
         json += "\"varient_id\": \"" + b.varientID + "\",\n";
         //deprecate this, remove once no longer used
-        json += "\"block_id\": " + b.blockID + ",\n";
+        //json += "\"block_id\": " + b.blockID + ",\n";
 
         //position
         json += GetPositionJSON(b.transform.position);

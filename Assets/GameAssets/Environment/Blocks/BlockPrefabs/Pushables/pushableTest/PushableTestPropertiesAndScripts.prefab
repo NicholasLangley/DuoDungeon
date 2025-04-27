@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 4806913264170894360}
   - component: {fileID: 9214073337690821204}
   - component: {fileID: 945532316830909662}
+  - component: {fileID: -4475066423303841778}
   m_Layer: 0
   m_Name: PushableTestPropertiesAndScripts
-  m_TagString: Untagged
+  m_TagString: Pushable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,3 +142,24 @@ MonoBehaviour:
     rightEdgeHeight: 1
   blocksAllMovement: 0
   isGround: 1
+--- !u!65 &-4475066423303841778
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898028207437761554}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

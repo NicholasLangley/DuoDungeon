@@ -29,17 +29,26 @@ public class BlockSide
     public float rightEdgeHeight;
 }
 
+[System.Serializable]
+public class BlockSideDefinitions
+{
+    public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
+}
+
 public class Block : MonoBehaviour, IPlaceable
 {
-    //baseID identifieds the base block (eg full stairs)
+    //baseID identifies the base block (eg full stairs)
     //varientID identifies the version of that block (different materials, meshes, etc.)
     public string listID { get; set; }
     [field: SerializeField] public string baseID  { get; set; }
     [field: SerializeField] public string varientID { get; set; }
-    public int blockID { get; set; }
+    //public int blockID { get; set; }
 
     //The height on each edges of the block, used for entering/exiting the stair block
-    [SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
+    //[SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
+
+    [SerializeField]    
+    public BlockSideDefinitions blockSideDefinitions;
 
     [SerializeField]
     public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;

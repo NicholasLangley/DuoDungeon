@@ -162,7 +162,7 @@ public class GameController : MonoBehaviour
         //blocks only
         mapBuilder.LoadMap(filename);
 
-        List<GameObject> moveableBlocks = map.GetMovableBlocks();
+        List<GameObject> moveableBlocks = map.GetMovableBlocksList();
         foreach (GameObject block in moveableBlocks)
         {
             Pushable pushableComponent = block.GetComponent<Pushable>();
