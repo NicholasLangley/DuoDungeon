@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4806913264170894360}
   - component: {fileID: 9214073337690821204}
-  - component: {fileID: 945532316830909662}
   - component: {fileID: -4475066423303841778}
+  - component: {fileID: 8706724901525744919}
   m_Layer: 0
   m_Name: PushableTestPropertiesAndScripts
   m_TagString: Pushable
@@ -56,92 +56,6 @@ MonoBehaviour:
   <busy>k__BackingField: 0
   toBePushedThisRound: 0
   pushDirection: 0
---- !u!114 &945532316830909662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7898028207437761554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c649449fc1b4ec449adb37b0ee722b31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <baseID>k__BackingField: pushableTest
-  <varientID>k__BackingField: blank
-  forwardEdgeHeight: 1
-  backwardEdgeHeight: 1
-  rightEdgeHeight: 1
-  leftEdgeHeight: 1
-  topSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  leftSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  rightSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  bottomSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  frontSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  backSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  blocksAllMovement: 0
-  isGround: 1
 --- !u!65 &-4475066423303841778
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -163,3 +77,86 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8706724901525744919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7898028207437761554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8214941f30bc5c441b03ad18c201efd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <baseID>k__BackingField: pushableTest
+  <varientID>k__BackingField: blank
+  componentBlocks:
+  - offsetFromCenter: {x: 0, y: 0, z: 0}
+    sides:
+      topSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1
+      leftSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1
+      rightSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1
+      bottomSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1
+      frontSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1
+      backSide:
+        type: 0
+        centerHeight: 1
+        forwardEdgeType: 0
+        forwardEdgeHeight: 1
+        backwardEdgeType: 0
+        backwardEdgeHeight: 1
+        leftEdgeType: 0
+        leftEdgeHeight: 1
+        rightEdgeType: 0
+        rightEdgeHeight: 1

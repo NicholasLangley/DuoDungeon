@@ -37,9 +37,9 @@ public class MapBuilder
         {
             GameObject newBlockObject = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
             Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
-            Block block = newBlockObject.GetComponent<Block>();
-            if (moveableBlockListIDs.Contains(block.listID)) { map.AddMoveableBlock(newBlockObject); }
-            else { map.AddStaticBlock(intPosition, block); }
+            IPlaceable placeable = newBlockObject.GetComponent<IPlaceable>();
+            if (moveableBlockListIDs.Contains(placeable.listID)) { map.AddMoveableBlock(newBlockObject); }
+            else { map.AddStaticBlock(intPosition, newBlockObject.GetComponent<Block>()); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 

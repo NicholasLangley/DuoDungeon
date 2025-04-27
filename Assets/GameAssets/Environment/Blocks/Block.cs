@@ -42,16 +42,9 @@ public class Block : MonoBehaviour, IPlaceable
     public string listID { get; set; }
     [field: SerializeField] public string baseID  { get; set; }
     [field: SerializeField] public string varientID { get; set; }
-    //public int blockID { get; set; }
-
-    //The height on each edges of the block, used for entering/exiting the stair block
-    //[SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
 
     [SerializeField]    
-    public BlockSideDefinitions blockSideDefinitions;
-
-    [SerializeField]
-    public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
+    public BlockSideDefinitions blockSides;
 
     [SerializeField]
     public bool blocksAllMovement, isGround;
@@ -260,22 +253,22 @@ public class Block : MonoBehaviour, IPlaceable
         {
             default:
                 //Debug.Log("top");
-                return topSide;
+                return blockSides.topSide;
             case DownDirection.Yup:
                 //Debug.Log("bottom");
-                return bottomSide;
+                return blockSides.bottomSide;
             case DownDirection.Xleft:
                 //Debug.Log("right");
-                return rightSide;
+                return blockSides.rightSide;
             case DownDirection.Xright:
                 //Debug.Log("left");
-                return leftSide;
+                return blockSides.leftSide;
             case DownDirection.Zforward:
                 //Debug.Log("back");
-                return backSide;
+                return blockSides.backSide;
             case DownDirection.Zback:
                // Debug.Log("front");
-                return frontSide;
+                return blockSides.frontSide;
         }
     }
 

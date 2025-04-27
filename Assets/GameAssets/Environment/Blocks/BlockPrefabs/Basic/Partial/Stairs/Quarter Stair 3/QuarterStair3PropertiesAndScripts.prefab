@@ -46,75 +46,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <baseID>k__BackingField: Quarter Stair 3 - High
   <varientID>k__BackingField: blank
-  forwardEdgeHeight: 0.625
-  backwardEdgeHeight: 0.625
-  rightEdgeHeight: 0.5
-  leftEdgeHeight: 0.75
-  topSide:
-    type: 0
-    centerHeight: 0.625
-    forwardEdgeType: 0
-    forwardEdgeHeight: 0.625
-    backwardEdgeType: 0
-    backwardEdgeHeight: 0.625
-    leftEdgeType: 0
-    leftEdgeHeight: 0.75
-    rightEdgeType: 0
-    rightEdgeHeight: 0.5
-  leftSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 1
-    rightEdgeHeight: 1
-  rightSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 1
-    leftEdgeHeight: 0
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  bottomSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  frontSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 1
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  backSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 1
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
+  blockSides:
+    topSide:
+      type: 0
+      centerHeight: 0.625
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0.625
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0.625
+      leftEdgeType: 0
+      leftEdgeHeight: 0.75
+      rightEdgeType: 0
+      rightEdgeHeight: 0.5
+    leftSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    rightSide:
+      type: 0
+      centerHeight: 0.625
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0.625
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0.625
+      leftEdgeType: 0
+      leftEdgeHeight: 0.5
+      rightEdgeType: 0
+      rightEdgeHeight: 0.75
+    bottomSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    frontSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 1
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 1
+      rightEdgeHeight: 1
+    backSide:
+      type: 0
+      centerHeight: 0
+      forwardEdgeType: 1
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 1
+      rightEdgeHeight: 1
   blocksAllMovement: 0
   isGround: 1
