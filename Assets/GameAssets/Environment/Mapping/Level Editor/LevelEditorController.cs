@@ -36,7 +36,7 @@ public class LevelEditorController : MonoBehaviour
         redoCommands = new Stack<Command>();
 
         //TODO populate multiple lists
-        blockSelector.populateButtons(ultimateList.GetMasterList("Basic Block"));
+        blockSelector.populateButtons(ultimateList.GetMasterList("Pushable"));
     }
 
     // Update is called once per frame

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//The raw block definitions of the complex block. If the transform is aligned with the grid, this is what the final blocks will be
 [System.Serializable]
 public class ComponentBlockDefinition
 {
@@ -11,12 +12,22 @@ public class ComponentBlockDefinition
     public BlockSideDefinitions sides;
 }
 
-public class GridSplitBlock
+//a partial block that was split to be alligned with the grid
+public class PartialComplexBlock
 {
     public Vector3Int gridPosition;
     public Block block;
 }
 
+//a unit contains the 2 block parts that a single component block is split into
+public class ComplexBlockUnit
+{
+    //The larger block, contains the midpoint
+    public PartialComplexBlock mainBlock;
+
+    //sticks up or down into the next grid space from the main block
+    public PartialComplexBlock subBlock;
+}
 //Blocks that may move / occupy multiple grid spaces at once. Will calculate sub blocks that conform to the grid
 public class ComplexBlock : MonoBehaviour, IPlaceable
 {
@@ -26,7 +37,7 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
 
     GameObject gridSplitBlocksParent;
 
-    List<GridSplitBlock> gridBlocks;
+    List<ComplexBlockUnit> gridBlockUnits;
 
     [SerializeField]
     List<ComponentBlockDefinition> componentBlocks;
@@ -49,23 +60,28 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         gridSplitBlocksParent = new GameObject("gridSplitBlocksParent");
         gridSplitBlocksParent.transform.parent = this.transform;
 
-        gridBlocks = new List<GridSplitBlock>();
+        gridBlockUnits = new List<ComplexBlockUnit>();
+
         foreach (ComponentBlockDefinition componentBlock in componentBlocks)
         {
-            GridSplitBlock gridBlock = new GridSplitBlock();
-            gridBlock.gridPosition = Map.GetIntVector3(transform.position +  transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
+            ComplexBlockUnit unit = new ComplexBlockUnit();
+
+            PartialComplexBlock partialBlock = new PartialComplexBlock();
+            partialBlock.gridPosition = Map.GetIntVector3(transform.position +  transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
 
             Block newBlock = gridSplitBlocksParent.AddComponent<Block>();
             newBlock.blockSides = componentBlock.sides;
-            gridBlock.block = newBlock;
+            partialBlock.block = newBlock;
 
-            gridBlocks.Add(gridBlock);
+            unit.mainBlock = partialBlock;
+
+            gridBlockUnits.Add(unit);
         }
     }
 
-    public List<GridSplitBlock> GetGridBlocks()
+    public List<ComplexBlockUnit> GetGridBlockUnits()
     {
-        return gridBlocks;
+        return gridBlockUnits;
     }
 
 

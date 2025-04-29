@@ -18,18 +18,6 @@ public abstract class StaticEnvironmentObject : MonoBehaviour, ICommandable, IUn
 
     #endregion
 
-    // Start is called before the first frame update
-    protected void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    protected virtual void Update()
-    {
-        
-    }
-
     #region Commands
     //Active decisions by the object such as to move or attack
     public abstract Command GetCommand();

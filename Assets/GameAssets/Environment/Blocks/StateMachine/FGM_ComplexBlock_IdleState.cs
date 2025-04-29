@@ -17,7 +17,7 @@ public class FGM_ComplexBlock_IdleState : FGM_IdleState
 
     public override void EnterState()
     {
-        complexBlock.CalculateGridBlocks();
+        //complexBlock.CalculateGridBlocks();
         _fgm.busy = false;
         _fgm.projectedDestinationBlock = Map.GetIntVector3(_fgm.transform.position);
     }
