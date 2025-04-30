@@ -20,6 +20,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
     [field: SerializeField] public bool affectedByGravity { get; set; }
+    public Vector3 gravityDirection { get; set; }
     [field: SerializeField] public float fallLerpDuration { get; set; }
 
     public Vector3 fallSrcPosition { get; set; }
@@ -66,6 +67,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     protected abstract void Awake();
     protected virtual void Start()
     {
+        //IMoveable
+        gravityDirection = -transform.up;
+
         //ICommandable
         busy = false;
 
@@ -347,13 +351,18 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         return true;
     }
 
+    public void setGravityDirection(Vector3 dir)
+    {
+        gravityDirection =dir;
+    }
+
     #endregion
 
     #region Helper Functions
 
     public DownDirection GetCurrentDownDirection()
     {
-        return ConvertVectorToDownDirection(-1 * transform.up);
+        return ConvertVectorToDownDirection(gravityDirection);
     }
 
     public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)

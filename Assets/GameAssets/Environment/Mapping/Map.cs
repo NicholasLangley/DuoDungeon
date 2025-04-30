@@ -90,11 +90,11 @@ public class Map
         {
             if (complexBlock.gameObject != requestor)
             {
-                foreach (ComplexBlockUnit complexBlockUnit in complexBlock.GetGridBlockUnits())
+                foreach (GridSplitBlock gridBlock in complexBlock.GetGridSplitBlocks())
                 {
-                    if (complexBlockUnit.mainBlock.gridPosition == position)
+                    if (gridBlock.gridPosition == position)
                     {
-                        return complexBlockUnit.mainBlock.block;
+                        return gridBlock.block;
                     }
                 }
             }

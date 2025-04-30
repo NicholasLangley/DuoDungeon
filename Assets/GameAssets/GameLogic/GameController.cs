@@ -174,6 +174,7 @@ public class GameController : MonoBehaviour
 
         //spawn Players
         playerController.SpawnPlayers(map);
+        playerController.SetPlayerGravity();
 
     }
     #endregion

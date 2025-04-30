@@ -36,6 +36,12 @@ public class PlayerController : ICommandable
         bluePlayer.map = map;
     }
 
+    public void SetPlayerGravity()
+    {
+        redPlayer.setGravityDirection(-redPlayer.transform.up);
+        bluePlayer.setGravityDirection(-bluePlayer.transform.up);
+    }
+
     public List<Command> GetCommands()
     {
         //Movement

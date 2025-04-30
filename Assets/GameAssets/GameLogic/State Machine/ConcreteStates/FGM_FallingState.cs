@@ -84,7 +84,7 @@ public class FGM_FallingState : FullGridMoveableState
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        if (startingBlock != null && startingBlock.GetOrientedTopSide(-_fgm.transform.up).type == centerType.GROUND)
+        if (startingBlock != null && startingBlock.GetOrientedTopSide(_fgm.gravityDirection).type == centerType.GROUND)
         {
             destBlock = startingBlock;
         }
@@ -124,24 +124,24 @@ public class FGM_FallingState : FullGridMoveableState
             {
                 //YDown
                 default:
-                    fallDestination.y += destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.y += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
                 case DownDirection.Yup:
-                    fallDestination.y -= destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.y -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
 
                 case DownDirection.Xright:
-                    fallDestination.x -= destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.x -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
                 case DownDirection.Xleft:
-                    fallDestination.x += destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.x += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
 
                 case DownDirection.Zforward:
-                    fallDestination.z -= destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.z -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
                 case DownDirection.Zback:
-                    fallDestination.z += destBlock.GetMidBlockHeight(-_fgm.transform.up);
+                    fallDestination.z += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
                     break;
             }
             //stops lesser falls from being slower

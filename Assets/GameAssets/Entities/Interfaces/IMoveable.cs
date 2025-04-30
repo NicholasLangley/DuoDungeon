@@ -31,6 +31,7 @@ public interface IMoveable
     LayerMask movementCollisionMask { get; set; }
 
     bool affectedByGravity { get; set; }
+    public Vector3 gravityDirection { get; set; }
     float fallLerpDuration { get; set; }
     Vector3 fallSrcPosition { get; set; }
 

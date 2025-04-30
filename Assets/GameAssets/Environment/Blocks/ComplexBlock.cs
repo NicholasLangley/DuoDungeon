@@ -13,21 +13,12 @@ public class ComponentBlockDefinition
 }
 
 //a partial block that was split to be alligned with the grid
-public class PartialComplexBlock
+public class GridSplitBlock
 {
     public Vector3Int gridPosition;
     public Block block;
 }
 
-//a unit contains the 2 block parts that a single component block is split into
-public class ComplexBlockUnit
-{
-    //The larger block, contains the midpoint
-    public PartialComplexBlock mainBlock;
-
-    //sticks up or down into the next grid space from the main block
-    public PartialComplexBlock subBlock;
-}
 //Blocks that may move / occupy multiple grid spaces at once. Will calculate sub blocks that conform to the grid
 public class ComplexBlock : MonoBehaviour, IPlaceable
 {
@@ -37,7 +28,7 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
 
     GameObject gridSplitBlocksParent;
 
-    List<ComplexBlockUnit> gridBlockUnits;
+    List<GridSplitBlock> gridBlocks;
 
     [SerializeField]
     List<ComponentBlockDefinition> componentBlocks;
@@ -60,28 +51,24 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         gridSplitBlocksParent = new GameObject("gridSplitBlocksParent");
         gridSplitBlocksParent.transform.parent = this.transform;
 
-        gridBlockUnits = new List<ComplexBlockUnit>();
+        gridBlocks = new List<GridSplitBlock>();
 
         foreach (ComponentBlockDefinition componentBlock in componentBlocks)
         {
-            ComplexBlockUnit unit = new ComplexBlockUnit();
-
-            PartialComplexBlock partialBlock = new PartialComplexBlock();
-            partialBlock.gridPosition = Map.GetIntVector3(transform.position +  transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
+            GridSplitBlock block1 = new GridSplitBlock();
+            block1.gridPosition = Map.GetIntVector3(transform.position +  transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
 
             Block newBlock = gridSplitBlocksParent.AddComponent<Block>();
             newBlock.blockSides = componentBlock.sides;
-            partialBlock.block = newBlock;
+            block1.block = newBlock;
 
-            unit.mainBlock = partialBlock;
-
-            gridBlockUnits.Add(unit);
+            gridBlocks.Add(block1);
         }
     }
 
-    public List<ComplexBlockUnit> GetGridBlockUnits()
+    public List<GridSplitBlock> GetGridSplitBlocks()
     {
-        return gridBlockUnits;
+        return gridBlocks;
     }
 
 
