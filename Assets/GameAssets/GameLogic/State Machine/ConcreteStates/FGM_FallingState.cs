@@ -84,7 +84,7 @@ public class FGM_FallingState : FullGridMoveableState
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        if (startingBlock != null && startingBlock.GetOrientedTopSide(_fgm.gravityDirection).type == centerType.GROUND)
+        if (startingBlock != null && startingBlock.GetOrientedTopSide(_fgm.gravityDirection).centerType == CenterType.GROUND)
         {
             destBlock = startingBlock;
         }

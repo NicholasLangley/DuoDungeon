@@ -134,11 +134,18 @@ public class Map
         return (GetStaticBlock(GetIntVector3(gridPosition)));
     }
 
+    //assumes input vector is very close to int already, and rounds to int to remove any floating point differences from small errors in transfrom positioning 
+    //DO NOT USE TO DETERMINE WHICH GRID SPACE AN OFFSET BLOCK IS IN AS THIS MAY ROUND UP
     public static Vector3Int GetIntVector3(Vector3 floatVector)
     {
         return new Vector3Int(Mathf.RoundToInt(floatVector.x), Mathf.RoundToInt(floatVector.y), Mathf.RoundToInt(floatVector.z));
     }
 
+    //Rounds to floor to get grid space vector is a part of
+    public static Vector3Int GetGridSpace(Vector3 floatVector)
+    {
+        return new Vector3Int(Mathf.FloorToInt(floatVector.x), Mathf.FloorToInt(floatVector.y), Mathf.FloorToInt(floatVector.z));
+    }
 
     public void SaveMapToFile(string filename)
     {

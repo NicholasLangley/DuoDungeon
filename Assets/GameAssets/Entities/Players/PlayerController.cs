@@ -38,8 +38,8 @@ public class PlayerController : ICommandable
 
     public void SetPlayerGravity()
     {
-        redPlayer.setGravityDirection(-redPlayer.transform.up);
-        bluePlayer.setGravityDirection(-bluePlayer.transform.up);
+        redPlayer.SetGravityDirection(-redPlayer.transform.up);
+        bluePlayer.SetGravityDirection(-bluePlayer.transform.up);
     }
 
     public List<Command> GetCommands()

@@ -5,34 +5,102 @@ using UnityEngine;
 [System.Serializable]
 public class BlockSide
 {
-    public enum edgeEnterType { WALK, HOP, NONE }
-    public enum centerType { GROUND, NOT_GROUND }
+    public enum EdgeEnterType { WALK, HOP, NONE }
+    public enum CenterType { GROUND, NOT_GROUND }
 
     [Header("CenterType")]
-    public centerType type;
+    public CenterType centerType;
     public float centerHeight;
 
     [Header("Forward")]
-    public edgeEnterType forwardEdgeType;
+    public EdgeEnterType forwardEdgeType;
     public float forwardEdgeHeight;
 
     [Header("Backward")]
-    public edgeEnterType backwardEdgeType;
+    public EdgeEnterType backwardEdgeType;
     public float backwardEdgeHeight;
 
     [Header("Left")]
-    public edgeEnterType leftEdgeType;
+    public EdgeEnterType leftEdgeType;
     public float leftEdgeHeight;
 
     [Header("Right")]
-    public edgeEnterType rightEdgeType;
+    public EdgeEnterType rightEdgeType;
     public float rightEdgeHeight;
+
+    public BlockSide()
+    {
+        centerType = CenterType.GROUND;
+        centerHeight = 0;
+
+        forwardEdgeType = EdgeEnterType.WALK;
+        forwardEdgeHeight = 0;
+
+        backwardEdgeType = EdgeEnterType.WALK;
+        backwardEdgeHeight = 0;
+
+        leftEdgeType = EdgeEnterType.WALK;
+        leftEdgeHeight = 0;
+
+        rightEdgeType = EdgeEnterType.WALK; 
+        rightEdgeHeight = 0;
+    }
+    public void AddHeightOffset(float offset)
+    {
+        centerHeight += offset;
+        forwardEdgeHeight += offset;
+        backwardEdgeHeight += offset;
+        leftEdgeHeight += offset;
+        rightEdgeHeight += offset;
+    }
+
+    public bool CheckIfSideExtendsToNextGrid()
+    {
+        return (centerHeight > 1.0f || forwardEdgeHeight > 1.0f || backwardEdgeHeight > 1.0f || leftEdgeHeight > 1.0f || rightEdgeHeight > 1.0f);
+    }
+
+    public void CopySide(BlockSide side)
+    {
+        centerType = side.centerType;
+        centerHeight = side.centerHeight;
+
+        forwardEdgeType = side.forwardEdgeType;
+        forwardEdgeHeight = side.forwardEdgeHeight;
+
+        backwardEdgeType = side.backwardEdgeType;
+        backwardEdgeHeight = side.backwardEdgeHeight;
+
+        leftEdgeType = side.leftEdgeType;
+        leftEdgeHeight = side.leftEdgeHeight;
+
+        rightEdgeType = side.rightEdgeType;
+        rightEdgeHeight = side.rightEdgeHeight;
+    }
 }
 
 [System.Serializable]
 public class BlockSideDefinitions
 {
     public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
+
+    public BlockSideDefinitions()
+    {
+        topSide = new BlockSide();
+        leftSide = new BlockSide();
+        rightSide = new BlockSide();
+        bottomSide = new BlockSide();
+        frontSide = new BlockSide();
+        backSide = new BlockSide();
+    }
+    public void CopyBlockSides(BlockSideDefinitions sides)
+    {
+        topSide.CopySide(sides.topSide);
+        leftSide.CopySide(sides.leftSide);
+        rightSide.CopySide(sides.rightSide);
+        bottomSide.CopySide(sides.bottomSide);
+        frontSide.CopySide(sides.frontSide);
+        backSide.CopySide(sides.backSide);
+    }
 }
 
 public class Block : MonoBehaviour, IPlaceable
