@@ -39,7 +39,7 @@ public class MapBuilder
             Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
             IPlaceable placeable = newBlockObject.GetComponent<IPlaceable>();
             if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-            else { map.AddStaticBlock(intPosition, newBlockObject.GetComponent<Block>()); }
+            else { map.AddStaticBlock(intPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetGridPosition(intPosition); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 

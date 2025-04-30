@@ -279,7 +279,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         //check for entities
         FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(destinationToCheck);
-        if (blockingFGM != null) { return true; }
+        if (blockingFGM != null && !(blockingFGM is Pushable)) { return true; }
         return false;
     }
 
@@ -344,7 +344,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         Block groundBlock = map.GetStaticBlock(groundPos);
-        if (groundBlock == null) { groundBlock = map.CheckGridForComplexBlock(groundPos, gameObject); }
+        if (groundBlock == null) { groundBlock = map.CheckGridForComplexBlock(groundPos, gameObject);  }
 
         if (groundBlock == null || (groundBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND) || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 

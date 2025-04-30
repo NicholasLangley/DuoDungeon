@@ -12,13 +12,6 @@ public class ComponentBlockDefinition
     public BlockSideDefinitions sides;
 }
 
-//a partial block that was split to be alligned with the grid
-public class GridSplitBlock
-{
-    public Vector3Int gridPosition;
-    public Block block;
-}
-
 //Blocks that may move / occupy multiple grid spaces at once. Will calculate sub blocks that conform to the grid
 public class ComplexBlock : MonoBehaviour, IPlaceable
 {
@@ -28,7 +21,7 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
 
     GameObject gridSplitBlocksParent;
 
-    List<GridSplitBlock> gridBlocks;
+    List<Block> gridBlocks;
 
     [SerializeField]
     List<ComponentBlockDefinition> componentBlocks;
@@ -53,7 +46,7 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         gridSplitBlocksParent = new GameObject("gridSplitBlocksParent");
         gridSplitBlocksParent.transform.parent = this.transform;
 
-        gridBlocks = new List<GridSplitBlock>();
+        gridBlocks = new List<Block>();
 
         float distanceOffsetFromGrid = 0.0f;
         //used to find side of block affected, offset will be in the opposite direction of this
@@ -73,15 +66,12 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         {
             foreach (ComponentBlockDefinition componentBlock in componentBlocks)
             {
-                GridSplitBlock block = new GridSplitBlock();
-                block.gridPosition = Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
+                Block singleBlock = gridSplitBlocksParent.AddComponent<Block>();
+                singleBlock.blockSides = new BlockSideDefinitions();
+                singleBlock.blockSides.CopyBlockSides(componentBlock.sides);
+                singleBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
 
-                Block newBlock = gridSplitBlocksParent.AddComponent<Block>();
-                newBlock.blockSides = new BlockSideDefinitions();
-                newBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                block.block = newBlock;
-
-                gridBlocks.Add(block);
+                gridBlocks.Add(singleBlock);
             }
             return;
         }
@@ -90,45 +80,39 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         foreach (ComponentBlockDefinition componentBlock in componentBlocks)
         {
             //The block that is still in the initial unoffset block grid
-            GridSplitBlock initialGridBlock = new GridSplitBlock();
-            initialGridBlock.gridPosition = Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z));
+            Block transformAlignedBlock = gridSplitBlocksParent.AddComponent<Block>();
+            transformAlignedBlock.blockSides = new BlockSideDefinitions();
+            transformAlignedBlock.blockSides.CopyBlockSides(componentBlock.sides);
+            transformAlignedBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
 
-            Block newBlock = gridSplitBlocksParent.AddComponent<Block>();
-            newBlock.blockSides = new BlockSideDefinitions();
-            newBlock.blockSides.CopyBlockSides(componentBlock.sides);
-            initialGridBlock.block = newBlock;
-
-            BlockSide topOffsetSide = newBlock.GetOrientedTopSide(gravityDir);
+            BlockSide topOffsetSide = transformAlignedBlock.GetOrientedTopSide(gravityDir);
             topOffsetSide.AddHeightOffset(distanceOffsetFromGrid);
      
-            BlockSide bottomOffsetSide = newBlock.GetOrientedTopSide(-gravityDir);
+            BlockSide bottomOffsetSide = transformAlignedBlock.GetOrientedTopSide(-gravityDir);
             bottomOffsetSide.AddHeightOffset(-distanceOffsetFromGrid);
 
-            gridBlocks.Add(initialGridBlock);
+            gridBlocks.Add(transformAlignedBlock);
 
             if(topOffsetSide.CheckIfSideExtendsToNextGrid())
             {
                 //the block that forms due to the offset pushing the component block into a new grid
-                GridSplitBlock offsetGridBlock = new GridSplitBlock();
-                offsetGridBlock.gridPosition = Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir);
-                Block newOffsetBlock = gridSplitBlocksParent.AddComponent<Block>();
-                newOffsetBlock.blockSides = new BlockSideDefinitions();
-                newOffsetBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                offsetGridBlock.block = newOffsetBlock;
-
+                Block OffsetBlock = gridSplitBlocksParent.AddComponent<Block>();
+                OffsetBlock.blockSides = new BlockSideDefinitions();
+                OffsetBlock.blockSides.CopyBlockSides(componentBlock.sides);
+                OffsetBlock.SetGridPosition(Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir));
                 
-                topOffsetSide = newOffsetBlock.GetOrientedTopSide(gravityDir);
+                topOffsetSide = OffsetBlock.GetOrientedTopSide(gravityDir);
                 topOffsetSide.AddHeightOffset(distanceOffsetFromGrid - 1.0f);
 
-                bottomOffsetSide = newOffsetBlock.GetOrientedTopSide(-gravityDir);
+                bottomOffsetSide = OffsetBlock.GetOrientedTopSide(-gravityDir);
                 bottomOffsetSide.AddHeightOffset(-distanceOffsetFromGrid + 1.0f);
 
-                gridBlocks.Add(offsetGridBlock);
+                gridBlocks.Add(OffsetBlock);
             }
         }
     }
 
-    public List<GridSplitBlock> GetGridSplitBlocks()
+    public List<Block> GetGridBlocks()
     {
         return gridBlocks;
     }

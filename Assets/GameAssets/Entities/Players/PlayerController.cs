@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -126,22 +127,23 @@ public class PlayerController : ICommandable
         //check if blocking object is a pushable object
         if (redBlocked)
         {
-            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextRedPos);
-            if (blockingFGM != null && blockingFGM is Pushable) 
+            Block destinationBlock = redPlayer.map.CheckGridForComplexBlock(nextRedPos, redPlayer.gameObject);
+            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null) 
             {
-                Pushable pushable = blockingFGM as Pushable;
+                Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
                 bool pushing = pushable.AttemptPush(redPlayer.transform);
                 if (pushing) { redBlocked = false; }
             }
         }
         if(blueBlocked)
         {
-            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextBluePos);
-            if (blockingFGM != null && blockingFGM is Pushable)
+            Block destinationBlock = bluePlayer.map.CheckGridForComplexBlock(nextRedPos, bluePlayer.gameObject);
+            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
-                Pushable pushable = blockingFGM as Pushable;
+
+                Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
                 bool pushing = pushable.AttemptPush(bluePlayer.transform);
-                if (pushing) { blueBlocked = false; }
+                if (pushing) { redBlocked = false; }
             }
         }
 
