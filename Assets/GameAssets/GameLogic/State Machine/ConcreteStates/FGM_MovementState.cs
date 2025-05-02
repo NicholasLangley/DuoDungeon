@@ -37,7 +37,7 @@ public class FGM_MovementState : FullGridMoveableState
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
         Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
-        Block destBlock = _fgm.map.GetStaticBlock(destPosition);
+        Block destBlock = _fgm.map.GetBlockAtGridPosition(destPosition, _fgm.gameObject, _fgm.gravityDirection);
         //if (destBlock == null) { Debug.Log(destPosition); }
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
@@ -163,7 +163,7 @@ public class FGM_MovementState : FullGridMoveableState
             {
                 Vector3 belowDestPos = destPosition;
                 belowDestPos -= _fgm.transform.up;
-                Block belowDestBlock = _fgm.map.GetStaticBlock(belowDestPos);
+                Block belowDestBlock = _fgm.map.GetBlockAtGridPosition(belowDestPos, _fgm.gameObject, _fgm.gravityDirection);
                 if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_fgm.transform.up) == 1.0f) 
                 {
                     switch (downDir)

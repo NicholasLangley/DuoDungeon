@@ -45,6 +45,8 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         Destroy(gridSplitBlocksParent);
         gridSplitBlocksParent = new GameObject("gridSplitBlocksParent");
         gridSplitBlocksParent.transform.parent = this.transform;
+        gridSplitBlocksParent.transform.localPosition = Vector3.zero;
+        gridSplitBlocksParent.transform.localRotation = Quaternion.identity;
 
         gridBlocks = new List<Block>();
 

@@ -127,7 +127,7 @@ public class PlayerController : ICommandable
         //check if blocking object is a pushable object
         if (redBlocked)
         {
-            Block destinationBlock = redPlayer.map.CheckGridForComplexBlock(nextRedPos, redPlayer.gameObject);
+            Block destinationBlock = redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
             if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null) 
             {
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
@@ -137,7 +137,7 @@ public class PlayerController : ICommandable
         }
         if(blueBlocked)
         {
-            Block destinationBlock = bluePlayer.map.CheckGridForComplexBlock(nextRedPos, bluePlayer.gameObject);
+            Block destinationBlock = bluePlayer.map.GetBlockAtGridPosition(nextRedPos, bluePlayer.gameObject, bluePlayer.gravityDirection);
             if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
 

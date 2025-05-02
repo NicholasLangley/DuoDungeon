@@ -212,13 +212,13 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check for stairs going down
-        Block straightForwardDestBlock = map.GetStaticBlock(nextPos);
+        Block straightForwardDestBlock = map.GetBlockAtGridPosition(nextPos, gameObject, gravityDirection);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
         if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && (straightForwardDestBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND))
         {
             Vector3 belowDest = nextPos - transform.up;
 
-            Block belowDestBlock = map.GetStaticBlock(belowDest);
+            Block belowDestBlock = map.GetBlockAtGridPosition(belowDest, gameObject, gravityDirection);
             if (belowDestBlock != null && (belowDestBlock.GetOrientedTopSide(-transform.up).centerType == CenterType.GROUND) && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
@@ -263,8 +263,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     {
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
         //block collision
-        Block destinationBlock = map.GetStaticBlock(destinationToCheck);
-        if (destinationBlock == null) { destinationBlock = map.CheckGridForComplexBlock(destinationToCheck, gameObject); }
+        Block destinationBlock = map.GetBlockAtGridPosition(destinationToCheck, gameObject, gravityDirection);
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
@@ -272,7 +271,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
-                Block headCheckBlock = map.GetStaticBlock(Map.GetIntVector3(headCheckPos));
+                Block headCheckBlock = map.GetBlockAtGridPosition(Map.GetIntVector3(headCheckPos), gameObject, transform.up);
                 if (headCheckBlock != null) { return true; }
             }
         }
@@ -343,8 +342,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 break;
         }
 
-        Block groundBlock = map.GetStaticBlock(groundPos);
-        if (groundBlock == null) { groundBlock = map.CheckGridForComplexBlock(groundPos, gameObject);  }
+        Block groundBlock = map.GetBlockAtGridPosition(groundPos, gameObject, gravityDirection);
 
         if (groundBlock == null || (groundBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND) || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 

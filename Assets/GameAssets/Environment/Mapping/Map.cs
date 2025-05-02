@@ -79,12 +79,12 @@ public class Map
         currentComplexBlocks.Add(complexBlock);
     }
 
-    public Block CheckGridForComplexBlock(Vector3 position, GameObject requestor)
+    Block GetComplexBlockPart(Vector3 position, GameObject requestor)
     {
-        return CheckGridForComplexBlock(Map.GetIntVector3(position), requestor);
+        return GetComplexBlockPart(Map.GetIntVector3(position), requestor);
     }
 
-    public Block CheckGridForComplexBlock(Vector3Int position, GameObject requestor)
+    Block GetComplexBlockPart(Vector3Int position, GameObject requestor)
     {
         foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
@@ -103,6 +103,24 @@ public class Map
     }
 
     #endregion
+
+    public Block GetBlockAtGridPosition(Vector3 pos, GameObject requestor, Vector3 downVector)
+    {
+        return GetBlockAtGridPosition(Map.GetIntVector3(pos), requestor, downVector);
+    }
+
+    public Block GetBlockAtGridPosition(Vector3Int pos, GameObject requestor, Vector3 downVector)
+    {
+        Block staticBlock = GetStaticBlock(pos);
+        Block complexBlockPart = GetComplexBlockPart(pos, requestor);
+
+        if (staticBlock == null) { return complexBlockPart; }
+        if (complexBlockPart == null) { return staticBlock; }
+
+        //need to find highest block relative to requestor and return that
+        if (staticBlock.GetOrientedTopSide(downVector).centerHeight > complexBlockPart.GetOrientedTopSide(downVector).centerHeight) { return staticBlock; }
+        return complexBlockPart;
+    }
 
     public Block GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
@@ -129,7 +147,7 @@ public class Map
                 break;
         }
 
-        Block complexBlock = CheckGridForComplexBlock(gridPosition, requestor);
+        Block complexBlock = GetComplexBlockPart(gridPosition, requestor);
         if (complexBlock != null ) { return complexBlock; }
         return (GetStaticBlock(GetIntVector3(gridPosition)));
     }

@@ -78,7 +78,7 @@ public class FGM_FallingState : FullGridMoveableState
             return;
         }
 
-        Block startingBlock = _fgm.map.GetStaticBlock(baseBlockPosition);
+        Block startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
         Block destBlock;
         fallDestination = baseBlockPosition;
 
@@ -115,7 +115,7 @@ public class FGM_FallingState : FullGridMoveableState
                     break;
             }
             
-            destBlock = _fgm.map.GetStaticBlock(fallDestination);
+            destBlock = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
         }
         
         if (destBlock != null)
