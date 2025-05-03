@@ -36,6 +36,15 @@ public class FGM_MovementState : FullGridMoveableState
 
         Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
         Block destBlock = _fgm.map.GetBlockAtGridPosition(Map.GetGridSpace(destPosition), _fgm.gameObject, _fgm.gravityDirection);
+        //need to check if the block is being pushed, so we can ignore it
+        if(destBlock != null)
+        {
+            Pushable push = destBlock.gameObject.transform.parent.gameObject.GetComponent<Pushable>();
+            if (push != null) 
+            {
+                if (push.toBePushedThisRound) { destBlock = null; }
+            }
+        }
         //if (destBlock == null) { Debug.Log(destPosition); }
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
