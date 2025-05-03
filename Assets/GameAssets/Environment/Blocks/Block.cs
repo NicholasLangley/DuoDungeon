@@ -160,20 +160,20 @@ public class Block : MonoBehaviour, IPlaceable
             float maxClimb = (e.maxStairClimbHeight + entityExitHeight);
             float climbNeeded = enteringEdgeHeight;
             if (climbNeeded <= maxClimb) { return true; }
-            Debug.Log("failed climbing stacked block");
+            //Debug.Log("failed climbing stacked block");
         }
         //same height or greater entry
         else if (IsEntityClimbingOrStayingSameHeight(gridPosition, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
         {
             if (enteringEdgeHeight <= e.maxStairClimbHeight + entityExitHeight) { return true; }
-            Debug.Log("failed climbing Or staying same height");
+            //Debug.Log("failed climbing Or staying same height");
         }
         //entering from above
         else
         {
             //Debug.Log("exit - climb: " + (entityExitHeight - e.maxStairClimbHeight) + "\n enter: " + enteringEdgeHeight);
             if (entityExitHeight - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
-            Debug.Log("failed entering from above");
+            //Debug.Log("failed entering from above");
         }
 
         return false;
@@ -181,8 +181,6 @@ public class Block : MonoBehaviour, IPlaceable
 
     public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection entityDownDir)
     {
-        DownDirection blockDownDir = Entity.ConvertVectorToDownDirection(-transform.up);
-
         //find forward, normal and relative direction vectors of entity
         Vector3 relativeDirection = gridPosition - entityTransform.position;
         Vector3 forwardVector;

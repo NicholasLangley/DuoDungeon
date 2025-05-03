@@ -289,12 +289,17 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         float downDirectionEntityHeight = Block.GetPositionsDownOrientedHeight(transform.position, downDir);
 
         Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
-        if (currentBlock != null && (currentBlock.GetOrientedTopSide(-transform.up).centerType == CenterType.GROUND))
+        if (currentBlock != null && (currentBlock.GetOrientedTopSide(gravityDirection).centerType == CenterType.GROUND))
         {
-            float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.transform.position, downDir);
+            float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.gridPosition, downDir);
 
             //In block but floating above it and need to fall
-            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.GetMidBlockHeight(-transform.up) > 0.01f) { /*Debug.Log("floating in block");*/ return false; }
+            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.GetMidBlockHeight(gravityDirection) > 0.01f) 
+            {
+                /*Debug.Log("floating in block");*/
+                //Debug.Log("Entity Height: " + downDirectionEntityHeight + "\nBlock Height: " + blockDownDirectionHeight + "\nMidBlock Height: " + currentBlock.GetMidBlockHeight(gravityDirection)); 
+                return false; 
+            }
             return true;
         }
         //floating in empty block
