@@ -131,7 +131,7 @@ public class PlayerController : ICommandable
             if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null) 
             {
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
-                bool pushing = pushable.AttemptPush(redPlayer.transform);
+                bool pushing = pushable.AttemptPush(redPlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing) { redBlocked = false; }
             }
         }
@@ -142,7 +142,7 @@ public class PlayerController : ICommandable
             {
 
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
-                bool pushing = pushable.AttemptPush(bluePlayer.transform);
+                bool pushing = pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing) { redBlocked = false; }
             }
         }

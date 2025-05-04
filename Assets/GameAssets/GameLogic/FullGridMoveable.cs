@@ -382,6 +382,28 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         return DownDirection.Zforward;
     }
 
+    //uses the projected block destination and returns a vector to it with the vertical component removed. Use this for telling which direction a block is going to be pushed
+    public Vector3 GetHorizontalMoveVector()
+    {
+        Vector3 horizontalVector = projectedDestinationBlock - Map.GetGridSpace(transform.position);
+        switch (GetCurrentDownDirection())
+        {
+            case DownDirection.Ydown:
+            case DownDirection.Yup:
+                horizontalVector.y = 0; 
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                horizontalVector.x = 0;
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                horizontalVector.z = 0;
+                break;
+        }
+        return horizontalVector;
+    }
+
     #endregion
 
     #region Commands

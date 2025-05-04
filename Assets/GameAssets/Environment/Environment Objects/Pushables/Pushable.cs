@@ -72,31 +72,29 @@ public class Pushable : FullGridMoveable
 
      #endregion
 
-    public bool AttemptPush(Transform pusher)
+    public bool AttemptPush(Vector3 pushDirectionVector, Block pushedBlockComponent)
     {
         if(true)
         {
             toBePushedThisRound = true;
-            pushDirection = getLocalPushDirection(pusher);
+            pushDirection = getLocalPushDirection(pushDirectionVector);
             return true;
         }
 
         return false;
     }
 
-    MovementDirection getLocalPushDirection(Transform pusher)
+    MovementDirection getLocalPushDirection(Vector3 pushDirectionVector)
     {
-        Vector3 pushVector = transform.position - pusher.position;
-
-        if(pushVector == transform.forward)
+        if(pushDirectionVector == transform.forward)
         {
             return MovementDirection.FORWARD;
         }
-        else if (pushVector == -transform.forward)
+        else if (pushDirectionVector == -transform.forward)
         {
             return MovementDirection.BACKWARD;
         }
-        else if (pushVector == transform.right)
+        else if (pushDirectionVector == transform.right)
         {
             return MovementDirection.RIGHT;
         }
