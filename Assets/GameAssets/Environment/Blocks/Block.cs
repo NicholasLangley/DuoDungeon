@@ -153,7 +153,6 @@ public class Block : MonoBehaviour, IPlaceable
             entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.gridPosition, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(gridPosition, e.transform.up, downDir);
         }
         else { entityExitHeight = GetPositionsDownOrientedHeight(e.transform.position, downDir); }
-
         //if player climbing up a level and still has to climb this block
         if (IsEntityClimbingStackedBlock(gridPosition, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
         {
@@ -172,7 +171,7 @@ public class Block : MonoBehaviour, IPlaceable
         else
         {
             //Debug.Log("exit - climb: " + (entityExitHeight - e.maxStairClimbHeight) + "\n enter: " + enteringEdgeHeight);
-            if (entityExitHeight - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
+            if (entityExitHeight <= enteringEdgeHeight + e.maxStairClimbHeight && entityExitHeight >= enteringEdgeHeight - e.maxStairClimbHeight) { return true; }
             //Debug.Log("failed entering from above");
         }
 

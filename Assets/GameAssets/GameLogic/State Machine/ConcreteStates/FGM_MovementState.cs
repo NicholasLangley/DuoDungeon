@@ -130,7 +130,7 @@ public class FGM_MovementState : FullGridMoveableState
         if (destBlock != null && srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)) <= _fgm.maxStairClimbHeight)
         {
             float destBlockHeight = destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-            Debug.Log("climbdown within partial: " + destBlockHeight);
+            //Debug.Log("climbdown within partial: " + destBlockHeight);
             switch (downDir)
             {
                 case DownDirection.Ydown:
