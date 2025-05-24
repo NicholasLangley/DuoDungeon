@@ -160,12 +160,6 @@ public class ObjectPlacer : MonoBehaviour
 
     public void PlaceBlock(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
-        if(string.Compare(baseID, "DELETE") == 0)
-        {
-            RemoveBlock(position);
-            return;
-        }
-
         GameObject newBlockObject = Instantiate(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), mapTransform.transform);
         Block newBlock = newBlockObject.GetComponent<Block>();
         newBlockObject.transform.position = position;
@@ -176,7 +170,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public void RemoveBlock(Vector3Int position)
     {
-        map.RemoveStaticBlock(position);
+        map.RemoveBlockAtLocation(position);
         return;
     }
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UIElements;
 
 public class Map
 {
@@ -102,7 +103,30 @@ public class Map
         return null;
     }
 
+    void RemoveComplexBlockAtLocation(Vector3 position)
+    {
+        Block blockPart = GetComplexBlockPart(position, null);
+        if (blockPart == null) { return; }
+        ComplexBlock  complex = blockPart.gameObject.GetComponent<ComplexBlock>();
+        currentComplexBlocks.Remove(complex);
+        GameObject.Destroy(complex.gameObject);
+    }
+
     #endregion
+
+    public void RemoveBlockAtLocation(Vector3 position)
+    {
+        Block block = GetBlockAtGridPosition(position, null, Vector3.down);
+        if (block == null) { return; }
+        if (block.gameObject.GetComponent<ComplexBlock>() != null)
+        {
+            RemoveComplexBlockAtLocation(position);
+        }
+        else
+        {
+            RemoveStaticBlock(Map.GetIntVector3(position));
+        }
+    }
 
     public Block GetBlockAtGridPosition(Vector3 pos, GameObject requestor, Vector3 downVector)
     {
