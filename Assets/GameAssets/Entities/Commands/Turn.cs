@@ -30,4 +30,12 @@ public class Turn
             TurnActions[i][j].Undo();
         }
     }
+
+    public void redoLayer(int i)
+    {
+        for (int j = 0; j < TurnActions[i].Count; j++)
+        {
+            TurnActions[i][j].Execute();
+        }
+    }
 }

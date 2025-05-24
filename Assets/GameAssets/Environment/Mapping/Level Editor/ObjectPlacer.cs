@@ -118,38 +118,44 @@ public class ObjectPlacer : MonoBehaviour
         placementIndicatorArrow.transform.SetParent(objectPlacementIndicator.transform, false);
     }
 
-    public Command PlaceCurrentObject()
+    public List<Command> PlaceCurrentObject()
     {
         if (EventSystem.current.IsPointerOverGameObject() || isRotating) { return null; }
 
-        Command cmd = null;
+        List<Command> commands = new List<Command>();
 
-        if (currentPlacementType == objectType.block && currentBlock != null) { cmd = GetPlaceBlockCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { cmd = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
+        if (currentPlacementType == objectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
 
-        if (cmd != null) { cmd.Execute(); }
-        return cmd;
+        if (commands.Count > 0) 
+        {
+            foreach (Command cmd in commands) { cmd.Execute(); }
+        }
+        return commands;
     }
 
-    Command GetPlaceBlockCommand(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
+    List<Command> GetPlaceBlockCommands(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
         if (IsPositionOutOfBounds(position)) 
         {
             Debug.Log("block out of bounds");
             return null;
         }
+        List<Command> commands = new List<Command>();
 
         Block preExistingBlock = map.GetStaticBlock(position);
-        PlaceBlockCommand cmd;
+        //TODO COMPLEX BLOCK CHECK
+
         if(preExistingBlock != null)
         {
-            cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            commands.Add(removeCmd);
         }
-        else
-        {
-            cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
-        }
-        return cmd;
+
+        PlaceBlockCommand cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
+        commands.Add(cmd);
+
+        return commands;
     }
 
     public void PlaceBlock(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
@@ -174,27 +180,41 @@ public class ObjectPlacer : MonoBehaviour
         return;
     }
 
-    Command GetPlacePlayerCommand(Vector3Int position, Quaternion rotation, bool isRedPlayer)
+    List<Command> GetPlacePlayerCommand(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
         if (IsPositionOutOfBounds(position))
         {
             Debug.Log("player out of bounds");
             return null;
         }
+        List<Command> commands = new List<Command>();
 
         Block preExistingBlock = map.GetStaticBlock(position);
+        //TODO COMPLEX BLOCKS
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
-        PlacePlayerCommand cmd;
+
         if (preExistingBlock != null)
         {
-            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            commands.Add(removeCmd);
         }
-        else
+        //checked for player collision
+        if(isRedPlayer && position == Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position))
         {
-            cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot);
+            PlacePlayerCommand moveOtherPlayerCmd = new PlacePlayerCommand(this, oldPlayerPos, oldPlayerRot, !isRedPlayer, Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position), bluePlayerPlacementIndicator.transform.rotation);
+            commands.Add(moveOtherPlayerCmd);
         }
-        return cmd;
+        else if (!isRedPlayer && position == Map.GetIntVector3(redPlayerPlacementIndicator.transform.position))
+        {
+            PlacePlayerCommand moveOtherPlayerCmd = new PlacePlayerCommand(this, oldPlayerPos, oldPlayerRot, isRedPlayer, Map.GetIntVector3(redPlayerPlacementIndicator.transform.position), redPlayerPlacementIndicator.transform.rotation);
+            commands.Add(moveOtherPlayerCmd);
+        }
+
+        PlacePlayerCommand cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot);
+        commands.Add(cmd);
+
+        return commands;
     }
 
     public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)

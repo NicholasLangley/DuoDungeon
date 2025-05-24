@@ -5,12 +5,11 @@ using UnityEngine;
 public class PlacePlayerCommand : Command
 {
     Vector3Int placementLocation, originalPlayerPosition;
-    Quaternion playerRotation, originalPlayerRotation, originalBlockRotation;
-    string originalListID, originalBaseID, originalVarientID;
+    Quaternion playerRotation, originalPlayerRotation;
     bool isRedPlayer;
     ObjectPlacer objectPlacer;
 
-    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation, string oldListID = "DELETE", string oldBaseID = "DELETE", string oldVarientID = "DELETE", Quaternion oldRotation = new Quaternion())
+    public PlacePlayerCommand(ObjectPlacer placer, Vector3Int destination, Quaternion rotation, bool isRed, Vector3Int oldPlayerPosition, Quaternion oldPlayerRotation)
     {
         placementLocation = destination;
 
@@ -19,11 +18,6 @@ public class PlacePlayerCommand : Command
 
         originalPlayerPosition = oldPlayerPosition;
         originalPlayerRotation = oldPlayerRotation;
-
-        originalListID = oldListID;
-        originalBaseID = oldBaseID;
-        originalVarientID = oldVarientID;
-        originalBlockRotation = oldRotation;
 
         objectPlacer = placer;
     }
@@ -36,6 +30,5 @@ public class PlacePlayerCommand : Command
     public override void Undo()
     {
         objectPlacer.PlacePlayer(originalPlayerPosition, originalPlayerRotation, isRedPlayer);
-        if (string.Compare(originalBaseID, "DELETE") != 0) { objectPlacer.PlaceBlock(placementLocation, originalBlockRotation, originalListID, originalBaseID, originalVarientID); }
     }
 }
