@@ -107,7 +107,7 @@ public class Map
     {
         Block blockPart = GetComplexBlockPart(position, null);
         if (blockPart == null) { return; }
-        ComplexBlock  complex = blockPart.gameObject.GetComponent<ComplexBlock>();
+        ComplexBlock  complex = blockPart.GetComponentInParent<ComplexBlock>();
         currentComplexBlocks.Remove(complex);
         GameObject.Destroy(complex.gameObject);
     }
@@ -117,8 +117,8 @@ public class Map
     public void RemoveBlockAtLocation(Vector3 position)
     {
         Block block = GetBlockAtGridPosition(position, null, Vector3.down);
-        if (block == null) { return; }
-        if (block.gameObject.GetComponent<ComplexBlock>() != null)
+        if (block == null){ return; }
+        if (block.GetComponentInParent<ComplexBlock>() != null)
         {
             RemoveComplexBlockAtLocation(position);
         }

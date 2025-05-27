@@ -19,10 +19,25 @@ public class BlockSelector : MonoBehaviour
         {
             GameObject newButton = Instantiate(blockButtonPrefab, blockButtonGrid.transform);
             BlockSelectionButton blockButton = newButton.GetComponent<BlockSelectionButton>();
-            GameObject blockGameObject = varientList.GetBlock("blank");
-            Block block = blockGameObject.GetComponent<Block>();
-            blockButton.SetBlock(blockGameObject, varientList.baseID);
-            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, block.baseID, block.varientID));
+            GameObject objectGameObject = varientList.GetBlock("blank");
+
+            string baseID;
+            string varientID;
+            ComplexBlock complexBlock = objectGameObject.GetComponent<ComplexBlock>();
+            if(complexBlock != null)
+            {
+                baseID = complexBlock.baseID;
+                varientID = complexBlock.varientID;
+            }
+            else
+            {
+                Block block = objectGameObject.GetComponent<Block>();
+                baseID = block.baseID;
+                varientID = block.varientID;
+            }
+            
+            blockButton.SetBlock(objectGameObject, varientList.baseID);
+            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, baseID, varientID));
         }
     }
 

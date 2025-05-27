@@ -143,12 +143,27 @@ public class ObjectPlacer : MonoBehaviour
         }
         List<Command> commands = new List<Command>();
 
-        Block preExistingBlock = map.GetStaticBlock(position);
-        //TODO COMPLEX BLOCK CHECK
-
+        Block preExistingBlock = map.GetBlockAtGridPosition(position, null, Vector3.down);
         if(preExistingBlock != null)
         {
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            string preExistingListID;
+            string preExistingBaseID;
+            string preExistingVarID;
+
+            ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
+            if (preExistingComplexBlock != null)
+            {
+                preExistingListID = preExistingComplexBlock.listID;
+                preExistingBaseID = preExistingComplexBlock.baseID;
+                preExistingVarID = preExistingComplexBlock.varientID;
+            }
+            else
+            {
+                preExistingListID = preExistingBlock.listID;
+                preExistingBaseID = preExistingBlock.baseID;
+                preExistingVarID = preExistingBlock.varientID;
+            }
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
             commands.Add(removeCmd);
         }
 
@@ -162,10 +177,19 @@ public class ObjectPlacer : MonoBehaviour
     {
         GameObject newBlockObject = Instantiate(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), mapTransform.transform);
         Block newBlock = newBlockObject.GetComponent<Block>();
+        if (newBlock != null)
+        {
+            newBlock.listID = listID;
+            map.AddStaticBlock(position, newBlock);
+        }
+        else
+        {
+            ComplexBlock complexBlock = newBlockObject.GetComponent <ComplexBlock>();
+            complexBlock.listID = listID;
+            map.AddComplexBlock(complexBlock);
+        }
         newBlockObject.transform.position = position;
         newBlockObject.transform.rotation = rotation;
-        newBlock.listID = listID;
-        map.AddStaticBlock(position, newBlock);
     }
 
     public void RemoveBlock(Vector3Int position)

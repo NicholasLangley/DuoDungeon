@@ -35,8 +35,11 @@ public class LevelEditorController : MonoBehaviour
         undoTurns = new Stack<Turn>();
         redoTurns = new Stack<Turn>();
 
-        //TODO populate multiple lists
-        blockSelector.populateButtons(ultimateList.GetMasterList("Basic Block"));
+        //TODO populate different tabs
+        foreach (BlockMasterList blocklist in ultimateList.ultimateList)
+        {
+            blockSelector.populateButtons(blocklist);
+        }
     }
 
     // Update is called once per frame
