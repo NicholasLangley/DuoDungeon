@@ -136,7 +136,7 @@ public class ObjectPlacer : MonoBehaviour
 
     List<Command> GetPlaceBlockCommands(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
-        if (IsPositionOutOfBounds(position)) 
+        if (IsPositionOutOfBounds(position))
         {
             Debug.Log("block out of bounds");
             return null;
@@ -157,8 +157,18 @@ public class ObjectPlacer : MonoBehaviour
         }
 
         List<ComplexBlock> alreadyCollidedComplexBlocks = new List<ComplexBlock>();
+        bool canPlaceBlock = true;
         foreach (Vector3Int positionCheck in positionsToCheck)
         {
+            //don't place block if colliding with player?
+            //todo maybe allow it and delete the player, but then don't allow this klind of map to be playable?
+            if (positionCheck == Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) || positionCheck == Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position))
+            {
+                commands.Clear();
+                canPlaceBlock = false;
+                break;
+            }
+
             Block preExistingBlock = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
             if (preExistingBlock != null)
             {
@@ -190,9 +200,11 @@ public class ObjectPlacer : MonoBehaviour
             }
         }
 
-
-        PlaceBlockCommand cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
-        commands.Add(cmd);
+        if (canPlaceBlock)
+        {
+            PlaceBlockCommand cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
+            commands.Add(cmd);
+        }
 
         return commands;
     }
@@ -354,7 +366,6 @@ public class ObjectPlacer : MonoBehaviour
                 break;
         }
 
-       
         startRotation = objectPlacementIndicator.transform.rotation;
         objectPlacementIndicator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
         destRotation = objectPlacementIndicator.transform.rotation;
