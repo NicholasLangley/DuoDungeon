@@ -119,5 +119,17 @@ public class ComplexBlock : MonoBehaviour, IPlaceable
         return gridBlocks;
     }
 
+    //takes an on grid position and retruns a list of all the subblocks based on that position
+    //used for on grid block placement, don't use for in game off grid calculations
+    public List<Vector3Int> getSubBlockPositions(Vector3Int mainPosition)
+    {
+        List<Vector3Int> positions = new List<Vector3Int>();
 
+        foreach(ComponentBlockDefinition component in componentBlocks)
+        {
+            positions.Add(mainPosition + component.offsetFromCenter);
+        }
+
+        return positions;
+    }
 }

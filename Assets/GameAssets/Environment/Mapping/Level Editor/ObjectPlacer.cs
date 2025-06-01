@@ -143,29 +143,46 @@ public class ObjectPlacer : MonoBehaviour
         }
         List<Command> commands = new List<Command>();
 
-        Block preExistingBlock = map.GetBlockAtGridPosition(position, null, Vector3.down);
-        if(preExistingBlock != null)
+        //TODO check with actual multi block complex blocks
+        List<Vector3Int> positionsToCheck;
+        ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
+        if (complexBlockBeingPlaced != null)
         {
-            string preExistingListID;
-            string preExistingBaseID;
-            string preExistingVarID;
-
-            ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
-            if (preExistingComplexBlock != null)
-            {
-                preExistingListID = preExistingComplexBlock.listID;
-                preExistingBaseID = preExistingComplexBlock.baseID;
-                preExistingVarID = preExistingComplexBlock.varientID;
-            }
-            else
-            {
-                preExistingListID = preExistingBlock.listID;
-                preExistingBaseID = preExistingBlock.baseID;
-                preExistingVarID = preExistingBlock.varientID;
-            }
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
-            commands.Add(removeCmd);
+            positionsToCheck = complexBlockBeingPlaced.getSubBlockPositions(position);
         }
+        else
+        {
+            positionsToCheck = new List<Vector3Int>();
+            positionsToCheck.Add(position);
+        }
+
+        foreach (Vector3Int positionCheck in positionsToCheck)
+        {
+            Block preExistingBlock = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
+            if (preExistingBlock != null)
+            {
+                string preExistingListID;
+                string preExistingBaseID;
+                string preExistingVarID;
+
+                ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
+                if (preExistingComplexBlock != null)
+                {
+                    preExistingListID = preExistingComplexBlock.listID;
+                    preExistingBaseID = preExistingComplexBlock.baseID;
+                    preExistingVarID = preExistingComplexBlock.varientID;
+                }
+                else
+                {
+                    preExistingListID = preExistingBlock.listID;
+                    preExistingBaseID = preExistingBlock.baseID;
+                    preExistingVarID = preExistingBlock.varientID;
+                }
+                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, positionCheck, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
+                commands.Add(removeCmd);
+            }
+        }
+
 
         PlaceBlockCommand cmd = new PlaceBlockCommand(this, position, listID, baseID, varientID, rotation);
         commands.Add(cmd);
