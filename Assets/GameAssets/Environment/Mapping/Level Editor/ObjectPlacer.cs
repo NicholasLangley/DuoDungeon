@@ -165,9 +165,12 @@ public class ObjectPlacer : MonoBehaviour
                 string preExistingBaseID;
                 string preExistingVarID;
 
+                //todo avoid duplicate remove commands if multi blocks conflict with eachothher in multiple places
+                Vector3Int rootPosition = positionCheck;
                 ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
                 if (preExistingComplexBlock != null)
                 {
+                    rootPosition = Map.GetIntVector3(preExistingComplexBlock.transform.position);
                     preExistingListID = preExistingComplexBlock.listID;
                     preExistingBaseID = preExistingComplexBlock.baseID;
                     preExistingVarID = preExistingComplexBlock.varientID;
@@ -178,7 +181,7 @@ public class ObjectPlacer : MonoBehaviour
                     preExistingBaseID = preExistingBlock.baseID;
                     preExistingVarID = preExistingBlock.varientID;
                 }
-                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, positionCheck, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
+                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
                 commands.Add(removeCmd);
             }
         }
@@ -224,14 +227,35 @@ public class ObjectPlacer : MonoBehaviour
         }
         List<Command> commands = new List<Command>();
 
-        Block preExistingBlock = map.GetStaticBlock(position);
-        //TODO COMPLEX BLOCKS
+        Block preExistingBlock = map.GetBlockAtGridPosition(position, null, Vector3.down);
+
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
 
         if (preExistingBlock != null)
         {
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, position, preExistingBlock.listID, preExistingBlock.baseID, preExistingBlock.varientID, preExistingBlock.gameObject.transform.rotation);
+            Vector3Int rootPosition = position;
+
+            string preExistingListID;
+            string preExistingBaseID;
+            string preExistingVarID;
+
+            ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
+            if (preExistingComplexBlock != null)
+            {
+                rootPosition = Map.GetIntVector3(preExistingComplexBlock.transform.position);
+                preExistingListID = preExistingComplexBlock.listID;
+                preExistingBaseID = preExistingComplexBlock.baseID;
+                preExistingVarID = preExistingComplexBlock.varientID;
+            }
+            else
+            {
+                preExistingListID = preExistingBlock.listID;
+                preExistingBaseID = preExistingBlock.baseID;
+                preExistingVarID = preExistingBlock.varientID;
+            }
+
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
             commands.Add(removeCmd);
         }
         //checked for player collision
