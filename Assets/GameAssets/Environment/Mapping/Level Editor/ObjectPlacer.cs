@@ -143,7 +143,7 @@ public class ObjectPlacer : MonoBehaviour
         }
         List<Command> commands = new List<Command>();
 
-        //TODO check with actual multi block complex blocks
+        //TODO actually check with actual multi block complex blocks (check multi collison overlaps aswell)
         List<Vector3Int> positionsToCheck;
         ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
         if (complexBlockBeingPlaced != null)
@@ -156,6 +156,7 @@ public class ObjectPlacer : MonoBehaviour
             positionsToCheck.Add(position);
         }
 
+        List<ComplexBlock> alreadyCollidedComplexBlocks = new List<ComplexBlock>();
         foreach (Vector3Int positionCheck in positionsToCheck)
         {
             Block preExistingBlock = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
@@ -165,11 +166,14 @@ public class ObjectPlacer : MonoBehaviour
                 string preExistingBaseID;
                 string preExistingVarID;
 
-                //todo avoid duplicate remove commands if multi blocks conflict with eachothher in multiple places
                 Vector3Int rootPosition = positionCheck;
                 ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
                 if (preExistingComplexBlock != null)
                 {
+                    //skip rest of loop iteration if already collided with block
+                    if (alreadyCollidedComplexBlocks.Contains(preExistingComplexBlock)) { continue; }
+                    alreadyCollidedComplexBlocks.Add(preExistingComplexBlock);
+
                     rootPosition = Map.GetIntVector3(preExistingComplexBlock.transform.position);
                     preExistingListID = preExistingComplexBlock.listID;
                     preExistingBaseID = preExistingComplexBlock.baseID;
