@@ -103,14 +103,8 @@ public class BlockSideDefinitions
     }
 }
 
-public class Block : MonoBehaviour, IPlaceable
+public class Block : Placeable
 {
-    //baseID identifies the base block (eg full stairs)
-    //varientID identifies the version of that block (different materials, meshes, etc.)
-    public string listID { get; set; }
-    [field: SerializeField] public string baseID  { get; set; }
-    [field: SerializeField] public string varientID { get; set; }
-
     [SerializeField]    
     public BlockSideDefinitions blockSides;
 

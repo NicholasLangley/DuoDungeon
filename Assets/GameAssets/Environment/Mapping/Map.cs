@@ -229,12 +229,21 @@ public class Map
 
         bool firstBlock = true;
         //fill blocks array
+        //static
         foreach (Block block in currentStaticBlocks.Values)
         {
             //add comma after previous block
             if (!firstBlock) { blocksListJSON += ",\n"; }
             else { firstBlock = false; }
-            blocksListJSON += ConvertBlockToJSON(block);
+            blocksListJSON += ConvertPlaceableToJSON(block);
+        }
+        //complex
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        {
+            //add comma after previous block
+            if (!firstBlock) { blocksListJSON += ",\n"; }
+            else { firstBlock = false; }
+            blocksListJSON += ConvertPlaceableToJSON(complexBlock);
         }
 
         //finish blocks array
@@ -256,7 +265,7 @@ public class Map
               "}\n},\n";
     }
 
-    string ConvertBlockToJSON(Block b)
+    string ConvertPlaceableToJSON(Placeable placeable)
     {
         //start block
         string json = "{\n";
@@ -268,17 +277,17 @@ public class Map
         json += "\"info\": {\n";
 
         //blockID
-        json += "\"list_id\": \"" + b.listID + "\",\n";
-        json += "\"base_id\": \"" + b.baseID + "\",\n";
-        json += "\"varient_id\": \"" + b.varientID + "\",\n";
+        json += "\"list_id\": \"" + placeable.listID + "\",\n";
+        json += "\"base_id\": \"" + placeable.baseID + "\",\n";
+        json += "\"varient_id\": \"" + placeable.varientID + "\",\n";
         //deprecate this, remove once no longer used
         //json += "\"block_id\": " + b.blockID + ",\n";
 
         //position
-        json += GetPositionJSON(b.transform.position);
+        json += GetPositionJSON(placeable.transform.position);
 
         //rotation
-        json += GetRotationJSON(b.transform.rotation); //add comma to this function if adding more parts to block info
+        json += GetRotationJSON(placeable.transform.rotation); //add comma to this function if adding more parts to block info
 
         //finish info
         json += "}\n";

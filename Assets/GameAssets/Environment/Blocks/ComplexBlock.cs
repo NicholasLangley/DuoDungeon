@@ -13,12 +13,8 @@ public class ComponentBlockDefinition
 }
 
 //Blocks that may move / occupy multiple grid spaces at once. Will calculate sub blocks that conform to the grid
-public class ComplexBlock : MonoBehaviour, IPlaceable
+public class ComplexBlock : Placeable
 {
-    public string listID { get; set; }
-    [field: SerializeField] public string baseID { get; set; }
-    [field: SerializeField] public string varientID { get; set; }
-
     GameObject gridSplitBlocksParent;
 
     List<Block> gridBlocks;

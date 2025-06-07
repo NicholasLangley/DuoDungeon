@@ -143,7 +143,6 @@ public class ObjectPlacer : MonoBehaviour
         }
         List<Command> commands = new List<Command>();
 
-        //TODO actually check with actual multi block complex blocks (check multi collison overlaps aswell)
         List<Vector3Int> positionsToCheck;
         ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
         if (complexBlockBeingPlaced != null)

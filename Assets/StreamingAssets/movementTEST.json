@@ -6217,7 +6217,7 @@
 "base_id": "Pushable - Full Length Stair",
 "varient_id": "blank",
 "position": {
-"x": -10,
+"x": -11,
 "y": 1,
 "z": 16
 },
@@ -6225,6 +6225,26 @@
 "w": 0,
 "x": 0,
 "y": 1,
+"z": 0
+}
+}
+}
+,
+{
+"type": 0,
+"info": {
+"list_id": "Pushable",
+"base_id": "Pushable - Log",
+"varient_id": "blank",
+"position": {
+"x": 0,
+"y": 1,
+"z": 16
+},
+"rotation": {
+"w": 0.7071068,
+"x": 0,
+"y": 0.7071068,
 "z": 0
 }
 }
