@@ -137,13 +137,12 @@ public class PlayerController : ICommandable
         }
         if(blueBlocked)
         {
-            Block destinationBlock = bluePlayer.map.GetBlockAtGridPosition(nextRedPos, bluePlayer.gameObject, bluePlayer.gravityDirection);
+            Block destinationBlock = bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
             if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
-
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
                 bool pushing = pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlock);
-                if (pushing) { redBlocked = false; }
+                if (pushing) { blueBlocked = false; }
             }
         }
 

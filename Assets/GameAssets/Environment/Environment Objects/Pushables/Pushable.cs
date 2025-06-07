@@ -74,11 +74,13 @@ public class Pushable : FullGridMoveable
 
     public bool AttemptPush(Vector3 pushDirectionVector, Block pushedBlockComponent)
     {
+        
         //todo actual logic for if can be pushed
         if(true)
         {
             toBePushedThisRound = true;
             pushDirection = getLocalPushDirection(pushDirectionVector);
+            Debug.Log(gameObject.name);
             return true;
         }
 

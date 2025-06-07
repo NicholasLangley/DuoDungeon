@@ -184,9 +184,10 @@ public class Map
     }
 
     //Rounds to floor to get grid space vector is a part of
+    // adds a small amount to each value to remove chance of floating point error going one grid space lower down
     public static Vector3Int GetGridSpace(Vector3 floatVector)
     {
-        return new Vector3Int(Mathf.FloorToInt(floatVector.x), Mathf.FloorToInt(floatVector.y), Mathf.FloorToInt(floatVector.z));
+        return new Vector3Int(Mathf.FloorToInt(floatVector.x + 0.001f), Mathf.FloorToInt(floatVector.y + 0.001f), Mathf.FloorToInt(floatVector.z + 0.001f));
     }
 
     public void SaveMapToFile(string filename)

@@ -69,6 +69,8 @@ public class ComplexBlock : Placeable
                 singleBlock.blockSides.CopyBlockSides(componentBlock.sides);
                 singleBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
 
+                Debug.Log("main: " + transform.position + "\nrotated offset: " + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z) + "\n final: " + singleBlock.gridPosition);
+
                 gridBlocks.Add(singleBlock);
             }
             return;
@@ -123,7 +125,8 @@ public class ComplexBlock : Placeable
 
         foreach(ComponentBlockDefinition component in componentBlocks)
         {
-            positions.Add(mainPosition + component.offsetFromCenter);
+            Vector3 finalPosition = mainPosition + (transform.rotation * component.offsetFromCenter);
+            positions.Add(Map.GetIntVector3(finalPosition));
         }
 
         return positions;
