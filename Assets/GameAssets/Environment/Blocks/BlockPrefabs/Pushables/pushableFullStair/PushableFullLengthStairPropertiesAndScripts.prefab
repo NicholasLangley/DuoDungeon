@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7898028207437761554
+--- !u!1 &1404077068033620650
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4806913264170894360}
-  - component: {fileID: 9214073337690821204}
-  - component: {fileID: -4475066423303841778}
-  - component: {fileID: 8706724901525744919}
+  - component: {fileID: 476982383528745501}
+  - component: {fileID: 6501617944640970410}
+  - component: {fileID: 8521004352289979027}
   m_Layer: 0
-  m_Name: PushableTestPropertiesAndScripts
-  m_TagString: Pushable
+  m_Name: PushableFullLengthStairPropertiesAndScripts
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4806913264170894360
+--- !u!4 &476982383528745501
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7898028207437761554}
+  m_GameObject: {fileID: 1404077068033620650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -34,13 +33,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9214073337690821204
+--- !u!114 &6501617944640970410
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7898028207437761554}
+  m_GameObject: {fileID: 1404077068033620650}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2793b7c0ec87e7c489fd4052c43a8d55, type: 3}
@@ -56,56 +55,35 @@ MonoBehaviour:
   <busy>k__BackingField: 0
   toBePushedThisRound: 0
   pushDirection: 0
-  complexBlock: {fileID: 8706724901525744919}
---- !u!65 &-4475066423303841778
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7898028207437761554}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8706724901525744919
+  complexBlock: {fileID: 0}
+--- !u!114 &8521004352289979027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7898028207437761554}
+  m_GameObject: {fileID: 1404077068033620650}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8214941f30bc5c441b03ad18c201efd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <baseID>k__BackingField: pushableTest
+  <baseID>k__BackingField: Pushable - Full Length Stair
   <varientID>k__BackingField: blank
   componentBlocks:
   - offsetFromCenter: {x: 0, y: 0, z: 0}
     sides:
       topSide:
         type: 0
-        centerHeight: 1
+        centerHeight: 0.5
         forwardEdgeType: 0
-        forwardEdgeHeight: 1
+        forwardEdgeHeight: 0.5
         backwardEdgeType: 0
-        backwardEdgeHeight: 1
+        backwardEdgeHeight: 0.5
         leftEdgeType: 0
         leftEdgeHeight: 1
         rightEdgeType: 0
-        rightEdgeHeight: 1
+        rightEdgeHeight: 0
       leftSide:
         type: 0
         centerHeight: 1
@@ -119,13 +97,13 @@ MonoBehaviour:
         rightEdgeHeight: 1
       rightSide:
         type: 0
-        centerHeight: 1
+        centerHeight: 0.5
         forwardEdgeType: 0
-        forwardEdgeHeight: 1
+        forwardEdgeHeight: 0.5
         backwardEdgeType: 0
-        backwardEdgeHeight: 1
+        backwardEdgeHeight: 0.5
         leftEdgeType: 0
-        leftEdgeHeight: 1
+        leftEdgeHeight: 0
         rightEdgeType: 0
         rightEdgeHeight: 1
       bottomSide:
@@ -145,19 +123,19 @@ MonoBehaviour:
         forwardEdgeType: 0
         forwardEdgeHeight: 1
         backwardEdgeType: 0
-        backwardEdgeHeight: 1
+        backwardEdgeHeight: 0
         leftEdgeType: 0
         leftEdgeHeight: 1
         rightEdgeType: 0
-        rightEdgeHeight: 1
+        rightEdgeHeight: 0
       backSide:
         type: 0
-        centerHeight: 1
+        centerHeight: 0
         forwardEdgeType: 0
-        forwardEdgeHeight: 1
+        forwardEdgeHeight: 0
         backwardEdgeType: 0
         backwardEdgeHeight: 1
         leftEdgeType: 0
         leftEdgeHeight: 1
         rightEdgeType: 0
-        rightEdgeHeight: 1
+        rightEdgeHeight: 0

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using UnityEngine.UIElements;
 
 public class Map
 {
     Dictionary<Vector3Int, Block> currentStaticBlocks;
-    List<GameObject> currentMoveableBlocks;
+    List<ComplexBlock> currentComplexBlocks;
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
@@ -13,7 +14,7 @@ public class Map
     public Map()
     {
         currentStaticBlocks = new Dictionary<Vector3Int, Block>();
-        currentMoveableBlocks = new List<GameObject>();
+        currentComplexBlocks = new List<ComplexBlock>();
     }
 
     public void ClearMap()
@@ -24,11 +25,11 @@ public class Map
         }
         currentStaticBlocks.Clear();
 
-        foreach (GameObject obj in currentMoveableBlocks)
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
-            GameObject.Destroy(obj);
+            GameObject.Destroy(complexBlock.gameObject);
         }
-        currentMoveableBlocks.Clear();
+        currentComplexBlocks.Clear();
     }
 
 
@@ -67,22 +68,87 @@ public class Map
     }
     #endregion
 
-    #region movingBlocks
+    #region complexBlocks
 
-    public List<GameObject> GetMovableBlocks()
+    public List<ComplexBlock> GetComplexBlocksList()
     {
-        return currentMoveableBlocks;
+        return currentComplexBlocks;
     }
 
-    public void AddMoveableBlock(GameObject obj)
+    public void AddComplexBlock(ComplexBlock complexBlock)
     {
-        currentMoveableBlocks.Add(obj);
+        currentComplexBlocks.Add(complexBlock);
+    }
+
+    Block GetComplexBlockPart(Vector3 position, GameObject requestor)
+    {
+        return GetComplexBlockPart(Map.GetIntVector3(position), requestor);
+    }
+
+    Block GetComplexBlockPart(Vector3Int position, GameObject requestor)
+    {
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        {
+            if (complexBlock.gameObject != requestor)
+            {
+                foreach (Block gridBlock in complexBlock.GetGridBlocks())
+                {
+                    if (gridBlock.gridPosition == position)
+                    {
+                        return gridBlock;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    void RemoveComplexBlockAtLocation(Vector3 position)
+    {
+        Block blockPart = GetComplexBlockPart(position, null);
+        if (blockPart == null) { return; }
+        ComplexBlock  complex = blockPart.GetComponentInParent<ComplexBlock>();
+        currentComplexBlocks.Remove(complex);
+        GameObject.Destroy(complex.gameObject);
     }
 
     #endregion
 
-    public Block GetCurrentlyOccupiedBlock(Vector3 gridPosition, DownDirection downDir)
+    public void RemoveBlockAtLocation(Vector3 position)
     {
+        Block block = GetBlockAtGridPosition(position, null, Vector3.down);
+        if (block == null){ return; }
+        if (block.GetComponentInParent<ComplexBlock>() != null)
+        {
+            RemoveComplexBlockAtLocation(position);
+        }
+        else
+        {
+            RemoveStaticBlock(Map.GetIntVector3(position));
+        }
+    }
+
+    public Block GetBlockAtGridPosition(Vector3 pos, GameObject requestor, Vector3 downVector)
+    {
+        return GetBlockAtGridPosition(Map.GetIntVector3(pos), requestor, downVector);
+    }
+
+    public Block GetBlockAtGridPosition(Vector3Int pos, GameObject requestor, Vector3 downVector)
+    {
+        Block staticBlock = GetStaticBlock(pos);
+        Block complexBlockPart = GetComplexBlockPart(pos, requestor);
+
+        if (staticBlock == null) { return complexBlockPart; }
+        if (complexBlockPart == null) { return staticBlock; }
+
+        //need to find highest block relative to requestor and return that
+        if (staticBlock.GetOrientedTopSide(downVector).centerHeight > complexBlockPart.GetOrientedTopSide(downVector).centerHeight) { return staticBlock; }
+        return complexBlockPart;
+    }
+
+    public Block GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
+    {
+        Vector3 gridPosition = requestor.transform.position;
         switch (downDir)
         {
             case DownDirection.Ydown:
@@ -105,14 +171,24 @@ public class Map
                 break;
         }
 
+        Block complexBlock = GetComplexBlockPart(gridPosition, requestor);
+        if (complexBlock != null ) { return complexBlock; }
         return (GetStaticBlock(GetIntVector3(gridPosition)));
     }
 
+    //assumes input vector is very close to int already, and rounds to int to remove any floating point differences from small errors in transfrom positioning 
+    //DO NOT USE TO DETERMINE WHICH GRID SPACE AN OFFSET BLOCK IS IN AS THIS MAY ROUND UP
     public static Vector3Int GetIntVector3(Vector3 floatVector)
     {
         return new Vector3Int(Mathf.RoundToInt(floatVector.x), Mathf.RoundToInt(floatVector.y), Mathf.RoundToInt(floatVector.z));
     }
 
+    //Rounds to floor to get grid space vector is a part of
+    // adds a small amount to each value to remove chance of floating point error going one grid space lower down
+    public static Vector3Int GetGridSpace(Vector3 floatVector)
+    {
+        return new Vector3Int(Mathf.FloorToInt(floatVector.x + 0.001f), Mathf.FloorToInt(floatVector.y + 0.001f), Mathf.FloorToInt(floatVector.z + 0.001f));
+    }
 
     public void SaveMapToFile(string filename)
     {
@@ -154,12 +230,21 @@ public class Map
 
         bool firstBlock = true;
         //fill blocks array
+        //static
         foreach (Block block in currentStaticBlocks.Values)
         {
             //add comma after previous block
             if (!firstBlock) { blocksListJSON += ",\n"; }
             else { firstBlock = false; }
-            blocksListJSON += ConvertBlockToJSON(block);
+            blocksListJSON += ConvertPlaceableToJSON(block);
+        }
+        //complex
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        {
+            //add comma after previous block
+            if (!firstBlock) { blocksListJSON += ",\n"; }
+            else { firstBlock = false; }
+            blocksListJSON += ConvertPlaceableToJSON(complexBlock);
         }
 
         //finish blocks array
@@ -181,7 +266,7 @@ public class Map
               "}\n},\n";
     }
 
-    string ConvertBlockToJSON(Block b)
+    string ConvertPlaceableToJSON(Placeable placeable)
     {
         //start block
         string json = "{\n";
@@ -193,17 +278,17 @@ public class Map
         json += "\"info\": {\n";
 
         //blockID
-        json += "\"list_id\": \"" + b.listID + "\",\n";
-        json += "\"base_id\": \"" + b.baseID + "\",\n";
-        json += "\"varient_id\": \"" + b.varientID + "\",\n";
+        json += "\"list_id\": \"" + placeable.listID + "\",\n";
+        json += "\"base_id\": \"" + placeable.baseID + "\",\n";
+        json += "\"varient_id\": \"" + placeable.varientID + "\",\n";
         //deprecate this, remove once no longer used
-        json += "\"block_id\": " + b.blockID + ",\n";
+        //json += "\"block_id\": " + b.blockID + ",\n";
 
         //position
-        json += GetPositionJSON(b.transform.position);
+        json += GetPositionJSON(placeable.transform.position);
 
         //rotation
-        json += GetRotationJSON(b.transform.rotation); //add comma to this function if adding more parts to block info
+        json += GetRotationJSON(placeable.transform.rotation); //add comma to this function if adding more parts to block info
 
         //finish info
         json += "}\n";

@@ -31,6 +31,7 @@ public interface IMoveable
     LayerMask movementCollisionMask { get; set; }
 
     bool affectedByGravity { get; set; }
+    public Vector3 gravityDirection { get; set; }
     float fallLerpDuration { get; set; }
     Vector3 fallSrcPosition { get; set; }
 
@@ -45,6 +46,8 @@ public interface IMoveable
     public void RotateBy(float degrees);
 
     public void Fall(Vector3 srcPosition);
+
+    public void SetGravityDirection(Vector3 dir);
 
     public void GetProjectedDestinationBlockPosition(MovementDirection dir);
 

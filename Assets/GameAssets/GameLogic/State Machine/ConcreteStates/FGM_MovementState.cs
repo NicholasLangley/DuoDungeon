@@ -8,8 +8,6 @@ public class FGM_MovementState : FullGridMoveableState
     Vector3 destPosition;
     Vector3 halfwayPosition;
 
-    Block srcBlock;
-    Block destBlock;
     float movementLerpTimer;
 
     bool inSrcBlock;
@@ -36,8 +34,17 @@ public class FGM_MovementState : FullGridMoveableState
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
-        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.transform.position, _fgm.GetCurrentDownDirection());
-        Block destBlock = _fgm.map.GetStaticBlock(destPosition);
+        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
+        Block destBlock = _fgm.map.GetBlockAtGridPosition(Map.GetGridSpace(destPosition), _fgm.gameObject, _fgm.gravityDirection);
+        //need to check if the block is being pushed, so we can ignore it
+        if(destBlock != null)
+        {
+            Pushable push = destBlock.gameObject.transform.parent.gameObject.GetComponent<Pushable>();
+            if (push != null) 
+            {
+                if (push.toBePushedThisRound) { destBlock = null; }
+            }
+        }
         //if (destBlock == null) { Debug.Log(destPosition); }
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
@@ -54,25 +61,26 @@ public class FGM_MovementState : FullGridMoveableState
                 switch (downDir)
                 {
                     case DownDirection.Ydown:
-                        halfwayPosition.y = srcBlock.transform.position.y + srcBlockExitHeight;
+                        halfwayPosition.y = srcBlock.gridPosition.y + srcBlockExitHeight;
                         break;
                     case DownDirection.Yup:
-                        halfwayPosition.y = srcBlock.transform.position.y - srcBlockExitHeight;
+                        halfwayPosition.y = srcBlock.gridPosition.y - srcBlockExitHeight;
                         break;
                     case DownDirection.Xleft:
-                        halfwayPosition.x = srcBlock.transform.position.x + srcBlockExitHeight;
+                        halfwayPosition.x = srcBlock.gridPosition.x + srcBlockExitHeight;
                         break;
                     case DownDirection.Xright:
-                        halfwayPosition.x = srcBlock.transform.position.x - srcBlockExitHeight;
+                        halfwayPosition.x = srcBlock.gridPosition.x - srcBlockExitHeight;
                         break;
                     case DownDirection.Zforward:
-                        halfwayPosition.z = srcBlock.transform.position.z - srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.gridPosition.z - srcBlockExitHeight;
                         break;
                     case DownDirection.Zback:
-                        halfwayPosition.z = srcBlock.transform.position.z + srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.gridPosition.z + srcBlockExitHeight;
                         break;
                 }
             }
+            //not grounded
             else 
             {
                 switch (downDir)
@@ -113,34 +121,40 @@ public class FGM_MovementState : FullGridMoveableState
         }
 
         //If moving into a partial block and able to climb down (not fall)
-        if (destBlock != null && Mathf.Abs((srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(_fgm.transform.position, downDir))) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.transform.position, downDir))) <= _fgm.maxStairClimbHeight)
+        /*if (destBlock != null) 
         {
-            float destBlockHeight = destBlock.GetMidBlockHeight(-_fgm.transform.up);
-            Debug.Log("climbdown within partial: " + destBlockHeight);
+            Debug.Log("src exit: " + srcBlockExitHeight + "src pos height: " + Block.GetPositionsDownOrientedHeight(srcPosition, downDir));
+            Debug.Log("dest enter: " + destBlockEnterHeight + "dest pos height: " + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir));
+            Debug.Log("TOTAL: " + (srcBlockExitHeight - destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(srcPosition, downDir) - Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)));
+        }*/
+        if (destBlock != null && srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)) <= _fgm.maxStairClimbHeight)
+        {
+            float destBlockHeight = destBlock.GetMidBlockHeight(_fgm.gravityDirection);
+            //Debug.Log("climbdown within partial: " + destBlockHeight);
             switch (downDir)
             {
                 case DownDirection.Ydown:
-                    destPosition.y = destBlock.transform.position.y + destBlockHeight;
+                    destPosition.y = destBlock.gridPosition.y + destBlockHeight;
                     break;
                 case DownDirection.Yup:
-                    destPosition.y = destBlock.transform.position.y - destBlockHeight;
+                    destPosition.y = destBlock.gridPosition.y - destBlockHeight;
                     break;
                 case DownDirection.Xleft:
-                    destPosition.x = destBlock.transform.position.x + destBlockHeight;
+                    destPosition.x = destBlock.gridPosition.x + destBlockHeight;
                     break;
                 case DownDirection.Xright:
-                    destPosition.x = destBlock.transform.position.x - destBlockHeight;
+                    destPosition.x = destBlock.gridPosition.x - destBlockHeight;
                     break;
                 case DownDirection.Zforward:
-                    destPosition.z = destBlock.transform.position.z - destBlockHeight;
+                    destPosition.z = destBlock.gridPosition.z - destBlockHeight;
                     break;
                 case DownDirection.Zback:
-                    destPosition.z = destBlock.transform.position.z + destBlockHeight;
+                    destPosition.z = destBlock.gridPosition.z + destBlockHeight;
                     break;
             }
         }
         //climbing up to a null block
-        else if (destBlock == null && Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir)) - Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(halfwayPosition, downDir)) > 0) { Debug.Log("climb up to null"); return; }
+        else if (destBlock == null && Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(destPosition, downDir)) - Mathf.FloorToInt(Block.GetPositionsDownOrientedHeight(halfwayPosition, downDir)) > 0) { /*Debug.Log("climb up to null")*/; return; }
         else
         {
             switch (downDir)
@@ -162,9 +176,10 @@ public class FGM_MovementState : FullGridMoveableState
             if (destBlock == null)
             {
                 Vector3 belowDestPos = destPosition;
-                belowDestPos -= _fgm.transform.up;
-                Block belowDestBlock = _fgm.map.GetStaticBlock(belowDestPos);
-                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(-_fgm.transform.up) == 1.0f) 
+                belowDestPos += _fgm.gravityDirection;
+                belowDestPos = Map.GetGridSpace(belowDestPos);
+                Block belowDestBlock = _fgm.map.GetBlockAtGridPosition(belowDestPos, _fgm.gameObject, _fgm.gravityDirection);
+                if (belowDestBlock != null && belowDestBlock.GetMidBlockHeight(_fgm.gravityDirection) == 1.0f && Mathf.Abs(Block.GetPositionsDownOrientedHeight(destPosition, _fgm.GetCurrentDownDirection()) - Block.GetPositionsDownOrientedHeight(belowDestPos, _fgm.GetCurrentDownDirection()) - 1.0f) <= _fgm.maxStairClimbHeight) 
                 {
                     switch (downDir)
                     {

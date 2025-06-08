@@ -20,8 +20,8 @@ public class LevelEditorController : MonoBehaviour
     ObjectPlacer objectPlacer;
 
     //Command Stacks
-    Stack<Command> undoCommands;
-    Stack<Command> redoCommands;
+    Stack<Turn> undoTurns;
+    Stack<Turn> redoTurns;
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +32,14 @@ public class LevelEditorController : MonoBehaviour
         objectPlacer.map = map;
         objectPlacer.SetBlockList(ultimateList);
 
-        undoCommands = new Stack<Command>();
-        redoCommands = new Stack<Command>();
+        undoTurns = new Stack<Turn>();
+        redoTurns = new Stack<Turn>();
 
-        //TODO populate multiple lists
-        blockSelector.populateButtons(ultimateList.GetMasterList("Basic Block"));
+        //TODO populate different tabs
+        foreach (BlockMasterList blocklist in ultimateList.ultimateList)
+        {
+            blockSelector.populateButtons(blocklist);
+        }
     }
 
     // Update is called once per frame
@@ -58,30 +61,35 @@ public class LevelEditorController : MonoBehaviour
         }
     }
 
-    public void AddCommand(Command cmd)
+    public void AddCommandTurn(List<Command> commands)
     {
-        if (cmd == null) { return; }
-        undoCommands.Push(cmd);
-        redoCommands.Clear();
+        if (commands == null) { return; }
+        Turn turn = new Turn();
+        foreach(Command cmd in commands)
+        {
+            turn.AddCommand(cmd);
+        }
+        undoTurns.Push(turn);
+        redoTurns.Clear();
     }
 
     public void Undo()
     {
-        if (undoCommands.Count > 0)
+        if (undoTurns.Count > 0)
         {
-            Command undoneCommand = undoCommands.Pop();
-            undoneCommand.Undo();
-            redoCommands.Push(undoneCommand);
+            Turn undoneTurn = undoTurns.Pop();
+            undoneTurn.undoLayer(0);
+            redoTurns.Push(undoneTurn);
         }
     }
 
     public void Redo()
     {
-        if (redoCommands.Count > 0)
+        if (redoTurns.Count > 0)
         {
-            Command redoCommand = redoCommands.Pop();
-            redoCommand.Execute();
-            undoCommands.Push(redoCommand);
+            Turn redoTurn = redoTurns.Pop();
+            redoTurn.redoLayer(0);
+            undoTurns.Push(redoTurn);
         }
     }
 

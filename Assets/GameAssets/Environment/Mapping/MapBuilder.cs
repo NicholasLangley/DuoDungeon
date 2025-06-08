@@ -11,7 +11,7 @@ public class MapBuilder
     BlockBuilder blockBuilder;
     GameObject mapParent;
     //list IDs for blocks that aren't static in the grid
-    List<string> moveableBlockListIDs = new List<string> { "Pushable" };
+    List<string> ComplexBlockListIDs = new List<string> { "Pushable" };
 
     public MapBuilder(BlockBuilder bb, Map m)
     {
@@ -37,9 +37,9 @@ public class MapBuilder
         {
             GameObject newBlockObject = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
             Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
-            Block block = newBlockObject.GetComponent<Block>();
-            if (moveableBlockListIDs.Contains(block.listID)) { map.AddMoveableBlock(newBlockObject); }
-            else { map.AddStaticBlock(intPosition, block); }
+            Placeable placeable = newBlockObject.GetComponent<Placeable>();
+            if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
+            else { map.AddStaticBlock(intPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetGridPosition(intPosition); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 

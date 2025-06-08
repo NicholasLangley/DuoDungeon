@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,12 @@ public class PlayerController : ICommandable
         bluePlayer.transform.position = map.bluePlayerSpawn;
         bluePlayer.transform.rotation = map.bluePlayerSpawnRotation;
         bluePlayer.map = map;
+    }
+
+    public void SetPlayerGravity()
+    {
+        redPlayer.SetGravityDirection(-redPlayer.transform.up);
+        bluePlayer.SetGravityDirection(-bluePlayer.transform.up);
     }
 
     public List<Command> GetCommands()
@@ -120,21 +127,21 @@ public class PlayerController : ICommandable
         //check if blocking object is a pushable object
         if (redBlocked)
         {
-            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextRedPos);
-            if (blockingFGM != null && blockingFGM is Pushable) 
+            Block destinationBlock = redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
+            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null) 
             {
-                Pushable pushable = blockingFGM as Pushable;
-                bool pushing = pushable.AttemptPush(redPlayer.transform);
+                Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
+                bool pushing = pushable.AttemptPush(redPlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing) { redBlocked = false; }
             }
         }
         if(blueBlocked)
         {
-            FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(nextBluePos);
-            if (blockingFGM != null && blockingFGM is Pushable)
+            Block destinationBlock = bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
+            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
-                Pushable pushable = blockingFGM as Pushable;
-                bool pushing = pushable.AttemptPush(bluePlayer.transform);
+                Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
+                bool pushing = pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing) { blueBlocked = false; }
             }
         }

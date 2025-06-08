@@ -86,8 +86,8 @@ public class MapEditorInputHandler : MonoBehaviour
         //object Placer
         placeAction.performed += context =>
         {
-            Command cmd = objectPlacer.PlaceCurrentObject();
-            if (cmd != null) { levelEditorController.AddCommand(cmd); }
+            List<Command> commands = objectPlacer.PlaceCurrentObject();
+            if (commands != null && commands.Count > 0) { levelEditorController.AddCommandTurn(commands); }
         };
         RotateForwardAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.FORWARD);
         RotateBackAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.BACK);

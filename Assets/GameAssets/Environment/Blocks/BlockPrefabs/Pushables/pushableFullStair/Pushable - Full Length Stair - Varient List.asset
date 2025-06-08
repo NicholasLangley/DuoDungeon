@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
+  m_Name: Pushable - Full Length Stair - Varient List
+  m_EditorClassIdentifier: 
+  BlockPropertiesAndScriptsObject: {fileID: 1404077068033620650, guid: daaaead083ef7914799973a92c39d5bb, type: 3}
+  baseID: Pushable - Full Length Stair
+  blockVarients:
+  - {fileID: 2245346612070820524, guid: db4893d96deb5bf4dbefc5dba2fb0a35, type: 3}

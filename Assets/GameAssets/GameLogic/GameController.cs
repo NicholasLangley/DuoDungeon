@@ -162,11 +162,11 @@ public class GameController : MonoBehaviour
         //blocks only
         mapBuilder.LoadMap(filename);
 
-        List<GameObject> moveableBlocks = map.GetMovableBlocks();
-        foreach (GameObject block in moveableBlocks)
+        List<ComplexBlock> complexBlocks = map.GetComplexBlocksList();
+        foreach (ComplexBlock block in complexBlocks)
         {
-            Pushable pushableComponent = block.GetComponent<Pushable>();
-            if (block.GetComponent<Pushable>() != null)
+            Pushable pushableComponent = block.gameObject.GetComponent<Pushable>();
+            if (pushableComponent != null)
             {
                 _pushableObjects.Add(pushableComponent);
             }
@@ -174,6 +174,7 @@ public class GameController : MonoBehaviour
 
         //spawn Players
         playerController.SpawnPlayers(map);
+        playerController.SetPlayerGravity();
 
     }
     #endregion
@@ -410,11 +411,6 @@ public class GameController : MonoBehaviour
         foreach(Entity enemy in _enemies)
         {
             if (enemy.GetCurrentBlockPosition() == destinationToCheck) { return enemy; }
-        }
-
-        foreach (FullGridMoveable fgm in _pushableObjects)
-        {
-            if (fgm.GetCurrentBlockPosition() == destinationToCheck) { return fgm; }
         }
 
         return null;

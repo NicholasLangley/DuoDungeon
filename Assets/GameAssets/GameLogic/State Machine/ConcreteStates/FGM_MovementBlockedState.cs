@@ -27,7 +27,7 @@ public class FGM_MovementBlockedState : FullGridMoveableState
 
         //modify dest height to match edge of srcblock
         DownDirection downDir = _fgm.GetCurrentDownDirection();
-        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.transform.position, _fgm.GetCurrentDownDirection());
+        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
         if (srcBlock != null) 
         {
             switch (downDir)

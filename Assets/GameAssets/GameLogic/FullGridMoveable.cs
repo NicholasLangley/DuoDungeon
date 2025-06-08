@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEditorInternal;
 using UnityEngine;
+using static BlockSide;
 
 public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, ICommandable, IUndoable
 {
@@ -19,6 +20,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     [field: SerializeField] public float movementLerpDuration { get; set; }
 
     [field: SerializeField] public bool affectedByGravity { get; set; }
+    public Vector3 gravityDirection { get; set; }
     [field: SerializeField] public float fallLerpDuration { get; set; }
 
     public Vector3 fallSrcPosition { get; set; }
@@ -65,6 +67,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     protected abstract void Awake();
     protected virtual void Start()
     {
+        //IMoveable
+        gravityDirection = -transform.up;
+
         //ICommandable
         busy = false;
 
@@ -119,28 +124,26 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     #endregion
 
     #region Movement functions
-    public virtual Vector3 GetInitialNextDestinationBlock(MovementDirection dir)
+    public virtual Vector3 GetInitialNextDestinationBlock(MovementDirection dir, Vector3 initialPos)
     {
-        Vector3 nextPos = transform.position;
-
         switch (dir)
         {
             case MovementDirection.FORWARD:
-                nextPos += transform.forward;
+                initialPos += transform.forward;
                 break;
             case MovementDirection.BACKWARD:
-                nextPos -= transform.forward;
+                initialPos -= transform.forward;
                 break;
             case MovementDirection.RIGHT:
-                nextPos += transform.right;
+                initialPos += transform.right;
                 break;
             case MovementDirection.LEFT:
-                nextPos -= transform.right;
+                initialPos -= transform.right;
                 break;
             default:
                 break;
         }
-        return nextPos;
+        return initialPos;
     }
 
     //any entity specific updates, like the player look direction can edit the final direction being moved
@@ -149,10 +152,16 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         return dir;
     }
 
+    // can be overidden for more complex behaviours, 
+    // such as complex blocks needing to check all sub blocks for collisions
     public virtual void GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
-        Vector3 nextPos = GetInitialNextDestinationBlock(dir);
-        
+        projectedDestinationBlock = CalculateProjectedDestinationBlockForPosition(dir, transform.position);
+    }
+    
+    protected Vector3Int CalculateProjectedDestinationBlockForPosition(MovementDirection dir, Vector3 initialPos)
+    {
+        Vector3 nextPos = GetInitialNextDestinationBlock(dir, initialPos);
 
         DownDirection downDir = GetCurrentDownDirection();
 
@@ -178,10 +187,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
         }
-        //Debug.Log(nextPos);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
-        Block currentBlock = map.GetCurrentlyOccupiedBlock(transform.position, GetCurrentDownDirection());
+        Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
         float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos, transform.up, GetCurrentDownDirection()) : 0;
         nextPos += transform.up * exitHeight;
         switch (downDir)
@@ -207,14 +215,14 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check for stairs going down
-        Block straightForwardDestBlock = map.GetStaticBlock(nextPos);
+        Block straightForwardDestBlock = map.GetBlockAtGridPosition(nextPos, gameObject, gravityDirection);
         //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
-        if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && !straightForwardDestBlock.isGround)
+        if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && (straightForwardDestBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND))
         {
             Vector3 belowDest = nextPos - transform.up;
 
-            Block belowDestBlock = map.GetStaticBlock(belowDest);
-            if (belowDestBlock != null && belowDestBlock.isGround && belowDestBlock.canEntityEnter(this))
+            Block belowDestBlock = map.GetBlockAtGridPosition(belowDest, gameObject, gravityDirection);
+            if (belowDestBlock != null && (belowDestBlock.GetOrientedTopSide(-transform.up).centerType == CenterType.GROUND) && belowDestBlock.canEntityEnter(this))
             {
                 nextPos = belowDest;
                 nextPos += transform.up * belowDestBlock.GetMidBlockHeight(-transform.up);
@@ -251,14 +259,14 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
         }
-        projectedDestinationBlock = Map.GetIntVector3(nextPos);
+        return Map.GetIntVector3(nextPos);
     }
 
     public virtual bool IsDestinationOccupied(Vector3Int destinationToCheck)
     {
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
         //block collision
-        Block destinationBlock = map.GetStaticBlock(destinationToCheck);
+        Block destinationBlock = map.GetBlockAtGridPosition(destinationToCheck, gameObject, gravityDirection);
         if (destinationBlock != null)
         {
             if (!destinationBlock.canEntityEnter(this)) { return true; }
@@ -266,7 +274,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
-                Block headCheckBlock = map.GetStaticBlock(Map.GetIntVector3(headCheckPos));
+                Block headCheckBlock = map.GetBlockAtGridPosition(Map.GetIntVector3(headCheckPos), gameObject, transform.up);
                 if (headCheckBlock != null) { return true; }
             }
         }
@@ -283,13 +291,18 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         float downDirectionEntityHeight = Block.GetPositionsDownOrientedHeight(transform.position, downDir);
 
-        Block currentBlock = map.GetCurrentlyOccupiedBlock(transform.position, GetCurrentDownDirection());
-        if (currentBlock != null && currentBlock.isGround)
+        Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        if (currentBlock != null && (currentBlock.GetOrientedTopSide(gravityDirection).centerType == CenterType.GROUND))
         {
-            float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.transform.position, downDir);
+            float blockDownDirectionHeight = Block.GetPositionsDownOrientedHeight(currentBlock.gridPosition, downDir);
 
             //In block but floating above it and need to fall
-            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.GetMidBlockHeight(-transform.up) > 0.01f) { /*Debug.Log("floating in block");*/ return false; }
+            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlock.GetMidBlockHeight(gravityDirection) > 0.01f) 
+            {
+                /*Debug.Log("floating in block");*/
+                //Debug.Log("Entity Height: " + downDirectionEntityHeight + "\nBlock Height: " + blockDownDirectionHeight + "\nMidBlock Height: " + currentBlock.GetMidBlockHeight(gravityDirection)); 
+                return false; 
+            }
             return true;
         }
         //floating in empty block
@@ -337,11 +350,16 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 break;
         }
 
-        Block groundBlock = map.GetStaticBlock(groundPos);
+        Block groundBlock = map.GetBlockAtGridPosition(groundPos, gameObject, gravityDirection);
 
-        if (groundBlock == null || !groundBlock.isGround || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
+        if (groundBlock == null || (groundBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND) || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 
         return true;
+    }
+
+    public void SetGravityDirection(Vector3 dir)
+    {
+        gravityDirection =dir;
     }
 
     #endregion
@@ -350,7 +368,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
     public DownDirection GetCurrentDownDirection()
     {
-        return ConvertVectorToDownDirection(-1 * transform.up);
+        return ConvertVectorToDownDirection(gravityDirection);
     }
 
     public static DownDirection ConvertVectorToDownDirection(Vector3 downVec)
@@ -365,6 +383,28 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         if (down.z == -1) { return DownDirection.Zback; }
         return DownDirection.Zforward;
+    }
+
+    //uses the projected block destination and returns a vector to it with the vertical component removed. Use this for telling which direction a block is going to be pushed
+    public Vector3 GetHorizontalMoveVector()
+    {
+        Vector3 horizontalVector = projectedDestinationBlock - Map.GetGridSpace(transform.position);
+        switch (GetCurrentDownDirection())
+        {
+            case DownDirection.Ydown:
+            case DownDirection.Yup:
+                horizontalVector.y = 0; 
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                horizontalVector.x = 0;
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                horizontalVector.z = 0;
+                break;
+        }
+        return horizontalVector;
     }
 
     #endregion

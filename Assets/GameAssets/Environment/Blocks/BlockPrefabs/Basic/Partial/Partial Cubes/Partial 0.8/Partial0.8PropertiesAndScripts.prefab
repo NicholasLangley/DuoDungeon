@@ -46,75 +46,72 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <baseID>k__BackingField: Partial 0.8
   <varientID>k__BackingField: blank
-  forwardEdgeHeight: 0.8
-  backwardEdgeHeight: 0.8
-  rightEdgeHeight: 0.8
-  leftEdgeHeight: 0.8
-  topSide:
-    type: 0
-    centerHeight: 0.8
-    forwardEdgeType: 0
-    forwardEdgeHeight: 0.8
-    backwardEdgeType: 0
-    backwardEdgeHeight: 0.8
-    leftEdgeType: 0
-    leftEdgeHeight: 0.8
-    rightEdgeType: 0
-    rightEdgeHeight: 0.8
-  leftSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 1
-    rightEdgeHeight: 0
-  rightSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 1
-    leftEdgeHeight: 0
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  bottomSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  frontSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 0
-    forwardEdgeHeight: 1
-    backwardEdgeType: 1
-    backwardEdgeHeight: 0
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
-  backSide:
-    type: 0
-    centerHeight: 1
-    forwardEdgeType: 1
-    forwardEdgeHeight: 0
-    backwardEdgeType: 0
-    backwardEdgeHeight: 1
-    leftEdgeType: 0
-    leftEdgeHeight: 1
-    rightEdgeType: 0
-    rightEdgeHeight: 1
+  blockSides:
+    topSide:
+      type: 0
+      centerHeight: 0.8
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0.8
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0.8
+      leftEdgeType: 0
+      leftEdgeHeight: 0.8
+      rightEdgeType: 0
+      rightEdgeHeight: 0.8
+    leftSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 1
+      rightEdgeHeight: 1
+    rightSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 1
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    bottomSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    frontSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 1
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    backSide:
+      type: 0
+      centerHeight: 1
+      forwardEdgeType: 1
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
   blocksAllMovement: 0
   isGround: 1

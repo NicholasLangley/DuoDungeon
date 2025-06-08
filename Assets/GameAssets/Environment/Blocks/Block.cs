@@ -5,47 +5,114 @@ using UnityEngine;
 [System.Serializable]
 public class BlockSide
 {
-    public enum edgeEnterType { WALK, HOP, NONE }
-    public enum centerType { GROUND, NOT_GROUND }
+    public enum EdgeEnterType { WALK, HOP, NONE }
+    public enum CenterType { GROUND, NOT_GROUND }
 
     [Header("CenterType")]
-    public centerType type;
+    public CenterType centerType;
     public float centerHeight;
 
     [Header("Forward")]
-    public edgeEnterType forwardEdgeType;
+    public EdgeEnterType forwardEdgeType;
     public float forwardEdgeHeight;
 
     [Header("Backward")]
-    public edgeEnterType backwardEdgeType;
+    public EdgeEnterType backwardEdgeType;
     public float backwardEdgeHeight;
 
     [Header("Left")]
-    public edgeEnterType leftEdgeType;
+    public EdgeEnterType leftEdgeType;
     public float leftEdgeHeight;
 
     [Header("Right")]
-    public edgeEnterType rightEdgeType;
+    public EdgeEnterType rightEdgeType;
     public float rightEdgeHeight;
+
+    public BlockSide()
+    {
+        centerType = CenterType.GROUND;
+        centerHeight = 0;
+
+        forwardEdgeType = EdgeEnterType.WALK;
+        forwardEdgeHeight = 0;
+
+        backwardEdgeType = EdgeEnterType.WALK;
+        backwardEdgeHeight = 0;
+
+        leftEdgeType = EdgeEnterType.WALK;
+        leftEdgeHeight = 0;
+
+        rightEdgeType = EdgeEnterType.WALK; 
+        rightEdgeHeight = 0;
+    }
+    public void AddHeightOffset(float offset)
+    {
+        centerHeight += offset;
+        forwardEdgeHeight += offset;
+        backwardEdgeHeight += offset;
+        leftEdgeHeight += offset;
+        rightEdgeHeight += offset;
+    }
+
+    public bool CheckIfSideExtendsToNextGrid()
+    {
+        return (centerHeight > 1.0f || forwardEdgeHeight > 1.0f || backwardEdgeHeight > 1.0f || leftEdgeHeight > 1.0f || rightEdgeHeight > 1.0f);
+    }
+
+    public void CopySide(BlockSide side)
+    {
+        centerType = side.centerType;
+        centerHeight = side.centerHeight;
+
+        forwardEdgeType = side.forwardEdgeType;
+        forwardEdgeHeight = side.forwardEdgeHeight;
+
+        backwardEdgeType = side.backwardEdgeType;
+        backwardEdgeHeight = side.backwardEdgeHeight;
+
+        leftEdgeType = side.leftEdgeType;
+        leftEdgeHeight = side.leftEdgeHeight;
+
+        rightEdgeType = side.rightEdgeType;
+        rightEdgeHeight = side.rightEdgeHeight;
+    }
 }
 
-public class Block : MonoBehaviour, IPlaceable
+[System.Serializable]
+public class BlockSideDefinitions
 {
-    //baseID identifieds the base block (eg full stairs)
-    //varientID identifies the version of that block (different materials, meshes, etc.)
-    public string listID { get; set; }
-    [field: SerializeField] public string baseID  { get; set; }
-    [field: SerializeField] public string varientID { get; set; }
-    public int blockID { get; set; }
-
-    //The height on each edges of the block, used for entering/exiting the stair block
-    [SerializeField] public float forwardEdgeHeight, backwardEdgeHeight, rightEdgeHeight, leftEdgeHeight;
-
-    [SerializeField]
     public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
 
+    public BlockSideDefinitions()
+    {
+        topSide = new BlockSide();
+        leftSide = new BlockSide();
+        rightSide = new BlockSide();
+        bottomSide = new BlockSide();
+        frontSide = new BlockSide();
+        backSide = new BlockSide();
+    }
+    public void CopyBlockSides(BlockSideDefinitions sides)
+    {
+        topSide.CopySide(sides.topSide);
+        leftSide.CopySide(sides.leftSide);
+        rightSide.CopySide(sides.rightSide);
+        bottomSide.CopySide(sides.bottomSide);
+        frontSide.CopySide(sides.frontSide);
+        backSide.CopySide(sides.backSide);
+    }
+}
+
+public class Block : Placeable
+{
+    [SerializeField]    
+    public BlockSideDefinitions blockSides;
+
     [SerializeField]
-    public bool blocksAllMovement, isGround;
+    public bool blocksAllMovement;
+
+    [SerializeField]
+    public Vector3Int gridPosition;
 
     // Start is called before the first frame update
     void Awake()
@@ -59,57 +126,56 @@ public class Block : MonoBehaviour, IPlaceable
         
     }
 
-    public void Initialize()
+    public void SetGridPosition(Vector3Int pos)
     {
-
+        gridPosition = pos;
     }
 
     //entering from same level as block
     public bool canEntityEnter(FullGridMoveable e)
     {
-        if (blocksAllMovement) { return false; }
+        if (blocksAllMovement) { Debug.Log("blocks all movement"); return false; }
 
         DownDirection downDir = e.GetCurrentDownDirection();
 
-        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(transform.position, downDir);
+        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(gridPosition, downDir);
 
-        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.transform.position, e.GetCurrentDownDirection());
+        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
         float entityExitHeight;
         if (entityCurrentBlock != null)
         {
-            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.transform.position, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(transform.position, e.transform.up, downDir);
+            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.gridPosition, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(gridPosition, e.transform.up, downDir);
         }
         else { entityExitHeight = GetPositionsDownOrientedHeight(e.transform.position, downDir); }
-
         //if player climbing up a level and still has to climb this block
-        if (IsEntityClimbingStackedBlock(transform.position, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
+        if (IsEntityClimbingStackedBlock(gridPosition, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
         {
             float maxClimb = (e.maxStairClimbHeight + entityExitHeight);
             float climbNeeded = enteringEdgeHeight;
             if (climbNeeded <= maxClimb) { return true; }
+            //Debug.Log("failed climbing stacked block");
         }
         //same height or greater entry
-        else if (IsEntityClimbingOrStayingSameHeight(transform.position, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
+        else if (IsEntityClimbingOrStayingSameHeight(gridPosition, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
         {
             if (enteringEdgeHeight <= e.maxStairClimbHeight + entityExitHeight) { return true; }
+            //Debug.Log("failed climbing Or staying same height");
         }
         //entering from above
         else
         {
             //Debug.Log("exit - climb: " + (entityExitHeight - e.maxStairClimbHeight) + "\n enter: " + enteringEdgeHeight);
-            if (entityExitHeight - e.maxStairClimbHeight <= enteringEdgeHeight ) { return true; }
+            if (entityExitHeight <= enteringEdgeHeight + e.maxStairClimbHeight && entityExitHeight >= enteringEdgeHeight - e.maxStairClimbHeight) { return true; }
+            //Debug.Log("failed entering from above");
         }
-        
 
         return false;
     }
 
     public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection entityDownDir)
     {
-        DownDirection blockDownDir = Entity.ConvertVectorToDownDirection(-transform.up);
-
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = transform.position - entityTransform.position;
+        Vector3 relativeDirection = gridPosition - entityTransform.position;
         Vector3 forwardVector;
         Vector3 normalVector = -entityTransform.up;
         switch (entityDownDir)
@@ -173,7 +239,7 @@ public class Block : MonoBehaviour, IPlaceable
     public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection EntityDownDir)
     {
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = transform.position - exitPoint;
+        Vector3 relativeDirection = gridPosition - exitPoint;
         Vector3 forwardVector;
         Vector3 normalVector = -entityUpVector;
         switch (EntityDownDir)
@@ -242,7 +308,7 @@ public class Block : MonoBehaviour, IPlaceable
     ///////////
     //HELPERS///
     ////////////
-    BlockSide GetOrientedTopSide(Vector3 entityDownVector)
+    public BlockSide GetOrientedTopSide(Vector3 entityDownVector)
     {
         Vector3 blockOrientedDownVector = transform.InverseTransformDirection(entityDownVector);
         DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
@@ -251,22 +317,22 @@ public class Block : MonoBehaviour, IPlaceable
         {
             default:
                 //Debug.Log("top");
-                return topSide;
+                return blockSides.topSide;
             case DownDirection.Yup:
                 //Debug.Log("bottom");
-                return bottomSide;
+                return blockSides.bottomSide;
             case DownDirection.Xleft:
                 //Debug.Log("right");
-                return rightSide;
+                return blockSides.rightSide;
             case DownDirection.Xright:
                 //Debug.Log("left");
-                return leftSide;
+                return blockSides.leftSide;
             case DownDirection.Zforward:
                 //Debug.Log("back");
-                return backSide;
+                return blockSides.backSide;
             case DownDirection.Zback:
                // Debug.Log("front");
-                return frontSide;
+                return blockSides.frontSide;
         }
     }
 
