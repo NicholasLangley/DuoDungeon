@@ -124,28 +124,26 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     #endregion
 
     #region Movement functions
-    public virtual Vector3 GetInitialNextDestinationBlock(MovementDirection dir)
+    public virtual Vector3 GetInitialNextDestinationBlock(MovementDirection dir, Vector3 initialPos)
     {
-        Vector3 nextPos = transform.position;
-
         switch (dir)
         {
             case MovementDirection.FORWARD:
-                nextPos += transform.forward;
+                initialPos += transform.forward;
                 break;
             case MovementDirection.BACKWARD:
-                nextPos -= transform.forward;
+                initialPos -= transform.forward;
                 break;
             case MovementDirection.RIGHT:
-                nextPos += transform.right;
+                initialPos += transform.right;
                 break;
             case MovementDirection.LEFT:
-                nextPos -= transform.right;
+                initialPos -= transform.right;
                 break;
             default:
                 break;
         }
-        return nextPos;
+        return initialPos;
     }
 
     //any entity specific updates, like the player look direction can edit the final direction being moved
@@ -154,10 +152,16 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         return dir;
     }
 
+    // can be overidden for more complex behaviours, 
+    // such as complex blocks needing to check all sub blocks for collisions
     public virtual void GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
-        Vector3 nextPos = GetInitialNextDestinationBlock(dir);
-        
+        projectedDestinationBlock = CalculateProjectedDestinationBlockForPosition(dir, transform.position);
+    }
+    
+    protected Vector3Int CalculateProjectedDestinationBlockForPosition(MovementDirection dir, Vector3 initialPos)
+    {
+        Vector3 nextPos = GetInitialNextDestinationBlock(dir, initialPos);
 
         DownDirection downDir = GetCurrentDownDirection();
 
@@ -183,7 +187,6 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
         }
-        //Debug.Log(nextPos);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
         Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
@@ -256,7 +259,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
                 break;
         }
-        projectedDestinationBlock = Map.GetIntVector3(nextPos);
+        return Map.GetIntVector3(nextPos);
     }
 
     public virtual bool IsDestinationOccupied(Vector3Int destinationToCheck)
@@ -278,7 +281,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         //check for entities
         FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(destinationToCheck);
-        if (blockingFGM != null && !(blockingFGM is Pushable)) { return true; }
+        if (blockingFGM != null) { return true; }
         return false;
     }
 

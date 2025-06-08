@@ -413,11 +413,6 @@ public class GameController : MonoBehaviour
             if (enemy.GetCurrentBlockPosition() == destinationToCheck) { return enemy; }
         }
 
-        foreach (FullGridMoveable fgm in _pushableObjects)
-        {
-            if (fgm.GetCurrentBlockPosition() == destinationToCheck) { return fgm; }
-        }
-
         return null;
     }
 

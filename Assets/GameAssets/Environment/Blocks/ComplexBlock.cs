@@ -68,9 +68,6 @@ public class ComplexBlock : Placeable
                 singleBlock.blockSides = new BlockSideDefinitions();
                 singleBlock.blockSides.CopyBlockSides(componentBlock.sides);
                 singleBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
-
-                Debug.Log("main: " + transform.position + "\nrotated offset: " + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z) + "\n final: " + singleBlock.gridPosition);
-
                 gridBlocks.Add(singleBlock);
             }
             return;

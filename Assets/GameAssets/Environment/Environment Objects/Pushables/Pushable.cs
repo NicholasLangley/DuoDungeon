@@ -74,17 +74,16 @@ public class Pushable : FullGridMoveable
 
     public bool AttemptPush(Vector3 pushDirectionVector, Block pushedBlockComponent)
     {
-        
-        //todo actual logic for if can be pushed
-        if(true)
+        pushDirection = getLocalPushDirection(pushDirectionVector);
+
+        foreach (Vector3Int subBlockPos in complexBlock.getSubBlockPositions(Map.GetIntVector3(transform.position)))
         {
-            toBePushedThisRound = true;
-            pushDirection = getLocalPushDirection(pushDirectionVector);
-            Debug.Log(gameObject.name);
-            return true;
+            if (IsDestinationOccupied(CalculateProjectedDestinationBlockForPosition(pushDirection, subBlockPos))) {return false; }
         }
 
-        return false;
+        toBePushedThisRound = true;
+        return true;
+ 
     }
 
     MovementDirection getLocalPushDirection(Vector3 pushDirectionVector)
@@ -106,4 +105,13 @@ public class Pushable : FullGridMoveable
             return MovementDirection.LEFT;
         }
     }
+
+    #region FGM Overrides
+
+    public override void GetProjectedDestinationBlockPosition(MovementDirection dir)
+    {
+        projectedDestinationBlock = CalculateProjectedDestinationBlockForPosition(dir, transform.position);
+    }
+
+    #endregion
 }
