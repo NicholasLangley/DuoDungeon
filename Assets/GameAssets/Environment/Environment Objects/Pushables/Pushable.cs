@@ -15,10 +15,10 @@ public class Pushable : FullGridMoveable
         stateMachine = new StateMachine();
 
         idleState = new FGM_ComplexBlock_IdleState(this, stateMachine, complexBlock);
-        movementState = new FGM_MovementState(this, stateMachine);
+        movementState = new Pushable_MovementState(this, stateMachine);
         movementBlockedState = new FGM_MovementBlockedState(this, stateMachine);
         rotationState = new FGM_RotationState(this, stateMachine);
-        fallingState = new FGM_FallingState(this, stateMachine);
+        fallingState = new Pushable_FallingState(this, stateMachine);
         //unique entities may override this
         #endregion
     }
