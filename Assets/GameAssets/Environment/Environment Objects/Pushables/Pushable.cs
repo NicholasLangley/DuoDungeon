@@ -110,7 +110,27 @@ public class Pushable : FullGridMoveable
 
     public override void GetProjectedDestinationBlockPosition(MovementDirection dir)
     {
-        projectedDestinationBlock = CalculateProjectedDestinationBlockForPosition(dir, transform.position);
+        //finds the sub blocks that ends up moving the most in the positive up direction (based on gravity)
+        //Those blocks are the ones that collided soonest with the ground and are the resting points of the block.
+        //This max transformation vector is applied tomain position of the block to get the final grid pos
+        //Need a custom fgm_movement state to handle proper mvement calculations though as the current one only takes mainposition block into account
+        Vector3Int maxHeightSubBlockTransformationVector = Vector3Int.zero;
+        float maxheightDotProductProjection = -999f;
+        foreach (Vector3Int subBlockPos in complexBlock.getSubBlockPositions(Map.GetIntVector3(transform.position)))
+        {
+
+            Vector3Int destPos = CalculateProjectedDestinationBlockForPosition(movementDirection, subBlockPos);
+            Vector3Int transformationVector = destPos - subBlockPos;
+
+            float projectedHeight = Vector3.Dot(transformationVector, -gravityDirection);
+            if (projectedHeight > maxheightDotProductProjection) 
+            { 
+                maxHeightSubBlockTransformationVector = transformationVector; 
+                maxheightDotProductProjection = projectedHeight;
+            }
+        }
+
+        projectedDestinationBlock = Map.GetIntVector3(transform.position) + maxHeightSubBlockTransformationVector;
     }
 
     #endregion
