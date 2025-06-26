@@ -271,8 +271,8 @@ public class Map
         //start block
         string json = "{\n";
 
-        //block type TODO
-        json += "\"type\": 0,\n";
+        //block type TODO?
+        //json += "\"type\": 0,\n";
 
         //INFO
         json += "\"info\": {\n";
