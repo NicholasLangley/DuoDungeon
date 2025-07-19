@@ -101,26 +101,7 @@ public class PlayerController : ICommandable
     {
         List<Command> commands = new List<Command>();
 
-        MovementDirection initialMovementDir;
-
-        //get next position for each player
-        if (playerInputHandler.moveInput.y > 0)
-        {
-            initialMovementDir = MovementDirection.FORWARD;
-        }
-        else if (playerInputHandler.moveInput.y < 0)
-        {
-            initialMovementDir = MovementDirection.BACKWARD;
-        }
-        else if (playerInputHandler.moveInput.x > 0)
-        {
-            initialMovementDir = MovementDirection.RIGHT;
-        }
-        else if (playerInputHandler.moveInput.x < 0)
-        {
-            initialMovementDir = MovementDirection.LEFT;
-        }
-        else { return null; }
+        MovementDirection initialMovementDir = GetPlayerInputMoveDirection();  
 
         MovementDirection redMovementDir = redPlayer.GetFinalMovementDirection(initialMovementDir);
         MovementDirection blueMovementDir = bluePlayer.GetFinalMovementDirection(initialMovementDir);
@@ -158,6 +139,8 @@ public class PlayerController : ICommandable
         }
 
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
+        //todo other entities / blocks being pushed
+        //will need prediction here
         if (redBlocked && !blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())
         {
             redBlocked = false;
@@ -168,6 +151,7 @@ public class PlayerController : ICommandable
         }
 
         //red player takes precedence if both try to move to same location
+        //todo unique collision animation rather than just block
         if (nextRedPos == nextBluePos) { blueBlocked = true; }
 
         Command cmdRed;
@@ -181,6 +165,27 @@ public class PlayerController : ICommandable
         commands.Add(cmdBlue);
 
         return commands;
+    }
+
+    //get next movementDir from input handler
+    public MovementDirection GetPlayerInputMoveDirection()
+    {
+        if (playerInputHandler.moveInput.y > 0)
+        {
+            return MovementDirection.FORWARD;
+        }
+        else if (playerInputHandler.moveInput.y < 0)
+        {
+            return MovementDirection.BACKWARD;
+        }
+        else if (playerInputHandler.moveInput.x > 0)
+        {
+            return MovementDirection.RIGHT;
+        }
+        else
+        {
+            return MovementDirection.LEFT;
+        }
     }
 
     List<Command> RotatePlayers(float degrees)
