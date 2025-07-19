@@ -28,10 +28,21 @@ public class PlayerController : ICommandable
     {
         //reset player stats if any
 
+        SpawnRedPlayer(map);
+        SpawnBluePlayer(map);
+
+        SetPlayerGravity();
+    }
+
+    public void SpawnRedPlayer(Map map)
+    {
         redPlayer.transform.position = map.redPlayerSpawn;
         redPlayer.transform.rotation = map.redPlayerSpawnRotation;
         redPlayer.map = map;
+    }
 
+    public void SpawnBluePlayer(Map map)
+    {
         bluePlayer.transform.position = map.bluePlayerSpawn;
         bluePlayer.transform.rotation = map.bluePlayerSpawnRotation;
         bluePlayer.map = map;
