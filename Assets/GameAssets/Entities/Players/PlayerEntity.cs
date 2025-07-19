@@ -119,10 +119,9 @@ public class PlayerEntity : Entity
         return nearestForwardLookDirection;
     }
 
+    //todo aiming ranged attacks?
     public override void Attack()
     {
-        
-
         stateMachine.changeState(attackState);
 
         RaycastHit hit;
@@ -148,6 +147,7 @@ public class PlayerEntity : Entity
     #region camera settings
     public void UpdateCameraAim(Vector2 mouseMovementVector)
     {
+        //todo sub option for limited mouse aim?
         if (classicDungeonCrawlerControlsEnabled) 
         { 
             _cameraBaseTransform.localRotation = Quaternion.identity;

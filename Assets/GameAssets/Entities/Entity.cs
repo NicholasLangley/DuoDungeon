@@ -89,7 +89,8 @@ public class Entity : FullGridMoveable, IDamageable
 
     void Die()
     {
-        //TODO
+        //TODO 
+        //+ todo makke part of damageable interface?
         Debug.Log(gameObject.name + " has died");
     }
 
