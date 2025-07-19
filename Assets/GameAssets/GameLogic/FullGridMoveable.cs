@@ -79,6 +79,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         #region Initialize State Machine
 
         stateMachine.Initialize(idleState);
+        //inheriting classes are expected to initialize the specific states to be used
 
         #endregion
     }
@@ -166,57 +167,18 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         DownDirection downDir = GetCurrentDownDirection();
 
         //remove height to get logical center of current block
-        switch (downDir)
-        {
-            case DownDirection.Ydown:
-                nextPos.y = Mathf.Floor(nextPos.y + 0.01f);
-                break;
-            case DownDirection.Yup:
-                nextPos.y = Mathf.Ceil(nextPos.y - 0.01f);
-                break;
-            case DownDirection.Xleft:
-                nextPos.x = Mathf.Floor(nextPos.x + 0.01f);
-                break;
-            case DownDirection.Xright:
-                nextPos.x = Mathf.Ceil(nextPos.x - 0.01f);
-                break;
-            case DownDirection.Zback:
-                nextPos.z = Mathf.Floor(nextPos.z + 0.01f);
-                break;
-            case DownDirection.Zforward:
-                nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
-                break;
-        }
+        nextPos = GetCenterOfBlock(nextPos, downDir);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
         Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
         float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(nextPos, transform.up, GetCurrentDownDirection()) : 0;
         nextPos += transform.up * exitHeight;
-        switch (downDir)
-        {
-            case DownDirection.Ydown:
-                nextPos.y = Mathf.Floor(nextPos.y + 0.01f);
-                break;
-            case DownDirection.Yup:
-                nextPos.y = Mathf.Ceil(nextPos.y - 0.01f);
-                break;
-            case DownDirection.Xleft:
-                nextPos.x = Mathf.Floor(nextPos.x + 0.01f);
-                break;
-            case DownDirection.Xright:
-                nextPos.x = Mathf.Ceil(nextPos.x - 0.01f);
-                break;
-            case DownDirection.Zback:
-                nextPos.z = Mathf.Floor(nextPos.z + 0.01f);
-                break;
-            case DownDirection.Zforward:
-                nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
-                break;
-        }
+        nextPos = GetCenterOfBlock(nextPos, downDir);
 
         //check for stairs going down
+        //TODO test for going up a block into a down staircase (example: /\  full stair configuration)
         Block straightForwardDestBlock = map.GetBlockAtGridPosition(nextPos, gameObject, gravityDirection);
-        //if straight forwad block is not ground in itself need to check if below block is a staircase for smooth movement
+        //if straight forward block is not ground in itself need to check if below block is a staircase for smooth movement
         if (straightForwardDestBlock == null || !straightForwardDestBlock.blocksAllMovement && (straightForwardDestBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND))
         {
             Vector3 belowDest = nextPos - transform.up;
@@ -238,27 +200,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
             }
         }
 
-        switch (downDir)
-        {
-            case DownDirection.Ydown:
-                nextPos.y = Mathf.Floor(nextPos.y + 0.01f);
-                break;
-            case DownDirection.Yup:
-                nextPos.y = Mathf.Ceil(nextPos.y - 0.01f);
-                break;
-            case DownDirection.Xleft:
-                nextPos.x = Mathf.Floor(nextPos.x + 0.01f);
-                break;
-            case DownDirection.Xright:
-                nextPos.x = Mathf.Ceil(nextPos.x - 0.01f);
-                break;
-            case DownDirection.Zback:
-                nextPos.z = Mathf.Floor(nextPos.z + 0.01f);
-                break;
-            case DownDirection.Zforward:
-                nextPos.z = Mathf.Ceil(nextPos.z - 0.01f);
-                break;
-        }
+        nextPos = GetCenterOfBlock(nextPos, downDir);
         return Map.GetIntVector3(nextPos);
     }
 
@@ -280,6 +222,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check for entities
+        //todo prediction for moving into about to be vacated space?
         FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(destinationToCheck);
         if (blockingFGM != null) { return true; }
         return false;
@@ -325,30 +268,8 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         }
 
         //check if standing on a block below current one
-        Vector3Int groundPos = Map.GetIntVector3(transform.position);
-        switch (downDir)
-        {
-            //YDown
-            default:
-                groundPos.y -= 1;
-                break;
-            case DownDirection.Yup:
-                groundPos.y += 1;
-                break;
-            case DownDirection.Xright:
-                groundPos.x += 1;
-                break;
-            case DownDirection.Xleft:
-                groundPos.x -= 1;
-                break;
-
-            case DownDirection.Zforward:
-                groundPos.z += 1;
-                break;
-            case DownDirection.Zback:
-                groundPos.z -= 1;
-                break;
-        }
+        Vector3Int groundPos =  GetBelowBlockPosition(Map.GetIntVector3(transform.position), downDir);
+        
 
         Block groundBlock = map.GetBlockAtGridPosition(groundPos, gameObject, gravityDirection);
 
@@ -405,6 +326,61 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 break;
         }
         return horizontalVector;
+    }
+
+    public Vector3 GetCenterOfBlock(Vector3 pos, DownDirection downDir)
+    {
+        Vector3 centerPos = pos;
+        switch (downDir)
+        {
+            case DownDirection.Ydown:
+                centerPos.y = Mathf.Floor(pos.y + 0.01f);
+                break;
+            case DownDirection.Yup:
+                centerPos.y = Mathf.Ceil(pos.y - 0.01f);
+                break;
+            case DownDirection.Xleft:
+                centerPos.x = Mathf.Floor(pos.x + 0.01f);
+                break;
+            case DownDirection.Xright:
+                centerPos.x = Mathf.Ceil(pos.x - 0.01f);
+                break;
+            case DownDirection.Zback:
+                centerPos.z = Mathf.Floor(pos.z + 0.01f);
+                break;
+            case DownDirection.Zforward:
+                centerPos.z = Mathf.Ceil(pos.z - 0.01f);
+                break;
+        }
+        return centerPos;
+    }
+    Vector3Int GetBelowBlockPosition(Vector3Int pos, DownDirection downDir)
+    {
+        Vector3Int belowPos = pos;
+        switch (downDir)
+        {
+            //YDown
+            default:
+                belowPos.y -= 1;
+                break;
+            case DownDirection.Yup:
+                belowPos.y += 1;
+                break;
+            case DownDirection.Xright:
+                belowPos.x += 1;
+                break;
+            case DownDirection.Xleft:
+                belowPos.x -= 1;
+                break;
+
+            case DownDirection.Zforward:
+                belowPos.z += 1;
+                break;
+            case DownDirection.Zback:
+                belowPos.z -= 1;
+                break;
+        }
+        return belowPos;
     }
 
     #endregion
