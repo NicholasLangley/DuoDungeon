@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour
     Turn currentlyUndoingTurn;
     bool undoCommandIsBuffered;
 
-    //turn order
+    //turn order TODO prediction round?
     //1. Player
     //2. Enemies
     //3. Environment

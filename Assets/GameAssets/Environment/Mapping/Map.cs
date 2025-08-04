@@ -7,6 +7,7 @@ public class Map
 {
     Dictionary<Vector3Int, Block> currentStaticBlocks;
     List<ComplexBlock> currentComplexBlocks;
+    Dictionary<Vector3Int, Wall> currentWalls;
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
