@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    //the wall is is positioned/oriented between these two points on the grid
-    Vector3Int positionA, positionB;
+    //how tall the wall is from each orientation
+    float heightFromBottom, heightFromTop, heightFromLeft, heightFromRight;
+    
+    //how thick the wall is (for landing on)
+    private float wallThickness;
 
     [SerializeField]
     public bool blocksMovement;
