@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 
-public class Wall : MonoBehaviour
+public class Wall : Placeable
 {
     //how tall the wall is from each orientation
     float heightFromBottom, heightFromTop, heightFromLeft, heightFromRight;
@@ -15,10 +15,12 @@ public class Wall : MonoBehaviour
     [SerializeField]
     public bool blocksMovement;
 
-    public void SetPositions(Vector3Int a, Vector3Int b)
+    public void SetHeights(float bot, float top, float left, float right)
     {
-        positionA = a;
-        positionB = b;
+        heightFromBottom = bot;
+        heightFromTop = top;
+		heightFromLeft = left;
+		heightFromRight = right;
     }
 
     // Start is called before the first frame update
@@ -30,18 +32,5 @@ public class Wall : MonoBehaviour
     public void UnblockMovement()
     {
         blocksMovement = false;
-    }
-
-    public bool DoesMovementPassThroughWall(Vector3Int src, Vector3Int dest)
-    {
-        if (src == positionA)
-        {
-            return dest == positionB;
-        }
-        else if (src == positionB)
-        {
-            return dest == positionA;
-        }
-        return false;
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "BlockVarientListScriptableObject", menuName = "ScriptableObjects/BlockVarientList")]
 public class BlockVarientList : ScriptableObject
@@ -9,12 +10,14 @@ public class BlockVarientList : ScriptableObject
     //examples include: The Pushable script for pushables, the block script (block side heights and properties, etc.)
     //This way any changes just have to be made once for all varients
     [SerializeField]
-    GameObject BlockPropertiesAndScriptsObject;
+    [FormerlySerializedAs("BlockPropertiesAndScriptsObject")]
+    GameObject CommonPropertiesAndScriptsObject;
 
     [SerializeField]
     public string baseID;
     [SerializeField]
-    List<GameObject> blockVarients;
+    [FormerlySerializedAs("blockVarients")]
+    List<GameObject> varients;
     
 
     Dictionary<string, GameObject> varientDictionary;
@@ -22,7 +25,7 @@ public class BlockVarientList : ScriptableObject
     public void generateDict()
     {
         varientDictionary = new Dictionary<string, GameObject>();
-        foreach (GameObject varientObj in blockVarients)
+        foreach (GameObject varientObj in varients)
         {
             VarientID id = varientObj.GetComponent<VarientID>();
             varientDictionary.Add(id.varientID, varientObj);
@@ -31,7 +34,7 @@ public class BlockVarientList : ScriptableObject
 
     public GameObject GetBlock(string varientID)
     {
-        GameObject baseBlock = Instantiate(BlockPropertiesAndScriptsObject);
+        GameObject baseBlock = Instantiate(CommonPropertiesAndScriptsObject);
 
         Block blockComponent = baseBlock.GetComponent<Block>();
         if (blockComponent != null) { blockComponent.varientID = varientID; }
@@ -43,6 +46,6 @@ public class BlockVarientList : ScriptableObject
 
     public int GetLength()
     {
-        return blockVarients.Count;
+        return varients.Count;
     }
 }

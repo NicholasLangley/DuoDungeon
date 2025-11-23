@@ -23,7 +23,10 @@ public class BlockSelector : MonoBehaviour
 
             string baseID;
             string varientID;
-            ComplexBlock complexBlock = objectGameObject.GetComponent<ComplexBlock>();
+            Placeable placeable = objectGameObject.GetComponent<Placeable>();
+            baseID = placeable.baseID;
+            varientID = placeable.varientID;
+            /*ComplexBlock complexBlock = objectGameObject.GetComponent<ComplexBlock>();
             if(complexBlock != null)
             {
                 baseID = complexBlock.baseID;
@@ -31,10 +34,10 @@ public class BlockSelector : MonoBehaviour
             }
             else
             {
-                Block block = objectGameObject.GetComponent<Block>();
+                Block block = objectGameObject.GetComponent<Placeable>();
                 baseID = block.baseID;
                 varientID = block.varientID;
-            }
+            }*/
             
             blockButton.SetBlock(objectGameObject, varientList.baseID);
             newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, baseID, varientID));
