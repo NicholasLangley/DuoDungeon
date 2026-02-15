@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <baseID>k__BackingField: basicWall
   <varientID>k__BackingField: blank
-  blocksMovement: 0
+  blocksMovement: 1
