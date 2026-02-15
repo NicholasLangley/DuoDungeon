@@ -101,7 +101,7 @@ public class PlayerController : ICommandable
     {
         List<Command> commands = new List<Command>();
 
-        MovementDirection initialMovementDir = GetPlayerInputMoveDirection();  
+        MovementDirection initialMovementDir = GetPlayerInputMoveDirection();
 
         MovementDirection redMovementDir = redPlayer.GetFinalMovementDirection(initialMovementDir);
         MovementDirection blueMovementDir = bluePlayer.GetFinalMovementDirection(initialMovementDir);
@@ -112,47 +112,61 @@ public class PlayerController : ICommandable
         Vector3Int nextRedPos = redPlayer.projectedDestinationBlock;
         Vector3Int nextBluePos = bluePlayer.projectedDestinationBlock;
 
+        bool redBlockedByWall = redPlayer.IsDirectionBlockedByWall(redMovementDir, redPlayer.transform.position);
+        bool blueBlockedByWall = bluePlayer.IsDirectionBlockedByWall(blueMovementDir, bluePlayer.transform.position);
+        
         //check if space is occupied
-        bool redBlocked = redPlayer.IsDestinationOccupied(nextRedPos);
-        bool blueBlocked = bluePlayer.IsDestinationOccupied(nextBluePos);
+        bool redBlocked = redBlockedByWall || redPlayer.IsDestinationOccupied(nextRedPos);
+        bool blueBlocked = blueBlockedByWall || bluePlayer.IsDestinationOccupied(nextBluePos);
 
         //check if blocking object is a pushable object
-        if (redBlocked)
+        if (redBlocked && !redBlockedByWall)
         {
-            Block destinationBlock = redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
-            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null) 
+            Block destinationBlock =
+                redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
+            if (destinationBlock != null &&
+                destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
                 bool pushing = pushable.AttemptPush(redPlayer.GetHorizontalMoveVector(), destinationBlock);
-                if (pushing) { redBlocked = false; }
+                if (pushing)
+                {
+                    redBlocked = false;
+                }
             }
         }
-        if(blueBlocked)
+
+        if (blueBlocked && !blueBlockedByWall)
         {
-            Block destinationBlock = bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
-            if (destinationBlock != null && destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
+            Block destinationBlock =
+                bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
+            if (destinationBlock != null &&
+                destinationBlock.transform.parent.gameObject.GetComponent<Pushable>() != null)
             {
                 Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
                 bool pushing = pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlock);
-                if (pushing) { blueBlocked = false; }
+                if (pushing)
+                {
+                    blueBlocked = false;
+                }
             }
         }
 
         //allow blocked player to move IFF it is moving into a space occupied by the other player which is vacating it
         //todo other entities / blocks being pushed
         //will need prediction here
-        if (redBlocked && !blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())
+        if (redBlocked && !redBlockedByWall &&!blueBlocked && nextRedPos == bluePlayer.GetCurrentBlockPosition())
         {
             redBlocked = false;
         }
-        else if (blueBlocked && !redBlocked && nextBluePos == redPlayer.GetCurrentBlockPosition())
+        else if (blueBlocked && !blueBlockedByWall && !redBlocked && nextBluePos == redPlayer.GetCurrentBlockPosition())
         {
             blueBlocked = false;
         }
 
-        //red player takes precedence if both try to move to same location
-        //todo unique collision animation rather than just block
-        if (nextRedPos == nextBluePos) { blueBlocked = true; }
+            //red player takes precedence if both try to move to same location
+    //todo unique collision animation rather than just block
+    if (nextRedPos == nextBluePos) { blueBlocked = true; }
 
         Command cmdRed;
         Command cmdBlue;

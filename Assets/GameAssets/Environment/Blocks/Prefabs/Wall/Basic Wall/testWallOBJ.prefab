@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1181413480260448056}
   - component: {fileID: 2549367873485641179}
   - component: {fileID: 3686784004265320571}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: testWallOBJ
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,6 +121,10 @@ PrefabInstance:
     - target: {fileID: 4532370135384009348, guid: d5cd5d8c6e89623e6a9ec63f2f7c613a, type: 3}
       propertyPath: m_Name
       value: BasicWall - Blank
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532370135384009348, guid: d5cd5d8c6e89623e6a9ec63f2f7c613a, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -210,7 +210,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2147484151
+    m_Bits: 2147485175
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -362,12 +362,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <movementCollisionMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 1472
   <movementLerpDuration>k__BackingField: 0.25
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
-  <busy>k__BackingField: 0
+  <collisionRayHeights>k__BackingField:
+  - 0.1
+  - 0.5
+  - 0.9
   <maxStairClimbHeight>k__BackingField: 0.25
+  <busy>k__BackingField: 0
   <maxHealth>k__BackingField: 3
   attackRange: 1
   attackDuration: 0.25

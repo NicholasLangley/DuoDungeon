@@ -48,10 +48,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <movementCollisionMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1472
   <movementLerpDuration>k__BackingField: 0.25
   <affectedByGravity>k__BackingField: 1
   <fallLerpDuration>k__BackingField: 0.25
+  <collisionRayHeights>k__BackingField:
+  - 0.1
+  - 0.9
   <maxStairClimbHeight>k__BackingField: 0
   <busy>k__BackingField: 0
   toBePushedThisRound: 0
@@ -96,7 +99,7 @@ MonoBehaviour:
   - offsetFromCenter: {x: 0, y: 0, z: 0}
     sides:
       topSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1
@@ -107,7 +110,7 @@ MonoBehaviour:
         rightEdgeType: 0
         rightEdgeHeight: 1
       leftSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1
@@ -118,7 +121,7 @@ MonoBehaviour:
         rightEdgeType: 0
         rightEdgeHeight: 1
       rightSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1
@@ -129,7 +132,7 @@ MonoBehaviour:
         rightEdgeType: 0
         rightEdgeHeight: 1
       bottomSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1
@@ -140,7 +143,7 @@ MonoBehaviour:
         rightEdgeType: 0
         rightEdgeHeight: 1
       frontSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1
@@ -151,7 +154,7 @@ MonoBehaviour:
         rightEdgeType: 0
         rightEdgeHeight: 1
       backSide:
-        type: 0
+        centerType: 0
         centerHeight: 1
         forwardEdgeType: 0
         forwardEdgeHeight: 1

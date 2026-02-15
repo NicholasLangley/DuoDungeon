@@ -28,6 +28,8 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     public float degreesToRotate { get; set; }
 
     public Vector3Int projectedDestinationBlock { get; set; }
+    
+    [field: SerializeField] public List<float> collisionRayHeights { get; set; }
 
     #endregion
 
@@ -225,6 +227,39 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         //todo prediction for moving into about to be vacated space?
         FullGridMoveable blockingFGM = gameController.GetFGMAtPosition(destinationToCheck);
         if (blockingFGM != null) { return true; }
+        return false;
+    }
+
+    public virtual bool IsDirectionBlockedByWall(MovementDirection dir, Vector3 initialPos)
+    {
+        DownDirection downDir = GetCurrentDownDirection();
+
+        //remove height to get logical center of current block
+        initialPos = GetCenterOfBlock(initialPos, downDir);
+
+        //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
+        Block currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        float exitHeight = currentBlock != null ? currentBlock.CalculateAttemptedExitEdgeHeight(initialPos, transform.up, GetCurrentDownDirection()) : 0;
+        initialPos += transform.up * exitHeight;
+
+		Vector3 rayDir = GetHorizontalMoveVector();
+
+        foreach(float rayStartHeight in collisionRayHeights)
+		{
+			Vector3 rayStartPos = initialPos + transform.up * rayStartHeight;
+            Ray ray = new Ray(rayStartPos, rayDir);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 1.0f, movementCollisionMask))
+            {
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+                    if (hit.collider.gameObject.GetComponent<Wall>().blocksMovement)
+                    {
+                        Debug.Log("Wall hit");
+                        return true;
+                    }
+            }
+		}
+        
         return false;
     }
 

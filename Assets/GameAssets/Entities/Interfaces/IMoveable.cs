@@ -38,6 +38,8 @@ public interface IMoveable
     float degreesToRotate { get; set; }
 
     public Vector3Int projectedDestinationBlock { get; set; }
+    
+    List<float> collisionRayHeights { get; set; }
 
     public void MoveTo(MovementDirection dir);
 
