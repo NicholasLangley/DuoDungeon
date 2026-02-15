@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class Wall : Placeable
 {
+    //How far the wall extends out from the center line (total width is 2x thickness)
+    [SerializeField]
+    public float thickness;
+    
     [SerializeField]
     public bool blocksMovement;
 

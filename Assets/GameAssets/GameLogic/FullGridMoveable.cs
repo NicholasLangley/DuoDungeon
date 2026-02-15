@@ -254,7 +254,6 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
                     if (hit.collider.gameObject.GetComponent<Wall>().blocksMovement)
                     {
-                        Debug.Log("Wall hit");
                         return true;
                     }
             }
@@ -264,6 +263,11 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     }
 
     public bool isEntityGrounded()
+    {
+        return isEntityGroundedOnBlock() || isEntityGroundedOnWall();
+    }
+
+    public bool isEntityGroundedOnBlock()
     {
         DownDirection downDir = GetCurrentDownDirection();
 
@@ -311,6 +315,34 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         if (groundBlock == null || (groundBlock.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND) || groundBlock.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 
         return true;
+    }
+
+    public bool isEntityGroundedOnWall()
+    {
+            Ray ray = new Ray(transform.position, -transform.up);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 1.0f, movementCollisionMask))
+            {
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+                {
+                    Wall wall = hit.collider.gameObject.GetComponent<Wall>();
+
+                    if (wall.blocksMovement)
+                    {
+                        DownDirection downDir = GetCurrentDownDirection();
+
+                        float downDirectionEntityHeight = Block.GetPositionsDownOrientedHeight(transform.position, downDir);
+
+                        float wallDownDirectionHeight = Block.GetPositionsDownOrientedHeight(wall.gameObject.transform.position, downDir);
+
+                        //above wall but floating above it and need to fall
+                        if (downDirectionEntityHeight - wallDownDirectionHeight - wall.thickness > 0.01f)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
     }
 
     public void SetGravityDirection(Vector3 dir)
