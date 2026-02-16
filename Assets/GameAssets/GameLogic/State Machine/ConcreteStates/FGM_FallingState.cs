@@ -79,10 +79,11 @@ public class FGM_FallingState : FullGridMoveableState
         }
 
         Block startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
-        Block destBlock;
+        Block destBlock = null;
         fallDestination = baseBlockPosition;
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
+        float landingHeightAdjustment = 0.0f;
 
         if (startingBlock != null && startingBlock.GetOrientedTopSide(_fgm.gravityDirection).centerType == CenterType.GROUND)
         {
@@ -90,63 +91,98 @@ public class FGM_FallingState : FullGridMoveableState
         }
         else
         {
+            //check for wall below
+            Vector3 rayStart = fallDestination;
             switch (downDir)
             {
-                //YDown
-                default:
-                    fallDestination.y -= 1;
-                    break;
+                case DownDirection.Ydown:
                 case DownDirection.Yup:
-                    fallDestination.y += 1;
-                    break;
-
-                case DownDirection.Xright:
-                    fallDestination.x += 1;
+                    rayStart.y = _fgm.transform.position.y;
                     break;
                 case DownDirection.Xleft:
-                    fallDestination.x -= 1;
+                case DownDirection.Xright:
+                    rayStart.x = _fgm.transform.position.x;
                     break;
-
                 case DownDirection.Zforward:
-                    fallDestination.z += 1;
-                    break;
                 case DownDirection.Zback:
-                    fallDestination.z -= 1;
+                    rayStart.z = _fgm.transform.position.z;
                     break;
             }
-            
-            destBlock = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
+            Ray ray = new Ray(rayStart, -_fgm.transform.up);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 0.5f, _fgm.movementCollisionMask) && hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                Wall wall = hit.collider.gameObject.GetComponent<Wall>();
+
+                if (wall.blocksMovement)
+                {
+                    landingHeightAdjustment = wall.thickness;
+                    Debug.Log(landingHeightAdjustment);
+                }
+            }
+            //no starting block or wall -> go down one block and check there
+            else 
+            {
+                switch (downDir)
+                {
+                    //YDown
+                    default:
+                        fallDestination.y -= 1;
+                        break;
+                    case DownDirection.Yup:
+                        fallDestination.y += 1;
+                        break;
+
+                    case DownDirection.Xright:
+                        fallDestination.x += 1;
+                        break;
+                    case DownDirection.Xleft:
+                        fallDestination.x -= 1;
+                        break;
+
+                    case DownDirection.Zforward:
+                        fallDestination.z += 1;
+                        break;
+                    case DownDirection.Zback:
+                        fallDestination.z -= 1;
+                        break;
+                }
+                destBlock = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
+            }
         }
         
+        //get dest block height to fall to
         if (destBlock != null)
         {
-            switch (downDir)
-            {
-                //YDown
-                default:
-                    fallDestination.y += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-                case DownDirection.Yup:
-                    fallDestination.y -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-
-                case DownDirection.Xright:
-                    fallDestination.x -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-                case DownDirection.Xleft:
-                    fallDestination.x += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-
-                case DownDirection.Zforward:
-                    fallDestination.z -= destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-                case DownDirection.Zback:
-                    fallDestination.z += destBlock.GetMidBlockHeight(_fgm.gravityDirection);
-                    break;
-            }
-            //stops lesser falls from being slower
-            modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
+            landingHeightAdjustment = destBlock.GetMidBlockHeight(_fgm.gravityDirection);
         }
+        
+        switch (downDir)
+        {
+            //YDown
+            default:
+                fallDestination.y += landingHeightAdjustment;
+                break;
+            case DownDirection.Yup:
+                fallDestination.y -= landingHeightAdjustment;
+                break;
+
+            case DownDirection.Xright:
+                fallDestination.x -= landingHeightAdjustment;
+                break;
+            case DownDirection.Xleft:
+                fallDestination.x += landingHeightAdjustment;
+                break;
+
+            case DownDirection.Zforward:
+                fallDestination.z -= landingHeightAdjustment;
+                break;
+            case DownDirection.Zback:
+                fallDestination.z += landingHeightAdjustment;
+                break;
+        }
+        //stops lesser falls from being slower
+        modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
 
         
     }

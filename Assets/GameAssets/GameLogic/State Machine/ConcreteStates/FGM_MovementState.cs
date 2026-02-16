@@ -120,6 +120,70 @@ public class FGM_MovementState : FullGridMoveableState
             }
         }
 
+        //check for moving onto a wall instead of a block
+        if (destBlock == null)
+        {
+            Vector3 rayStart = destPosition;
+            rayStart.x = Mathf.Floor(rayStart.x);
+            rayStart.y = Mathf.Floor(rayStart.y);
+            rayStart.z = Mathf.Floor(rayStart.z);
+            switch (downDir)
+            {
+                case DownDirection.Ydown:
+                case DownDirection.Yup:
+                    rayStart.y = _fgm.transform.position.y;
+                    break;
+                case DownDirection.Xleft:
+                case DownDirection.Xright:
+                    rayStart.x = _fgm.transform.position.x;
+                    break;
+                case DownDirection.Zforward:
+                case DownDirection.Zback:
+                    rayStart.z = _fgm.transform.position.z;
+                    break;
+            }
+            
+            Ray ray = new Ray(rayStart, -_fgm.transform.up);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 0.5f, _fgm.movementCollisionMask) &&
+                hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
+            {
+                Wall wall = hit.collider.gameObject.GetComponent<Wall>().gameObject.GetComponent<Wall>();
+                
+                //check if wall is within climb distance
+                float wallStandheight = Block.GetPositionsDownOrientedHeight(wall.transform.position, downDir) + wall.thickness + 0.5f;
+                if(Mathf.Abs(srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(srcPosition, downDir)) - wallStandheight) <= _fgm.maxStairClimbHeight)
+                {
+                    switch (downDir)
+                    {
+                        case DownDirection.Ydown:
+                            destPosition.y = wallStandheight;
+                            break;
+                        case DownDirection.Yup:
+                            destPosition.y = -wallStandheight;
+                            break;
+                        case DownDirection.Xleft:
+                            destPosition.x = wallStandheight;
+                            break;
+                        case DownDirection.Xright:
+                            destPosition.x = -wallStandheight;
+                            break;
+                        case DownDirection.Zforward:
+                            destPosition.z = -wallStandheight;
+                            break;
+                        case DownDirection.Zback:
+                            destPosition.z = wallStandheight;
+                            break;
+                    }
+
+                    return;
+                }
+        }
+            
+            
+            
+        }
+        
         //If moving into a partial block and able to climb down (not fall)
         /*if (destBlock != null) 
         {
