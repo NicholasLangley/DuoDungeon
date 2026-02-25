@@ -26,10 +26,11 @@ public class ObjectPlacer : MonoBehaviour
     GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
     public GameObject redPlayerPlacementIndicator, bluePlayerPlacementIndicator;
 
-    public enum objectType {none, block, redPlayer, bluePlayer, entity, environmentalEntity }
+    public enum objectType {none, block, wall, redPlayer, bluePlayer, entity, environmentalEntity }
     objectType currentPlacementType;
 
     UltimateList ultimateList;
+    public List<string> wallListIDs;
 
     GameObject placementIndicatorArrow;
 
@@ -91,7 +92,14 @@ public class ObjectPlacer : MonoBehaviour
 
         SetObjectIndicator(block);
 
-        currentPlacementType = objectType.block;
+        if (wallListIDs.Contains(listID))
+        {
+            currentPlacementType = objectType.wall;
+        }
+        else
+        {
+            currentPlacementType = objectType.block;
+        }
     }
 
     public void SetPlayer(bool isRedPlayer)
@@ -125,6 +133,7 @@ public class ObjectPlacer : MonoBehaviour
         List<Command> commands = new List<Command>();
 
         if (currentPlacementType == objectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (currentPlacementType == objectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
         else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
 
         if (commands.Count > 0) 
@@ -139,7 +148,7 @@ public class ObjectPlacer : MonoBehaviour
         if (IsPositionOutOfBounds(position))
         {
             Debug.Log("block out of bounds");
-            return null;
+            return new List<Command>();
         }
         List<Command> commands = new List<Command>();
 
@@ -231,6 +240,24 @@ public class ObjectPlacer : MonoBehaviour
     {
         map.RemoveBlockAtLocation(position);
         return;
+    }
+
+    List<Command> GetPlaceWallCommands(Vector3 position, Quaternion rotation, string listID, string baseID, string varientID)
+    {
+        //TODO
+        Debug.Log("get place wall command");
+        return new List<Command>();
+    }
+
+    public void PlaceWall(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
+    {
+        Debug.Log("Placing wall");
+        //TODO
+    }
+    
+    public void RemoveWall(Vector3Int position)
+    {
+        //TODO
     }
 
     List<Command> GetPlacePlayerCommand(Vector3Int position, Quaternion rotation, bool isRedPlayer)

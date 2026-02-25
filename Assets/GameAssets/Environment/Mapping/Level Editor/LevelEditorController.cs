@@ -12,6 +12,8 @@ public class LevelEditorController : MonoBehaviour
     MapBuilder mapBuilder;
     [SerializeField]
     UltimateList ultimateList;
+    [SerializeField] 
+    List<string> wallListIDs;
     [SerializeField]
     BlockSelector blockSelector;
     BlockBuilder blockBuilder;
@@ -31,6 +33,7 @@ public class LevelEditorController : MonoBehaviour
         mapBuilder = new MapBuilder(blockBuilder, map);
         objectPlacer.map = map;
         objectPlacer.SetBlockList(ultimateList);
+        objectPlacer.wallListIDs =  wallListIDs;
 
         undoTurns = new Stack<Turn>();
         redoTurns = new Stack<Turn>();

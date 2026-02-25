@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1418,6 +1417,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapFilename: movementTEST
   ultimateList: {fileID: 11400000, guid: 4330b5eca20a3bc4e8e2c3f472a5a5f6, type: 2}
+  wallListIDs:
+  - Wall
   blockSelector: {fileID: 383731221}
   objectPlacer: {fileID: 1220146675}
 --- !u!4 &1137269225
@@ -1699,6 +1700,7 @@ MonoBehaviour:
   placementArrow: {fileID: 3248029786735157320, guid: 4f3fad61b73f1c748b5da6eabfdd97f7, type: 3}
   redPlayerPlacementIndicator: {fileID: 0}
   bluePlayerPlacementIndicator: {fileID: 0}
+  wallListIDs: []
 --- !u!4 &1220146676
 Transform:
   m_ObjectHideFlags: 0

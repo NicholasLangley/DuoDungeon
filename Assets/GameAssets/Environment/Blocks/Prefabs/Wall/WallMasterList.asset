@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b09a2f0cf617e145b0f78eec028dde3, type: 3}
   m_Name: WallMasterList
   m_EditorClassIdentifier: 
-  listID: 
+  listID: Wall
   blockVarientLists:
   - {fileID: 11400000, guid: 11c5fc3c01ad5d586962502bdd06f3e7, type: 2}
