@@ -39,6 +39,6 @@ public class yLevelManager : MonoBehaviour
     void updateYLevel()
     {
         yText.text = yLevel.ToString();
-        blockPlacer.SetYIntersectionPlane(yLevel);
+        blockPlacer.SetYIntersectionPlane(Vector3.up, yLevel);
     }
 }

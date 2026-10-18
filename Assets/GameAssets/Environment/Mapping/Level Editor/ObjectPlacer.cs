@@ -43,7 +43,7 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementRotationTimer = 0.0f;
         isRotating = false;
         yLevelIntersectionPlane = new Plane(); 
-        SetYIntersectionPlane(0);
+        SetYIntersectionPlane(Vector3.up, 0);
         mapTransform = new GameObject();
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
@@ -90,15 +90,17 @@ public class ObjectPlacer : MonoBehaviour
         currentBlockBaseID = baseID;
         currentBlockVarientID = varientID;
 
-        SetObjectIndicator(block);
-
         if (wallListIDs.Contains(listID))
         {
             currentPlacementType = objectType.wall;
+            SetWallPlacerMode(true);
+            SetObjectIndicator(block);
         }
         else
         {
+            SetObjectIndicator(block);
             currentPlacementType = objectType.block;
+            SetWallPlacerMode(false);
         }
     }
 
@@ -114,6 +116,7 @@ public class ObjectPlacer : MonoBehaviour
             currentPlacementType = objectType.bluePlayer;
             SetObjectIndicator(bluePlayerModelPrefab);
         }
+        SetWallPlacerMode(false);
     }
 
     void SetObjectIndicator(GameObject obj)
@@ -124,6 +127,18 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementIndicator.gameObject.AddComponent<GridLines>();
 
         placementIndicatorArrow.transform.SetParent(objectPlacementIndicator.transform, false);
+    }
+
+    void SetWallPlacerMode(bool isWallPlacerMode)
+    {
+        if (isWallPlacerMode)
+        {
+            Debug.Log("TODO enable wallPlacerMode");
+        }
+        else
+        {
+            Debug.Log("TODO disable wallPlacerMode");
+        }
     }
 
     public List<Command> PlaceCurrentObject()
@@ -169,7 +184,7 @@ public class ObjectPlacer : MonoBehaviour
         foreach (Vector3Int positionCheck in positionsToCheck)
         {
             //don't place block if colliding with player?
-            //todo maybe allow it and delete the player, but then don't allow this klind of map to be playable?
+            //todo maybe allow it and delete the player, but then don't allow this kind of map to be playable?
             if (positionCheck == Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) || positionCheck == Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position))
             {
                 commands.Clear();
@@ -244,19 +259,27 @@ public class ObjectPlacer : MonoBehaviour
 
     List<Command> GetPlaceWallCommands(Vector3 position, Quaternion rotation, string listID, string baseID, string varientID)
     {
+        if (IsPositionOutOfBounds(position))
+        {
+            Debug.Log("block out of bounds");
+            return new List<Command>();
+        }
+        List<Command> commands = new List<Command>();
+        
         //TODO
         Debug.Log("get place wall command");
-        return new List<Command>();
+        return commands;
     }
 
     public void PlaceWall(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
-        Debug.Log("Placing wall");
+        Debug.Log("Placing wall at " + position);
         //TODO
     }
     
     public void RemoveWall(Vector3Int position)
     {
+        Debug.Log("Removing wall at " + position);
         //TODO
     }
 
@@ -349,16 +372,16 @@ public class ObjectPlacer : MonoBehaviour
         if (objectPlacementIndicator != null) { objectPlacementIndicator.SetActive(true); }
     }
 
-    public void SetYIntersectionPlane(int yLevel)
+    public void SetYIntersectionPlane(Vector3 normal, int yLevel)
     {
-        yLevelIntersectionPlane.SetNormalAndPosition(Vector3.up, new Vector3(0, yLevel, 0));
+        yLevelIntersectionPlane.SetNormalAndPosition(normal, new Vector3(0, yLevel, 0));
     }
 
     public enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
 
     public void RotateObjectPlacement(RotationDirection dir)
     {
-        if (isRotating) { return; }
+        if (isRotating || currentPlacementType == objectType.wall) { return; }
         Vector3 rotationAxis;
         float rotationAmount = 90;
 
