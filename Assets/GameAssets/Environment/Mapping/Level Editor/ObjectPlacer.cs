@@ -13,8 +13,7 @@ public class ObjectPlacer : MonoBehaviour
     GameObject objectPlacementIndicator;
     Quaternion startRotation, destRotation;
     float objectPlacementRotationTimer;
-    [SerializeField]
-    float objectPlacementRotationDuration = 0.5f;
+    [SerializeField] float objectPlacementRotationDuration = 0.5f;
     public bool isRotating;
 
     Plane yLevelIntersectionPlane;
@@ -22,12 +21,34 @@ public class ObjectPlacer : MonoBehaviour
     GameObject mapTransform;
     Vector3 intersectionPos;
 
-    [SerializeField]
-    GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
+    [SerializeField] GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
     public GameObject redPlayerPlacementIndicator, bluePlayerPlacementIndicator;
 
-    public enum objectType {none, block, wall, redPlayer, bluePlayer, entity, environmentalEntity }
-    objectType currentPlacementType;
+    public enum ObjectType
+    {
+        none,
+        block,
+        wall,
+        redPlayer,
+        bluePlayer,
+        entity,
+        environmentalEntity
+    }
+
+    ObjectType _currentPlacementType;
+
+    public enum DrawMode
+    {
+        pencil,
+        line,
+        box,
+        boxfill,
+        circle,
+        circlefill
+    }
+
+    DrawMode _currentDrawMode;
+    private bool _currentlyDrawing;
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -37,48 +58,30 @@ public class ObjectPlacer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentPlacementType = objectType.none;
+        _currentPlacementType = ObjectType.none;
         currentBlock = null;
         objectPlacementIndicator = null;
         objectPlacementRotationTimer = 0.0f;
         isRotating = false;
-        yLevelIntersectionPlane = new Plane(); 
+        yLevelIntersectionPlane = new Plane();
         SetYIntersectionPlane(Vector3.up, 0);
         mapTransform = new GameObject();
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
         intersectionPos = Vector3.negativeInfinity;
         placementIndicatorArrow = Instantiate(placementArrow);
+        _currentDrawMode = DrawMode.pencil;
+        _currentlyDrawing = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
-        float distance;
-        intersectionPos = Vector3.negativeInfinity;
-        if (yLevelIntersectionPlane.Raycast(ray, out distance))
-        {
-            if (objectPlacementIndicator != null)
-            {
-                intersectionPos = ray.GetPoint(distance);
-                objectPlacementIndicator.transform.position = Map.GetIntVector3(intersectionPos);
-                unHideBlock();
-            }
-        }
-        else { hideBlock(); }
-        if(isRotating)
-        {
-            objectPlacementRotationTimer += Time.deltaTime;
-            objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation, objectPlacementRotationTimer / objectPlacementRotationDuration);
-            if (objectPlacementRotationTimer > objectPlacementRotationDuration)
-            {
-                isRotating = false;
-            }
-        }
+        PlacePlacementIndicatorGhosts();
+        HandleRotation();
     }
 
-    public void SetBlockList(UltimateList list)
+public void SetBlockList(UltimateList list)
     {
         ultimateList = list;
     }
@@ -92,14 +95,14 @@ public class ObjectPlacer : MonoBehaviour
 
         if (wallListIDs.Contains(listID))
         {
-            currentPlacementType = objectType.wall;
+            _currentPlacementType = ObjectType.wall;
             SetWallPlacerMode(true);
             SetObjectIndicator(block);
         }
         else
         {
             SetObjectIndicator(block);
-            currentPlacementType = objectType.block;
+            _currentPlacementType = ObjectType.block;
             SetWallPlacerMode(false);
         }
     }
@@ -108,12 +111,12 @@ public class ObjectPlacer : MonoBehaviour
     {
         if(isRedPlayer)
         {
-            currentPlacementType = objectType.redPlayer;
+            _currentPlacementType = ObjectType.redPlayer;
             SetObjectIndicator(redPlayerModelPrefab);
         }
         else
         {
-            currentPlacementType = objectType.bluePlayer;
+            _currentPlacementType = ObjectType.bluePlayer;
             SetObjectIndicator(bluePlayerModelPrefab);
         }
         SetWallPlacerMode(false);
@@ -141,15 +144,78 @@ public class ObjectPlacer : MonoBehaviour
         }
     }
 
+    //possible performance improvement: render every x frames
+    void PlacePlacementIndicatorGhosts()
+    {
+        if (!_currentlyDrawing)
+        {
+            Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
+            float distance;
+            intersectionPos = Vector3.negativeInfinity;
+            if (yLevelIntersectionPlane.Raycast(ray, out distance))
+            {
+                if (objectPlacementIndicator != null)
+                {
+                    intersectionPos = ray.GetPoint(distance);
+                    objectPlacementIndicator.transform.position = Map.GetIntVector3(intersectionPos);
+                    unHideBlock();
+                }
+            }
+            else
+            {
+                hideBlock();
+            }
+        }
+    }
+    void HandleRotation() 
+    {
+        //todo rotate each ghost individually
+        if(isRotating)
+        {
+            objectPlacementRotationTimer += Time.deltaTime;
+            objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation,
+                objectPlacementRotationTimer / objectPlacementRotationDuration);
+            if (objectPlacementRotationTimer > objectPlacementRotationDuration)
+            {
+                isRotating = false;
+            }
+        }
+    }
+
+    public void BeginDrawing()
+    {
+        _currentlyDrawing = true;
+    }
+
+    public void FinishDrawing()
+    {
+
+        PlaceProjectedBlocks();
+        _currentlyDrawing = false;
+    }
+
+    void PlaceProjectedBlocks()
+    {
+        //place blocks as it goes, TODO figure out how to make these a commandGroup for simple undo
+        if (_currentDrawMode == DrawMode.pencil) { return; }
+        //depending on draw mode (though i guess all can be grouped, even if its just one block)
+        //create command group
+        //for each projected block
+        //  Create command
+        //  add to commandgroup
+        //  execute command group (or maybe return it to the level editor controller, need to remember how the command process fully works)
+    }
+    
+    //todo swap to Place ProjectedBlocks
     public List<Command> PlaceCurrentObject()
     {
         if (EventSystem.current.IsPointerOverGameObject() || isRotating) { return null; }
 
         List<Command> commands = new List<Command>();
 
-        if (currentPlacementType == objectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (currentPlacementType == objectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (currentPlacementType == objectType.redPlayer || currentPlacementType == objectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (currentPlacementType == objectType.redPlayer)); }
+        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
 
         if (commands.Count > 0) 
         {
@@ -381,7 +447,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public void RotateObjectPlacement(RotationDirection dir)
     {
-        if (isRotating || currentPlacementType == objectType.wall) { return; }
+        if (isRotating || _currentPlacementType == ObjectType.wall) { return; }
         Vector3 rotationAxis;
         float rotationAmount = 90;
 
@@ -432,4 +498,9 @@ public class ObjectPlacer : MonoBehaviour
         return false;
     }
 
+    public void setDrawMode(DrawMode drawMode)
+    {
+        _currentDrawMode = drawMode;
+    }
+    
 }
