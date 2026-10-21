@@ -39,6 +39,7 @@ public class ObjectPlacer : MonoBehaviour
 
     public enum DrawMode
     {
+        point,
         pencil,
         line,
         box,
@@ -49,6 +50,7 @@ public class ObjectPlacer : MonoBehaviour
 
     DrawMode _currentDrawMode;
     private bool _currentlyDrawing;
+    private bool pointDrawModeLimited;
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -77,8 +79,12 @@ public class ObjectPlacer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isRotating)
+        {
+            HandleRotation();
+        }
+        //CalculateProjectedGhostPlacements();
         PlacePlacementIndicatorGhosts();
-        HandleRotation();
     }
 
 public void SetBlockList(UltimateList list)
@@ -104,6 +110,21 @@ public void SetBlockList(UltimateList list)
             SetObjectIndicator(block);
             _currentPlacementType = ObjectType.block;
             SetWallPlacerMode(false);
+            
+            //for now limit complex blocks to point drawmode,
+            //since they can occupy multiple blocks and I don't want to deal with draw collisions
+            // could maybe add a variable to the blocks on if point mode is enabled or not?
+            ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
+            if (complexBlockBeingPlaced != null)
+            {
+                pointDrawModeLimited = true;
+                _currentDrawMode = DrawMode.point;
+            }
+            else
+            {
+                pointDrawModeLimited = false;
+                //TODO maybe save previous draw mode from before enforcing point mode?
+            }
         }
     }
 
@@ -120,6 +141,8 @@ public void SetBlockList(UltimateList list)
             SetObjectIndicator(bluePlayerModelPrefab);
         }
         SetWallPlacerMode(false);
+        pointDrawModeLimited = true;
+        _currentDrawMode = DrawMode.point;
     }
 
     void SetObjectIndicator(GameObject obj)
@@ -143,6 +166,65 @@ public void SetBlockList(UltimateList list)
             Debug.Log("TODO disable wallPlacerMode");
         }
     }
+
+    #region DrawingCalculations
+
+    //possible performance improvement: calculate every x frames
+    void CalculateProjectedGhostPlacements()
+    {
+        //single point where intersecting plane
+        if (!_currentlyDrawing || _currentDrawMode == DrawMode.point)
+        {
+            CalculatePointModeGhost();
+        }
+        else if (_currentDrawMode == DrawMode.pencil)
+        {
+            //no ghosts, since we're placing as we go
+            hideBlock();
+        }
+        else if (_currentDrawMode == DrawMode.line)
+        {
+            //start vs end point. linear interpolation?
+        }
+        else if (_currentDrawMode == DrawMode.box)
+        {
+            //start vs end point. on current reference plane
+        }
+        else if (_currentDrawMode == DrawMode.boxfill)
+        {
+            //start vs end point. on current reference plane
+        }
+        else if (_currentDrawMode == DrawMode.circle)
+        {
+            //start vs end point. radius or diameter? circle algorithm? ovals?
+        }
+        else if (_currentDrawMode == DrawMode.circlefill)
+        {
+            //start vs end point. radius or diameter? circle algorithm? ovals?
+        }
+    }
+
+    void CalculatePointModeGhost()
+    {
+        Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
+        float distance;
+        intersectionPos = Vector3.negativeInfinity;
+        if (yLevelIntersectionPlane.Raycast(ray, out distance))
+        {
+            if (objectPlacementIndicator != null)
+            {
+                intersectionPos = ray.GetPoint(distance);
+                objectPlacementIndicator.transform.position = Map.GetIntVector3(intersectionPos);
+                unHideBlock();
+            }
+        }
+        else
+        {
+            hideBlock();
+        }
+    }
+    
+    #endregion
 
     //possible performance improvement: render every x frames
     void PlacePlacementIndicatorGhosts()
@@ -170,15 +252,13 @@ public void SetBlockList(UltimateList list)
     void HandleRotation() 
     {
         //todo rotate each ghost individually
-        if(isRotating)
+
+        objectPlacementRotationTimer += Time.deltaTime;
+        objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation,
+            objectPlacementRotationTimer / objectPlacementRotationDuration);
+        if (objectPlacementRotationTimer > objectPlacementRotationDuration)
         {
-            objectPlacementRotationTimer += Time.deltaTime;
-            objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation,
-                objectPlacementRotationTimer / objectPlacementRotationDuration);
-            if (objectPlacementRotationTimer > objectPlacementRotationDuration)
-            {
-                isRotating = false;
-            }
+            isRotating = false;
         }
     }
 
@@ -320,7 +400,7 @@ public void SetBlockList(UltimateList list)
     public void RemoveBlock(Vector3Int position)
     {
         map.RemoveBlockAtLocation(position);
-        return;
+        //TODO figure out why blocks are going to 0,0,0 or elsewhere?
     }
 
     List<Command> GetPlaceWallCommands(Vector3 position, Quaternion rotation, string listID, string baseID, string varientID)
