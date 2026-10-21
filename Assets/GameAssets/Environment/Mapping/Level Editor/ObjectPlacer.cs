@@ -51,6 +51,9 @@ public class ObjectPlacer : MonoBehaviour
     DrawMode _currentDrawMode;
     private bool _currentlyDrawing;
     private bool pointDrawModeLimited;
+    
+    Vector3Int _drawStartPosition, _drawEndPosition;
+    List<Vector3Int> _pencilDrawCurrentList;
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -74,6 +77,7 @@ public class ObjectPlacer : MonoBehaviour
         placementIndicatorArrow = Instantiate(placementArrow);
         _currentDrawMode = DrawMode.pencil;
         _currentlyDrawing = false;
+        _pencilDrawCurrentList = new List<Vector3Int>();
     }
 
     // Update is called once per frame
@@ -103,11 +107,11 @@ public void SetBlockList(UltimateList list)
         {
             _currentPlacementType = ObjectType.wall;
             SetWallPlacerMode(true);
-            SetObjectIndicator(block);
+            SetProjectedGhostObject(block);
         }
         else
         {
-            SetObjectIndicator(block);
+            SetProjectedGhostObject(block);
             _currentPlacementType = ObjectType.block;
             SetWallPlacerMode(false);
             
@@ -133,19 +137,19 @@ public void SetBlockList(UltimateList list)
         if(isRedPlayer)
         {
             _currentPlacementType = ObjectType.redPlayer;
-            SetObjectIndicator(redPlayerModelPrefab);
+            SetProjectedGhostObject(redPlayerModelPrefab);
         }
         else
         {
             _currentPlacementType = ObjectType.bluePlayer;
-            SetObjectIndicator(bluePlayerModelPrefab);
+            SetProjectedGhostObject(bluePlayerModelPrefab);
         }
         SetWallPlacerMode(false);
         pointDrawModeLimited = true;
         _currentDrawMode = DrawMode.point;
     }
 
-    void SetObjectIndicator(GameObject obj)
+    void SetProjectedGhostObject(GameObject obj)
     {
         if (objectPlacementIndicator != null) { GameObject.Destroy(objectPlacementIndicator.gameObject); }
         objectPlacementIndicator = Instantiate(obj);
