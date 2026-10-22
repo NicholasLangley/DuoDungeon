@@ -53,7 +53,10 @@ public class ObjectPlacer : MonoBehaviour
     private bool pointDrawModeLimited;
     
     Vector3Int _drawStartPosition, _drawEndPosition;
-    List<Vector3Int> _pencilDrawCurrentList;
+    List<Vector3Int> _ghostDrawPositionList;
+    private GameObject _ghostParent;
+    private GameObject _ghostSelectedBlock;
+    List<Transform> _ghostTransformList;
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -77,7 +80,9 @@ public class ObjectPlacer : MonoBehaviour
         placementIndicatorArrow = Instantiate(placementArrow);
         _currentDrawMode = DrawMode.pencil;
         _currentlyDrawing = false;
-        _pencilDrawCurrentList = new List<Vector3Int>();
+        _ghostDrawPositionList = new List<Vector3Int>();
+        _ghostTransformList = new List<Transform>();
+        _ghostParent = new GameObject(name: "ghost parent");
     }
 
     // Update is called once per frame
@@ -87,7 +92,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             HandleRotation();
         }
-        //CalculateProjectedGhostPlacements();
+        CalculateProjectedGhostPlacements();
         PlacePlacementIndicatorGhosts();
     }
 
@@ -118,7 +123,7 @@ public void SetBlockList(UltimateList list)
             //for now limit complex blocks to point drawmode,
             //since they can occupy multiple blocks and I don't want to deal with draw collisions
             // could maybe add a variable to the blocks on if point mode is enabled or not?
-            ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
+            ComplexBlock complexBlockBeingPlaced = _ghostSelectedBlock.GetComponent<ComplexBlock>();
             if (complexBlockBeingPlaced != null)
             {
                 pointDrawModeLimited = true;
@@ -151,12 +156,18 @@ public void SetBlockList(UltimateList list)
 
     void SetProjectedGhostObject(GameObject obj)
     {
-        if (objectPlacementIndicator != null) { GameObject.Destroy(objectPlacementIndicator.gameObject); }
-        objectPlacementIndicator = Instantiate(obj);
-        objectPlacementIndicator.name = "Object Placement Indicator";
-        objectPlacementIndicator.gameObject.AddComponent<GridLines>();
-
-        placementIndicatorArrow.transform.SetParent(objectPlacementIndicator.transform, false);
+        if (_ghostSelectedBlock != null) { GameObject.Destroy(_ghostSelectedBlock.gameObject); }
+        _ghostSelectedBlock = Instantiate(obj);
+        _ghostSelectedBlock.name = "Ghost Block Blueprint";
+        _ghostSelectedBlock.transform.parent = _ghostParent.transform;
+        
+        //clear ghost list so it can be recreated with the new block type
+        while (_ghostTransformList.Count > 0)
+        {
+            Transform ghostToExorcise = _ghostTransformList[0];
+            _ghostTransformList.RemoveAt(0);
+            GameObject.Destroy(ghostToExorcise);
+        }
     }
 
     void SetWallPlacerMode(bool isWallPlacerMode)
@@ -215,10 +226,11 @@ public void SetBlockList(UltimateList list)
         intersectionPos = Vector3.negativeInfinity;
         if (yLevelIntersectionPlane.Raycast(ray, out distance))
         {
-            if (objectPlacementIndicator != null)
+            if (_ghostSelectedBlock != null)
             {
                 intersectionPos = ray.GetPoint(distance);
-                objectPlacementIndicator.transform.position = Map.GetIntVector3(intersectionPos);
+                _ghostDrawPositionList = new List<Vector3Int>();
+                _ghostDrawPositionList.Add(Map.GetIntVector3(intersectionPos));
                 unHideBlock();
             }
         }
@@ -233,24 +245,32 @@ public void SetBlockList(UltimateList list)
     //possible performance improvement: render every x frames
     void PlacePlacementIndicatorGhosts()
     {
-        if (!_currentlyDrawing)
+        //dynamically resize list, reuse game objects where possible
+        //first shrink gameobjects to fit (if list bigger)
+        while (_ghostDrawPositionList.Count < _ghostTransformList.Count)
         {
-            Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
-            float distance;
-            intersectionPos = Vector3.negativeInfinity;
-            if (yLevelIntersectionPlane.Raycast(ray, out distance))
-            {
-                if (objectPlacementIndicator != null)
-                {
-                    intersectionPos = ray.GetPoint(distance);
-                    objectPlacementIndicator.transform.position = Map.GetIntVector3(intersectionPos);
-                    unHideBlock();
-                }
-            }
-            else
-            {
-                hideBlock();
-            }
+            Transform ghostToExorcise = _ghostTransformList[0];
+            _ghostTransformList.RemoveAt(0);
+            GameObject.Destroy(ghostToExorcise);
+        }
+        //then reuse existing ghosts
+        int i = 0;
+        while (i < _ghostTransformList.Count)
+        {
+            _ghostTransformList[i].position = _ghostDrawPositionList[i];
+            i++;
+        }
+        //finally create new ghosts if needed
+        while (_ghostTransformList.Count < _ghostDrawPositionList.Count)
+        {
+            Debug.Log("Creating New Ghost");
+
+            GameObject newGhost = Instantiate(_ghostSelectedBlock);
+            newGhost.name = "Ghost " + i;
+            newGhost.transform.parent = _ghostParent.transform;
+            newGhost.transform.position = _ghostDrawPositionList[i];
+            _ghostTransformList.Add(newGhost.transform);
+            i++;
         }
     }
     void HandleRotation() 
@@ -258,8 +278,13 @@ public void SetBlockList(UltimateList list)
         //todo rotate each ghost individually
 
         objectPlacementRotationTimer += Time.deltaTime;
-        objectPlacementIndicator.transform.rotation = Quaternion.Lerp(startRotation, destRotation,
+        Quaternion currentRotation = Quaternion.Lerp(startRotation, destRotation,
             objectPlacementRotationTimer / objectPlacementRotationDuration);
+        _ghostSelectedBlock.transform.rotation = currentRotation;
+        foreach (Transform ghostTransform in _ghostTransformList)
+        {
+            ghostTransform.rotation = currentRotation;
+        }
         if (objectPlacementRotationTimer > objectPlacementRotationDuration)
         {
             isRotating = false;
@@ -280,8 +305,9 @@ public void SetBlockList(UltimateList list)
 
     void PlaceProjectedBlocks()
     {
-        //place blocks as it goes, TODO figure out how to make these a commandGroup for simple undo
+        //pencil places blocks as it goes, TODO figure out how to make these a commandGroup for simple undo
         if (_currentDrawMode == DrawMode.pencil) { return; }
+        
         //depending on draw mode (though i guess all can be grouped, even if its just one block)
         //create command group
         //for each projected block
@@ -297,9 +323,9 @@ public void SetBlockList(UltimateList list)
 
         List<Command> commands = new List<Command>();
 
-        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, objectPlacementIndicator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), objectPlacementIndicator.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
+        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), _ghostSelectedBlock.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
 
         if (commands.Count > 0) 
         {
@@ -318,7 +344,7 @@ public void SetBlockList(UltimateList list)
         List<Command> commands = new List<Command>();
 
         List<Vector3Int> positionsToCheck;
-        ComplexBlock complexBlockBeingPlaced = objectPlacementIndicator.GetComponent<ComplexBlock>();
+        ComplexBlock complexBlockBeingPlaced = _ghostSelectedBlock.GetComponent<ComplexBlock>();
         if (complexBlockBeingPlaced != null)
         {
             positionsToCheck = complexBlockBeingPlaced.getSubBlockPositions(position);
@@ -514,12 +540,12 @@ public void SetBlockList(UltimateList list)
 
         void hideBlock()
     {
-        if (objectPlacementIndicator != null) { objectPlacementIndicator.SetActive(false); }
+        if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(false); }
     }
 
     void unHideBlock()
     {
-        if (objectPlacementIndicator != null) { objectPlacementIndicator.SetActive(true); }
+        if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(true); }
     }
 
     public void SetYIntersectionPlane(Vector3 normal, int yLevel)
@@ -565,10 +591,10 @@ public void SetBlockList(UltimateList list)
                 break;
         }
 
-        startRotation = objectPlacementIndicator.transform.rotation;
-        objectPlacementIndicator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
-        destRotation = objectPlacementIndicator.transform.rotation;
-        objectPlacementIndicator.transform.rotation = startRotation;
+        startRotation = _ghostSelectedBlock.transform.rotation;
+        _ghostSelectedBlock.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
+        destRotation = _ghostSelectedBlock.transform.rotation;
+        _ghostSelectedBlock.transform.rotation = startRotation;
         objectPlacementRotationTimer = 0.0f;
         isRotating = true;
     }
