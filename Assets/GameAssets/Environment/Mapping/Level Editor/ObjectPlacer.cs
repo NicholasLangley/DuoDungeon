@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
@@ -16,7 +17,7 @@ public class ObjectPlacer : MonoBehaviour
     [SerializeField] float objectPlacementRotationDuration = 0.5f;
     public bool isRotating;
 
-    Plane yLevelIntersectionPlane;
+    Plane levelIntersectionPlane;
     public Map map;
     GameObject mapTransform;
 
@@ -51,7 +52,7 @@ public class ObjectPlacer : MonoBehaviour
     private bool _currentlyDrawing;
     private bool pointDrawModeLimited;
     
-    Vector3Int _drawStartPosition, _drawEndPosition;
+    Vector3Int _drawStartPosition;
     List<Vector3Int> _ghostDrawPositionList;
     private GameObject _ghostParent;
     private GameObject _ghostSelectedBlock;
@@ -70,8 +71,8 @@ public class ObjectPlacer : MonoBehaviour
         objectPlacementIndicator = null;
         objectPlacementRotationTimer = 0.0f;
         isRotating = false;
-        yLevelIntersectionPlane = new Plane();
-        SetYIntersectionPlane(Vector3.up, 0);
+        levelIntersectionPlane = new Plane();
+        SetLevelIntersectionPlane(Vector3.up, 0);
         mapTransform = new GameObject();
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
@@ -93,7 +94,9 @@ public class ObjectPlacer : MonoBehaviour
         CalculateProjectedGhostPlacements();
         PlacePlacementIndicatorGhosts();
     }
-
+    
+    #region Set Objects
+    
 public void SetBlockList(UltimateList list)
     {
         ultimateList = list;
@@ -158,7 +161,6 @@ public void SetBlockList(UltimateList list)
         _ghostSelectedBlock = Instantiate(obj);
         _ghostSelectedBlock.name = "Ghost Block Blueprint";
         _ghostSelectedBlock.transform.parent = _ghostParent.transform;
-        
         //clear ghost list so it can be recreated with the new block type
         while (_ghostTransformList.Count > 0)
         {
@@ -179,7 +181,38 @@ public void SetBlockList(UltimateList list)
             Debug.Log("TODO disable wallPlacerMode");
         }
     }
+    
+    public void setDrawMode(DrawMode drawMode)
+    {
+        _currentDrawMode = drawMode;
+    }
+    
+    #endregion
 
+    #region Drawing
+    public List<Command> BeginDrawing()
+    {
+        //point mode will place immediately
+        if (_currentDrawMode == DrawMode.point)
+        {
+            return PlaceProjectedBlocks();
+        }
+        _currentlyDrawing = true;
+        _drawStartPosition = Map.GetIntVector3(GetCurrentIntersectPoint());
+        return null;
+    }
+
+    public List<Command> FinishDrawing()
+    {
+        //point mode already placed on press
+        if (_currentDrawMode == DrawMode.point)
+        {
+            return null;
+        }
+        _currentlyDrawing = false;
+        return PlaceProjectedBlocks();
+    }
+    
     #region DrawingCalculations
 
     //possible performance improvement: calculate every x frames
@@ -193,49 +226,115 @@ public void SetBlockList(UltimateList list)
         else if (_currentDrawMode == DrawMode.pencil)
         {
             //no ghosts, since we're placing as we go
-            hideBlock();
+            hideGhosts();
         }
         else if (_currentDrawMode == DrawMode.line)
         {
             //start vs end point. linear interpolation?
+            CalculateLineModeGhosts();
         }
         else if (_currentDrawMode == DrawMode.box)
         {
             //start vs end point. on current reference plane
+            CalculateBoxModeGhosts(false);
         }
         else if (_currentDrawMode == DrawMode.boxfill)
         {
             //start vs end point. on current reference plane
+            CalculateBoxModeGhosts(true);
         }
         else if (_currentDrawMode == DrawMode.circle)
         {
             //start vs end point. radius or diameter? circle algorithm? ovals?
+            CalculateCircleModeGhosts(false);
         }
         else if (_currentDrawMode == DrawMode.circlefill)
         {
             //start vs end point. radius or diameter? circle algorithm? ovals?
+            CalculateCircleModeGhosts(true);
         }
     }
 
     void CalculatePointModeGhost()
     {
-        Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
-        float distance;
-        Vector3 intersectionPos = Vector3.negativeInfinity;
-        if (yLevelIntersectionPlane.Raycast(ray, out distance))
+        Vector3 intersectionPos = GetCurrentIntersectPoint();
+        if (intersectionPos != Vector3.negativeInfinity)
         {
-            if (_ghostSelectedBlock != null)
-            {
-                intersectionPos = ray.GetPoint(distance);
                 _ghostDrawPositionList = new List<Vector3Int>();
                 _ghostDrawPositionList.Add(Map.GetIntVector3(intersectionPos));
-                unHideBlock();
-            }
+                unHideGhosts();
         }
         else
         {
-            hideBlock();
+            hideGhosts();
         }
+    }
+
+    void CalculateLineModeGhosts()
+    {
+        //todo
+    }
+    
+    void CalculateBoxModeGhosts(bool fill)
+    {
+        Vector3 intersectionPos = GetCurrentIntersectPoint();
+        if (intersectionPos != Vector3.negativeInfinity)
+        {
+            _ghostDrawPositionList = new List<Vector3Int>();
+            Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
+        
+            //since positions will always be on the same plane, one of the axis will have the same value for both
+            //so looping will only loop that axis once each time
+            //and we don't have to actuually logic which plane we are on
+            int xMin = Math.Min(_drawStartPosition.x, drawEndPosition.x);
+            int xMax = Math.Max(_drawStartPosition.x, drawEndPosition.x);
+            int yMin = Math.Min(_drawStartPosition.y, drawEndPosition.y);
+            int yMax = Math.Max(_drawStartPosition.y, drawEndPosition.y);
+            int zMin = Math.Min(_drawStartPosition.z, drawEndPosition.z);
+            int zMax = Math.Max(_drawStartPosition.z, drawEndPosition.z);
+            //todo maybe limit max size if necessary
+        
+            for (int x = xMin; x <= xMax; x++)
+            {
+                for (int y = yMin; y <= yMax; y++)
+                {
+                    for (int z = zMin; z <= zMax; z++)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        //only fill insides if fill enabled
+                        if (fill || IsPositionOnBoxEdge(pos, xMin, xMax, yMin, yMax, zMin, zMax))
+                        {
+                            _ghostDrawPositionList.Add(pos);
+                        }
+                    }
+                }
+            }
+            unHideGhosts();
+        }
+        else
+        {
+            hideGhosts();
+        }
+        
+       
+    }
+
+    bool IsPositionOnBoxEdge(Vector3Int pos, int minX, int maxX, int minY, int maxY, int minZ, int maxZ)
+    {
+        //one of these will always occur on the aligned axis, so if 2+ occur than it's an edge
+        int edgeCollisions = 0;
+        if (pos.x == minX || pos.x ==maxX) {edgeCollisions++;}
+        if (pos.y == minY || pos.y == maxY) {edgeCollisions++;}
+        if (pos.z == minZ || pos.z == maxZ) {edgeCollisions++;}
+            
+        if(edgeCollisions >= 2){return true;}
+        
+        return false;
+    }
+    
+    void CalculateCircleModeGhosts(bool fill)
+    {
+        
     }
     
     #endregion
@@ -243,6 +342,7 @@ public void SetBlockList(UltimateList list)
     //possible performance improvement: render every x frames
     void PlacePlacementIndicatorGhosts()
     {
+        if (_ghostSelectedBlock == null) { return; }
         //dynamically resize list, reuse game objects where possible
         //first shrink gameobjects to fit (if list bigger)
         while (_ghostDrawPositionList.Count < _ghostTransformList.Count)
@@ -261,11 +361,8 @@ public void SetBlockList(UltimateList list)
         //finally create new ghosts if needed
         while (_ghostTransformList.Count < _ghostDrawPositionList.Count)
         {
-            Debug.Log("Creating New Ghost");
-
-            GameObject newGhost = Instantiate(_ghostSelectedBlock);
+            GameObject newGhost = Instantiate(_ghostSelectedBlock, _ghostParent.transform);
             newGhost.name = "Ghost " + i;
-            newGhost.transform.parent = _ghostParent.transform;
             newGhost.transform.position = _ghostDrawPositionList[i];
             _ghostTransformList.Add(newGhost.transform);
             i++;
@@ -287,28 +384,6 @@ public void SetBlockList(UltimateList list)
         {
             isRotating = false;
         }
-    }
-
-    public List<Command> BeginDrawing()
-    {
-        //point mode will place immediately
-        if (_currentDrawMode == DrawMode.point)
-        {
-            return PlaceProjectedBlocks();
-        }
-        _currentlyDrawing = true;
-        return null;
-    }
-
-    public List<Command> FinishDrawing()
-    {
-        //point mode already placed on press
-        if (_currentDrawMode == DrawMode.point)
-        {
-            return null;
-        }
-        _currentlyDrawing = false;
-        return PlaceProjectedBlocks();
     }
 
     List<Command> PlaceProjectedBlocks()
@@ -333,8 +408,6 @@ public void SetBlockList(UltimateList list)
                 commandGroup.AddCommand(command);
             }
         }
-
-        Debug.Log(AllCommands);
         return AllCommands;
     }
     
@@ -560,19 +633,25 @@ public void SetBlockList(UltimateList list)
         }
     }
 
-        void hideBlock()
+        void hideGhosts()
     {
         if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(false); }
+        _ghostParent.SetActive(false);
     }
 
-    void unHideBlock()
+    void unHideGhosts()
     {
         if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(true); }
+        _ghostParent.SetActive(true);
     }
-
-    public void SetYIntersectionPlane(Vector3 normal, int yLevel)
+    
+    #endregion
+    
+    #region helper functions
+    
+    public void SetLevelIntersectionPlane(Vector3 normal, int yLevel)
     {
-        yLevelIntersectionPlane.SetNormalAndPosition(normal, new Vector3(0, yLevel, 0));
+        levelIntersectionPlane.SetNormalAndPosition(normal, new Vector3(0, yLevel, 0));
     }
 
     public enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
@@ -630,9 +709,17 @@ public void SetBlockList(UltimateList list)
         return false;
     }
 
-    public void setDrawMode(DrawMode drawMode)
+    Vector3 GetCurrentIntersectPoint()
     {
-        _currentDrawMode = drawMode;
+        Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
+        float distance;
+        Vector3 intersectionPos = Vector3.negativeInfinity;
+        if (levelIntersectionPlane.Raycast(ray, out distance))
+        {
+                return ray.GetPoint(distance);
+        }
+        return Vector3.negativeInfinity;
     }
     
+    #endregion
 }
