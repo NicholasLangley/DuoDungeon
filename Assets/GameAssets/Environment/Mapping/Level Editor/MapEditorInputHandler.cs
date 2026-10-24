@@ -31,7 +31,7 @@ public class MapEditorInputHandler : MonoBehaviour
     public bool cameraAimEnabledInput;
 
     //ObjectPlacer
-    InputAction placeAction { get; set; }
+    InputAction drawingAction { get; set; }
     InputAction RotateForwardAction { get; set; }
     InputAction RotateBackAction { get; set; }
     InputAction RotateLeftAction { get; set; }
@@ -54,7 +54,7 @@ public class MapEditorInputHandler : MonoBehaviour
         cameraEnableAimAction = inputActionMap.FindActionMap(CameraControlsActionMapName).FindAction("EnableCameraAim");
 
         //object Placer
-        placeAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("PlaceBlock");
+        drawingAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("Draw");
         RotateForwardAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RotateObjectForward");
         RotateBackAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RotateObjectBack");
         RotateLeftAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RotateObjectLeft");
@@ -84,9 +84,14 @@ public class MapEditorInputHandler : MonoBehaviour
 
 
         //object Placer
-        placeAction.performed += context =>
+        drawingAction.performed += context =>
         {
-            List<Command> commands = objectPlacer.PlaceCurrentObject();
+            List<Command> commands = objectPlacer.BeginDrawing();
+            if (commands != null && commands.Count > 0) { levelEditorController.AddCommandTurn(commands); }
+        };
+        drawingAction.canceled += context =>
+        {
+            List<Command> commands = objectPlacer.FinishDrawing();
             if (commands != null && commands.Count > 0) { levelEditorController.AddCommandTurn(commands); }
         };
         RotateForwardAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.FORWARD);
@@ -110,7 +115,7 @@ public class MapEditorInputHandler : MonoBehaviour
         cameraEnableAimAction.Enable();
 
         //object Placer
-        placeAction.Enable();
+        drawingAction.Enable();
         RotateForwardAction.Enable();
         RotateBackAction.Enable();
         RotateLeftAction.Enable();
@@ -132,7 +137,7 @@ public class MapEditorInputHandler : MonoBehaviour
         cameraEnableAimAction.Disable();
 
         //object Placer
-        placeAction.Disable();
+        drawingAction.Disable();
         RotateForwardAction.Disable();
         RotateBackAction.Disable();
         RotateLeftAction.Disable();

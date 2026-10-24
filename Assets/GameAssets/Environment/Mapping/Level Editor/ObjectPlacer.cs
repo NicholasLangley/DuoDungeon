@@ -19,7 +19,6 @@ public class ObjectPlacer : MonoBehaviour
     Plane yLevelIntersectionPlane;
     public Map map;
     GameObject mapTransform;
-    Vector3 intersectionPos;
 
     [SerializeField] GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
     public GameObject redPlayerPlacementIndicator, bluePlayerPlacementIndicator;
@@ -76,9 +75,8 @@ public class ObjectPlacer : MonoBehaviour
         mapTransform = new GameObject();
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
-        intersectionPos = Vector3.negativeInfinity;
         placementIndicatorArrow = Instantiate(placementArrow);
-        _currentDrawMode = DrawMode.pencil;
+        _currentDrawMode = DrawMode.point;
         _currentlyDrawing = false;
         _ghostDrawPositionList = new List<Vector3Int>();
         _ghostTransformList = new List<Transform>();
@@ -166,7 +164,7 @@ public void SetBlockList(UltimateList list)
         {
             Transform ghostToExorcise = _ghostTransformList[0];
             _ghostTransformList.RemoveAt(0);
-            GameObject.Destroy(ghostToExorcise);
+            GameObject.Destroy(ghostToExorcise.gameObject);
         }
     }
 
@@ -223,7 +221,7 @@ public void SetBlockList(UltimateList list)
     {
         Ray ray = (Camera.main.ScreenPointToRay(Input.mousePosition));
         float distance;
-        intersectionPos = Vector3.negativeInfinity;
+        Vector3 intersectionPos = Vector3.negativeInfinity;
         if (yLevelIntersectionPlane.Raycast(ray, out distance))
         {
             if (_ghostSelectedBlock != null)
@@ -251,7 +249,7 @@ public void SetBlockList(UltimateList list)
         {
             Transform ghostToExorcise = _ghostTransformList[0];
             _ghostTransformList.RemoveAt(0);
-            GameObject.Destroy(ghostToExorcise);
+            GameObject.Destroy(ghostToExorcise.gameObject);
         }
         //then reuse existing ghosts
         int i = 0;
@@ -291,41 +289,65 @@ public void SetBlockList(UltimateList list)
         }
     }
 
-    public void BeginDrawing()
+    public List<Command> BeginDrawing()
     {
+        //point mode will place immediately
+        if (_currentDrawMode == DrawMode.point)
+        {
+            return PlaceProjectedBlocks();
+        }
         _currentlyDrawing = true;
+        return null;
     }
 
-    public void FinishDrawing()
+    public List<Command> FinishDrawing()
     {
-
-        PlaceProjectedBlocks();
+        //point mode already placed on press
+        if (_currentDrawMode == DrawMode.point)
+        {
+            return null;
+        }
         _currentlyDrawing = false;
+        return PlaceProjectedBlocks();
     }
 
-    void PlaceProjectedBlocks()
+    List<Command> PlaceProjectedBlocks()
     {
         //pencil places blocks as it goes, TODO figure out how to make these a commandGroup for simple undo
-        if (_currentDrawMode == DrawMode.pencil) { return; }
+        if (_currentDrawMode == DrawMode.pencil) { return null; }
         
         //depending on draw mode (though i guess all can be grouped, even if its just one block)
         //create command group
+        //todo consider refactoring whole solution to use a list of command groups rather than a list of commands
+        //todo its basically the same, but perhaps neater
+        List<Command> AllCommands = new List<Command>();
+        CommandGroup commandGroup = new CommandGroup();
+        AllCommands.Add(commandGroup);
         //for each projected block
-        //  Create command
-        //  add to commandgroup
-        //  execute command group (or maybe return it to the level editor controller, need to remember how the command process fully works)
+        foreach (Transform ghostTransform in _ghostTransformList)
+        {
+            //get place commands and add to command group in order
+            List<Command> commands = PlaceCurrentObject(ghostTransform.position);
+            foreach (Command command in commands)
+            {
+                commandGroup.AddCommand(command);
+            }
+        }
+
+        Debug.Log(AllCommands);
+        return AllCommands;
     }
     
     //todo swap to Place ProjectedBlocks
-    public List<Command> PlaceCurrentObject()
+    public List<Command> PlaceCurrentObject(Vector3 pos)
     {
         if (EventSystem.current.IsPointerOverGameObject() || isRotating) { return null; }
 
         List<Command> commands = new List<Command>();
 
-        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(intersectionPos), _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(intersectionPos, _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(intersectionPos), _ghostSelectedBlock.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
+        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(pos), _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(pos, _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(pos), _ghostSelectedBlock.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
 
         if (commands.Count > 0) 
         {

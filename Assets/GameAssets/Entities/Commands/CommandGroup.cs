@@ -4,11 +4,11 @@ using UnityEngine;
 
 //used to group commands together when running them all at once
 //Mostly used for the map editor placing multiple blocks at once so they can be undone in a single action
-public class GroupOfCommands : Command
+public class CommandGroup : Command
 {
     List<Command> commands;
 
-public GroupOfCommands()
+public CommandGroup()
 {
     commands = new List<Command>();
 }
