@@ -645,8 +645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36486d047d0f8f5498e80321aeef94b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yText: {fileID: 689574480}
-  blockPlacer: {fileID: 1220146675}
+  planeLevelText: {fileID: 689574480}
+  objectPlacer: {fileID: 1220146675}
 --- !u!1 &529472319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,7 +1302,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 519807732}
         m_TargetAssemblyTypeName: yLevelManager, Assembly-CSharp
-        m_MethodName: decrementYLevel
+        m_MethodName: decrementLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1700,6 +1700,8 @@ MonoBehaviour:
   placementArrow: {fileID: 3248029786735157320, guid: 4f3fad61b73f1c748b5da6eabfdd97f7, type: 3}
   redPlayerPlacementIndicator: {fileID: 0}
   bluePlayerPlacementIndicator: {fileID: 0}
+  _currentDrawMode: 2
+  maxDrawDistanceBetweenBlocks: 100
   wallListIDs: []
 --- !u!4 &1220146676
 Transform:
@@ -2165,7 +2167,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 519807732}
         m_TargetAssemblyTypeName: yLevelManager, Assembly-CSharp
-        m_MethodName: incrementYLevel
+        m_MethodName: incrementLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -272,7 +272,33 @@ public void SetBlockList(UltimateList list)
 
     void CalculateLineModeGhosts()
     {
-        //todo
+        Vector3 intersectionPos = GetCurrentIntersectPoint();
+        if (intersectionPos != Vector3.negativeInfinity)
+        {
+            //Need to cap size, so game doesn't try drawabox
+            if (Vector3.Distance(_drawStartPosition, intersectionPos) > maxDrawDistanceBetweenBlocks * 2)
+            {
+                //TODO some sort of error / warning
+                //returning should just keep the previous list
+                return;
+            }
+            
+            _ghostDrawPositionList = new List<Vector3Int>();
+            Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
+            Vector3 lineVector = drawEndPosition - _drawStartPosition;
+            lineVector.Normalize();
+            
+            _ghostDrawPositionList.Add(_drawStartPosition);
+            float finalDistance = Vector3.Distance(_drawStartPosition, drawEndPosition);
+            float walkDistance = 1.0f;
+            while (walkDistance < finalDistance)
+            {
+                Vector3Int nextPoint = _drawStartPosition;
+                nextPoint = Map.GetIntVector3(nextPoint + lineVector * walkDistance);
+                _ghostDrawPositionList.Add(nextPoint);
+                walkDistance += 1.0f;
+            }
+        }
     }
     
     void CalculateBoxModeGhosts(bool fill)
@@ -280,7 +306,7 @@ public void SetBlockList(UltimateList list)
         Vector3 intersectionPos = GetCurrentIntersectPoint();
         if (intersectionPos != Vector3.negativeInfinity)
         {
-            //Need to cap size, so game doesn't try drawabox
+            //Need to cap size, so game doesn't try the drawabox challenge
             if (Vector3.Distance(_drawStartPosition, intersectionPos) > maxDrawDistanceBetweenBlocks)
             {
                 //TODO some sort of error / warning
