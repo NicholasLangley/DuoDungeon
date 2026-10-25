@@ -48,11 +48,12 @@ public class ObjectPlacer : MonoBehaviour
         circlefill
     }
 
-    DrawMode _currentDrawMode;
+    [SerializeField] DrawMode _currentDrawMode;
     private bool _currentlyDrawing;
     private bool pointDrawModeLimited;
     
     Vector3Int _drawStartPosition;
+    [SerializeField] float maxDrawDistanceBetweenBlocks;
     List<Vector3Int> _ghostDrawPositionList;
     private GameObject _ghostParent;
     private GameObject _ghostSelectedBlock;
@@ -77,7 +78,6 @@ public class ObjectPlacer : MonoBehaviour
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
         placementIndicatorArrow = Instantiate(placementArrow);
-        _currentDrawMode = DrawMode.point;
         _currentlyDrawing = false;
         _ghostDrawPositionList = new List<Vector3Int>();
         _ghostTransformList = new List<Transform>();
@@ -280,6 +280,14 @@ public void SetBlockList(UltimateList list)
         Vector3 intersectionPos = GetCurrentIntersectPoint();
         if (intersectionPos != Vector3.negativeInfinity)
         {
+            //Need to cap size, so game doesn't try drawabox
+            if (Vector3.Distance(_drawStartPosition, intersectionPos) > maxDrawDistanceBetweenBlocks)
+            {
+                //TODO some sort of error / warning
+                //returning should just keep the previous list
+                return;
+            }
+            
             _ghostDrawPositionList = new List<Vector3Int>();
             Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
         
