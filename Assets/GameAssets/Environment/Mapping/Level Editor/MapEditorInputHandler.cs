@@ -17,6 +17,9 @@ public class MapEditorInputHandler : MonoBehaviour
 
     [SerializeField]
     ObjectPlacer objectPlacer;
+    
+    [SerializeField]
+    planeLevelManager planeLevelManager;
 
     [SerializeField]
     LevelEditorController levelEditorController;
@@ -38,6 +41,8 @@ public class MapEditorInputHandler : MonoBehaviour
     InputAction RotateRightAction { get; set; }
     InputAction RollLeftAction { get; set; }
     InputAction RollRightAction { get; set; }
+
+    private InputAction ChangeIntersectionPlaneLevelAction { get;  set; }
 
 
 
@@ -61,7 +66,7 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RotateObjectRight");
         RollLeftAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RollObjectLeft");
         RollRightAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("RollObjectRight");
-
+        ChangeIntersectionPlaneLevelAction = inputActionMap.FindActionMap(ObjectPlacerActionMapName).FindAction("ChangeIntersectionPlaneLevel");
         //LevelEditorController
         undoAction = inputActionMap.FindActionMap(LevelEditorActionMapName).FindAction("Undo");
         redoAction = inputActionMap.FindActionMap(LevelEditorActionMapName).FindAction("Redo");
@@ -100,7 +105,13 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.RIGHT);
         RollLeftAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.LEFTROLL);
         RollRightAction.performed += context => objectPlacer.RotateObjectPlacement(ObjectPlacer.RotationDirection.RIGHTROLL);
-
+        ChangeIntersectionPlaneLevelAction.performed += context =>
+        {
+            float scrollValue = context.ReadValue<float>();
+            if(scrollValue > 0.0f){ planeLevelManager.incrementLevel();}
+            else { planeLevelManager.decrementLevel();}
+        };
+        
         //LevelEditorCOntroller
         undoAction.performed += context => levelEditorController.Undo();
         redoAction.performed += context => levelEditorController.Redo();
@@ -122,6 +133,7 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction.Enable();
         RollLeftAction.Enable();
         RollRightAction.Enable();
+        ChangeIntersectionPlaneLevelAction.Enable();
 
         //Level Editor Controller
         undoAction.Enable();
@@ -144,6 +156,7 @@ public class MapEditorInputHandler : MonoBehaviour
         RotateRightAction.Disable();
         RollLeftAction.Disable();
         RollRightAction.Disable();
+        ChangeIntersectionPlaneLevelAction.Disable();
 
         //Level Editor Controller
         undoAction.Disable();

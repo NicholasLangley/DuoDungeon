@@ -68,6 +68,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChangeIntersectionPlaneLevel",
+                    "type": "Value",
+                    "id": "09a23daa-f967-431b-87d5-c685209d93cb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -147,6 +156,17 @@
                     "action": "Draw",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9a57dc46-cc93-4758-a0e1-b7f9c3d2e40d",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChangeIntersectionPlaneLevel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -158,7 +178,7 @@
                     "name": "Undo",
                     "type": "Button",
                     "id": "48249ed9-13d8-46cb-9509-1ebb9aa4993a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

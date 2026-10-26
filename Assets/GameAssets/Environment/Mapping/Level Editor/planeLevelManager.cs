@@ -47,6 +47,21 @@ public class planeLevelManager : MonoBehaviour
         updateIntersectionPlane();
     }
 
+    public void SetXPlane()
+    {
+        SetNormal(Vector3.right);
+    }
+
+    public void SetYPlane()
+    {
+        SetNormal(Vector3.up);
+    }
+
+    public void SetZPlane()
+    {
+        SetNormal(Vector3.forward);
+    }
+
     void updateIntersectionPlane()
     {
         planeLevelText.text = level.ToString();

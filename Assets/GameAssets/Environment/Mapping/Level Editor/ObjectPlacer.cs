@@ -44,8 +44,8 @@ public class ObjectPlacer : MonoBehaviour
         line,
         box,
         boxfill,
-        circle,
-        circlefill
+        ellipse,
+        ellipsefill
     }
 
     [SerializeField] DrawMode _currentDrawMode;
@@ -243,15 +243,15 @@ public void SetBlockList(UltimateList list)
             //start vs end point. on current reference plane
             CalculateBoxModeGhosts(true);
         }
-        else if (_currentDrawMode == DrawMode.circle)
+        else if (_currentDrawMode == DrawMode.ellipse)
         {
             //start vs end point. radius or diameter? circle algorithm? ovals?
-            CalculateCircleModeGhosts(false);
+            CalculateEllipseModeGhosts(false);
         }
-        else if (_currentDrawMode == DrawMode.circlefill)
+        else if (_currentDrawMode == DrawMode.ellipsefill)
         {
             //start vs end point. radius or diameter? circle algorithm? ovals?
-            CalculateCircleModeGhosts(true);
+            CalculateEllipseModeGhosts(true);
         }
     }
 
@@ -326,7 +326,6 @@ public void SetBlockList(UltimateList list)
             int yMax = Math.Max(_drawStartPosition.y, drawEndPosition.y);
             int zMin = Math.Min(_drawStartPosition.z, drawEndPosition.z);
             int zMax = Math.Max(_drawStartPosition.z, drawEndPosition.z);
-            //todo maybe limit max size if necessary
         
             for (int x = xMin; x <= xMax; x++)
             {
@@ -349,8 +348,6 @@ public void SetBlockList(UltimateList list)
         {
             hideGhosts();
         }
-        
-       
     }
 
     bool IsPositionOnBoxEdge(Vector3Int pos, int minX, int maxX, int minY, int maxY, int minZ, int maxZ)
@@ -366,9 +363,92 @@ public void SetBlockList(UltimateList list)
         return false;
     }
     
-    void CalculateCircleModeGhosts(bool fill)
+    void CalculateEllipseModeGhosts(bool fill)
     {
+        Vector3 intersectionPos = GetCurrentIntersectPoint();
+        if (intersectionPos != Vector3.negativeInfinity)
+        {
+            //Need to cap size, so game doesn't try the drawabox challenge
+            if (Vector3.Distance(_drawStartPosition, intersectionPos) > maxDrawDistanceBetweenBlocks)
+            {
+                //TODO some sort of error / warning
+                //returning should just keep the previous list
+                return;
+            }
+            
+            _ghostDrawPositionList = new List<Vector3Int>();
+            Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
         
+            //get bounds
+            int xMin = Math.Min(_drawStartPosition.x, drawEndPosition.x);
+            int xMax = Math.Max(_drawStartPosition.x, drawEndPosition.x);
+            int yMin = Math.Min(_drawStartPosition.y, drawEndPosition.y);
+            int yMax = Math.Max(_drawStartPosition.y, drawEndPosition.y);
+            int zMin = Math.Min(_drawStartPosition.z, drawEndPosition.z);
+            int zMax = Math.Max(_drawStartPosition.z, drawEndPosition.z);
+
+            //get ellipse parameters
+            Vector3 ellipseCenter = new Vector3((xMin + xMax) / 2.0f, (yMin + yMax) / 2.0f, (zMin + zMax) / 2.0f);
+            
+            float xSemiAxisLength = Math.Max (Mathf.Abs(xMax - xMin) / 2.0f, 0.5f);
+            float ySemiAxisLength = Math.Max (Mathf.Abs(yMax - yMin) / 2.0f, 0.5f);
+            float zSemiAxisLength = Math.Max (Mathf.Abs(zMax - zMin) / 2.0f, 0.5f);
+            
+            float xSemiAxisSquared = xSemiAxisLength * xSemiAxisLength;
+            float ySemiAxisSquared = ySemiAxisLength * ySemiAxisLength;
+            float zSemiAxisSquared = zSemiAxisLength * zSemiAxisLength;
+            
+            for (int x = xMin; x <= xMax; x++)
+            {
+                for (int y = yMin; y <= yMax; y++)
+                {
+                    for (int z = zMin; z <= zMax; z++)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        
+                        float dx = pos.x - ellipseCenter.x;
+                        float dy = pos.y - ellipseCenter.y;
+                        float dz = pos.z - ellipseCenter.z;
+                        
+                        float ellipseValue = (dx * dx) / xSemiAxisSquared + (dy * dy) / ySemiAxisSquared + (dz * dz) / zSemiAxisSquared;
+                        if (fill && ellipseValue <= 1.02f)
+                        {
+                            _ghostDrawPositionList.Add(pos);
+                        }
+                        else
+                        {
+                            //need to dynamically maintain shell thickness
+                            // This measures exactly how fast the value changes at this point in space
+                            float gradX = (2.0f * dx) / xSemiAxisSquared;
+                            float gradY = (2.0f * dy) / ySemiAxisSquared;
+                            float gradZ = (2.0f * dz) / zSemiAxisSquared;
+                            
+                            // Length of the local gradient vector
+                            float gradientLength = Mathf.Sqrt(gradX * gradX + gradY * gradY + gradZ * gradZ);
+                            // Convert tback to grid
+                            float distanceFromShell = Mathf.Abs(ellipseValue - 1.0f) / gradientLength;
+
+                            if (distanceFromShell <= 0.5f)
+                            {
+                                _ghostDrawPositionList.Add(pos);
+                            }
+                        }
+                    }
+                }
+            }
+            unHideGhosts();
+        }
+        else
+        {
+            hideGhosts();
+        }
+    }
+
+    float calculatePointEllipseValue(Vector3 point, Vector3 ellipseCenter, float a, float b, float c)
+    {
+        return Mathf.Pow((point.x - ellipseCenter.x), 2.0f) / MathF.Pow(a, 2.0f) +
+               Mathf.Pow((point.y - ellipseCenter.y), 2.0f) / MathF.Pow(b, 2.0f) +
+               Mathf.Pow((point.z - ellipseCenter.z), 2.0f) / MathF.Pow(c, 2.0f);
     }
     
     #endregion
@@ -683,9 +763,9 @@ public void SetBlockList(UltimateList list)
     
     #region helper functions
     
-    public void SetLevelIntersectionPlane(Vector3 normal, int yLevel)
+    public void SetLevelIntersectionPlane(Vector3 normal, int level)
     {
-        levelIntersectionPlane.SetNormalAndPosition(normal, new Vector3(0, yLevel, 0));
+        levelIntersectionPlane.SetNormalAndPosition(normal, normal * level );
     }
 
     public enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
