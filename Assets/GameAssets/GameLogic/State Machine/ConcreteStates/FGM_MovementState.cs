@@ -61,22 +61,22 @@ public class FGM_MovementState : FullGridMoveableState
                 switch (downDir)
                 {
                     case DownDirection.Ydown:
-                        halfwayPosition.y = srcBlock.gridPosition.y + srcBlockExitHeight;
+                        halfwayPosition.y = srcBlock.worldPosition.y + srcBlockExitHeight;
                         break;
                     case DownDirection.Yup:
-                        halfwayPosition.y = srcBlock.gridPosition.y - srcBlockExitHeight;
+                        halfwayPosition.y = srcBlock.worldPosition.y - srcBlockExitHeight;
                         break;
                     case DownDirection.Xleft:
-                        halfwayPosition.x = srcBlock.gridPosition.x + srcBlockExitHeight;
+                        halfwayPosition.x = srcBlock.worldPosition.x + srcBlockExitHeight;
                         break;
                     case DownDirection.Xright:
-                        halfwayPosition.x = srcBlock.gridPosition.x - srcBlockExitHeight;
+                        halfwayPosition.x = srcBlock.worldPosition.x - srcBlockExitHeight;
                         break;
                     case DownDirection.Zforward:
-                        halfwayPosition.z = srcBlock.gridPosition.z - srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.worldPosition.z - srcBlockExitHeight;
                         break;
                     case DownDirection.Zback:
-                        halfwayPosition.z = srcBlock.gridPosition.z + srcBlockExitHeight;
+                        halfwayPosition.z = srcBlock.worldPosition.z + srcBlockExitHeight;
                         break;
                 }
             }
@@ -191,29 +191,29 @@ public class FGM_MovementState : FullGridMoveableState
             Debug.Log("dest enter: " + destBlockEnterHeight + "dest pos height: " + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir));
             Debug.Log("TOTAL: " + (srcBlockExitHeight - destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(srcPosition, downDir) - Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)));
         }*/
-        if (destBlock != null && srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)) <= _fgm.maxStairClimbHeight)
+        if (destBlock != null && srcBlockExitHeight + Mathf.Floor(Block.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(destBlock.worldPosition, downDir)) <= _fgm.maxStairClimbHeight)
         {
             float destBlockHeight = destBlock.GetMidBlockHeight(_fgm.gravityDirection);
             //Debug.Log("climbdown within partial: " + destBlockHeight);
             switch (downDir)
             {
                 case DownDirection.Ydown:
-                    destPosition.y = destBlock.gridPosition.y + destBlockHeight;
+                    destPosition.y = destBlock.worldPosition.y + destBlockHeight;
                     break;
                 case DownDirection.Yup:
-                    destPosition.y = destBlock.gridPosition.y - destBlockHeight;
+                    destPosition.y = destBlock.worldPosition.y - destBlockHeight;
                     break;
                 case DownDirection.Xleft:
-                    destPosition.x = destBlock.gridPosition.x + destBlockHeight;
+                    destPosition.x = destBlock.worldPosition.x + destBlockHeight;
                     break;
                 case DownDirection.Xright:
-                    destPosition.x = destBlock.gridPosition.x - destBlockHeight;
+                    destPosition.x = destBlock.worldPosition.x - destBlockHeight;
                     break;
                 case DownDirection.Zforward:
-                    destPosition.z = destBlock.gridPosition.z - destBlockHeight;
+                    destPosition.z = destBlock.worldPosition.z - destBlockHeight;
                     break;
                 case DownDirection.Zback:
-                    destPosition.z = destBlock.gridPosition.z + destBlockHeight;
+                    destPosition.z = destBlock.worldPosition.z + destBlockHeight;
                     break;
             }
         }

@@ -110,9 +110,8 @@ public class Block : Placeable
 
     [SerializeField]
     public bool blocksAllMovement;
-
-    [SerializeField]
-    public Vector3Int gridPosition;
+    
+    public Vector3Int gridPosition, worldPosition;
 
     // Start is called before the first frame update
     void Awake()
@@ -126,29 +125,29 @@ public class Block : Placeable
         
     }
 
-    public void SetGridPosition(Vector3Int pos)
+    public void SetPosition(Vector3Int pos)
     {
         gridPosition = Map.WorldToHalfGrid(pos);
+        worldPosition = pos;
     }
-
-    //entering from same level as block
+    
     public bool canEntityEnter(FullGridMoveable e)
     {
         if (blocksAllMovement) { Debug.Log("blocks all movement"); return false; }
 
         DownDirection downDir = e.GetCurrentDownDirection();
 
-        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(gridPosition, downDir);
+        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(worldPosition, downDir);
 
         Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
         float entityExitHeight;
         if (entityCurrentBlock != null)
         {
-            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.gridPosition, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(gridPosition, e.transform.up, downDir);
+            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.worldPosition, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(worldPosition, e.transform.up, downDir);
         }
         else { entityExitHeight = GetPositionsDownOrientedHeight(e.transform.position, downDir); }
         //if player climbing up a level and still has to climb this block
-        if (IsEntityClimbingStackedBlock(gridPosition, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
+        if (IsEntityClimbingStackedBlock(worldPosition, e.transform.position, downDir))//transform.position.y - Mathf.Floor(e.transform.position.y) >= 0.99f)
         {
             float maxClimb = (e.maxStairClimbHeight + entityExitHeight);
             float climbNeeded = enteringEdgeHeight;
@@ -156,8 +155,9 @@ public class Block : Placeable
             //Debug.Log("failed climbing stacked block");
         }
         //same height or greater entry
-        else if (IsEntityClimbingOrStayingSameHeight(gridPosition, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
+        else if (IsEntityClimbingOrStayingSameHeight(worldPosition, e.transform.position, downDir))//transform.position.y >= Mathf.Floor(e.transform.position.y))
         {
+            //Debug.Log(e.transform.position + "\nEntering edgeHeight: " + enteringEdgeHeight + "\nexit stairs: " + (e.maxStairClimbHeight + entityExitHeight));
             if (enteringEdgeHeight <= e.maxStairClimbHeight + entityExitHeight) { return true; }
             //Debug.Log("failed climbing Or staying same height");
         }
@@ -175,7 +175,7 @@ public class Block : Placeable
     public float CalculateAttemptedEntryEdgeHeight(Transform entityTransform, DownDirection entityDownDir)
     {
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = gridPosition - entityTransform.position;
+        Vector3 relativeDirection = worldPosition - entityTransform.position;
         Vector3 forwardVector;
         Vector3 normalVector = -entityTransform.up;
         switch (entityDownDir)
@@ -239,7 +239,7 @@ public class Block : Placeable
     public float CalculateAttemptedExitEdgeHeight(Vector3 exitPoint, Vector3 entityUpVector, DownDirection EntityDownDir)
     {
         //find forward, normal and relative direction vectors of entity
-        Vector3 relativeDirection = gridPosition - exitPoint;
+        Vector3 relativeDirection = worldPosition - exitPoint;
         Vector3 forwardVector;
         Vector3 normalVector = -entityUpVector;
         switch (EntityDownDir)

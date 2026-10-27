@@ -67,7 +67,7 @@ public class ComplexBlock : Placeable
                 Block singleBlock = gridSplitBlocksParent.AddComponent<Block>();
                 singleBlock.blockSides = new BlockSideDefinitions();
                 singleBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                singleBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
+                singleBlock.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
                 gridBlocks.Add(singleBlock);
             }
             return;
@@ -80,7 +80,7 @@ public class ComplexBlock : Placeable
             Block transformAlignedBlock = gridSplitBlocksParent.AddComponent<Block>();
             transformAlignedBlock.blockSides = new BlockSideDefinitions();
             transformAlignedBlock.blockSides.CopyBlockSides(componentBlock.sides);
-            transformAlignedBlock.SetGridPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
+            transformAlignedBlock.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
 
             BlockSide topOffsetSide = transformAlignedBlock.GetOrientedTopSide(gravityDir);
             topOffsetSide.AddHeightOffset(distanceOffsetFromGrid);
@@ -96,7 +96,7 @@ public class ComplexBlock : Placeable
                 Block OffsetBlock = gridSplitBlocksParent.AddComponent<Block>();
                 OffsetBlock.blockSides = new BlockSideDefinitions();
                 OffsetBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                OffsetBlock.SetGridPosition(Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir));
+                OffsetBlock.SetPosition(Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir));
                 
                 topOffsetSide = OffsetBlock.GetOrientedTopSide(gravityDir);
                 topOffsetSide.AddHeightOffset(distanceOffsetFromGrid - 1.0f);
