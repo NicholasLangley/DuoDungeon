@@ -15,26 +15,12 @@ public class BlockBuilder
         ultimateList = lists;
     }
 
-    public enum BlockType { Basic, Door, Ice }
-
-    public GameObject BuildBlock(BlockType type, JToken blockEntry)
+    public GameObject BuildBlock(JToken blockEntry)
     {
         GameObject newBlock = GeneratePrefab((string)blockEntry["list_id"], (string)blockEntry["base_id"], (string)blockEntry["varient_id"]);
 
         setBlockPosition(newBlock, blockEntry["position"]);
         setBlockRotation(newBlock, blockEntry["rotation"]);
-
-        switch (type)
-            {
-            case BlockType.Door:
-                break;
-
-            case BlockType.Ice:
-                break;
-
-            default:
-                break;
-        }
 
         return newBlock;
     }
@@ -51,7 +37,7 @@ public class BlockBuilder
 
     public void setBlockPosition(GameObject block, JToken position)
     {
-        Vector3 blockPos = parseJSONPosition(position);
+        Vector3 blockPos = Map.HalfGridToWorld(parseJSONPosition(position));
         block.transform.position = blockPos;
     }
 

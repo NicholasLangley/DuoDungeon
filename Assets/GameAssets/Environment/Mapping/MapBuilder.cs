@@ -7,6 +7,8 @@ using System.IO;
 
 public class MapBuilder
 {
+    
+    //note: all blocks are saved / loaded with their adjusted halfGrid positions and this will need to be converted to world positions on instantiation
     Map map;
     BlockBuilder blockBuilder;
     GameObject mapParent;
@@ -30,16 +32,23 @@ public class MapBuilder
         JObject mapJson = JObject.Parse(mapJSON);
 
         //TODO METADATA STUFF//
-        
+        Debug.Log("version: " + mapJson["metadata"]["version"]);
 
         //read and create blocks
+        //todo refactor to:
+        //use flyweight pattern
+        //use more compact save file structure hierarchy
+        //- block ids
+        //-- rotations
+        //--- block specific (positions, etc.)
         foreach (JObject blockObject in mapJson["blocks"])
         {
-            GameObject newBlockObject = blockBuilder.BuildBlock((BlockBuilder.BlockType)(int)blockObject["type"], blockObject["info"]);
-            Vector3Int intPosition = Map.GetIntVector3(newBlockObject.transform.position);
+            GameObject newBlockObject = blockBuilder.BuildBlock(blockObject["info"]);
+            //block already converted to world in BlockBuilder
+            Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
             Placeable placeable = newBlockObject.GetComponent<Placeable>();
             if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-            else { map.AddStaticBlock(intPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetGridPosition(intPosition); }
+            else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetGridPosition(worldPosition); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 

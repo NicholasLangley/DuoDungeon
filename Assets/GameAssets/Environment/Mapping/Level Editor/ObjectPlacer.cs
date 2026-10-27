@@ -725,7 +725,7 @@ public void SetBlockList(UltimateList list)
 
     public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
-        map.RemoveStaticBlock(position);
+        map.RemoveBlockAtLocation(position);
         if (isRedPlayer)
         {
             map.redPlayerSpawn = position;

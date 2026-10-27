@@ -2769,7 +2769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2438fd9e97c1904d9d9520107fb99e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapFilename: movementTEST
+  mapFilename: halfGridTest
   ultimateList: {fileID: 11400000, guid: 4330b5eca20a3bc4e8e2c3f472a5a5f6, type: 2}
   wallListIDs:
   - Wall

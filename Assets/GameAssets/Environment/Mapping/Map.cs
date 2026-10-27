@@ -3,6 +3,13 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UIElements;
 
+//The map uses a half grid (all postions multiplied by 2)
+//This means that even coordinates indicate grid allignment ie a full square
+//odd coordinates indicate a position between two grid spaces
+//
+//All internal map functions will use this half grid position and it should be opaque to outside functions
+//This means calling objects will pass in world coordinates,
+//that the map class must convert to internal halfGrid positions ASAP
 public class Map
 {
     Dictionary<Vector3Int, Block> currentStaticBlocks;
@@ -11,6 +18,8 @@ public class Map
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
+
+    public string _currentMapVersion = "0.1";
 
     public Map()
     {
@@ -47,7 +56,7 @@ public class Map
         currentStaticBlocks.Add(position, block);
     }
 
-    public void RemoveStaticBlock(Vector3Int position)
+    private void RemoveStaticBlock(Vector3Int position)
     {
         if (currentStaticBlocks.ContainsKey(position))
         {
@@ -56,14 +65,14 @@ public class Map
         }
     }
 
-    public Block GetStaticBlock(Vector3Int position)
+    private Block GetStaticBlock(Vector3Int position)
     {
         if (currentStaticBlocks.ContainsKey(position)) { return currentStaticBlocks[position]; }
 
         return null;
     }
 
-    public Block GetStaticBlock(Vector3 position)
+    private Block GetStaticBlock(Vector3 position)
     {
         return (GetStaticBlock(Map.GetIntVector3(position)));
     }
@@ -81,12 +90,12 @@ public class Map
         currentComplexBlocks.Add(complexBlock);
     }
 
-    Block GetComplexBlockPart(Vector3 position, GameObject requestor)
+    private Block GetComplexBlockPart(Vector3 position, GameObject requestor)
     {
         return GetComplexBlockPart(Map.GetIntVector3(position), requestor);
     }
 
-    Block GetComplexBlockPart(Vector3Int position, GameObject requestor)
+    private Block GetComplexBlockPart(Vector3Int position, GameObject requestor)
     {
         foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
@@ -104,7 +113,7 @@ public class Map
         return null;
     }
 
-    void RemoveComplexBlockAtLocation(Vector3 position)
+    private void RemoveComplexBlockAtLocation(Vector3 position)
     {
         Block blockPart = GetComplexBlockPart(position, null);
         if (blockPart == null) { return; }
@@ -115,8 +124,9 @@ public class Map
 
     #endregion
 
-    public void RemoveBlockAtLocation(Vector3 position)
+    public void RemoveBlockAtLocation(Vector3 pos)
     {
+        Vector3 position = WorldToHalfGrid(pos);
         Block block = GetBlockAtGridPosition(position, null, Vector3.down);
         if (block == null){ return; }
         if (block.GetComponentInParent<ComplexBlock>() != null)
@@ -136,8 +146,9 @@ public class Map
 
     public Block GetBlockAtGridPosition(Vector3Int pos, GameObject requestor, Vector3 downVector)
     {
-        Block staticBlock = GetStaticBlock(pos);
-        Block complexBlockPart = GetComplexBlockPart(pos, requestor);
+        Vector3Int halfGridPos = WorldToHalfGrid(pos);
+        Block staticBlock = GetStaticBlock(halfGridPos);
+        Block complexBlockPart = GetComplexBlockPart(halfGridPos, requestor);
 
         if (staticBlock == null) { return complexBlockPart; }
         if (complexBlockPart == null) { return staticBlock; }
@@ -149,7 +160,8 @@ public class Map
 
     public Block GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
-        Vector3 gridPosition = requestor.transform.position;
+        //TODO update to half grid
+        Vector3 gridPosition = WorldToHalfGrid(requestor.transform.position);
         switch (downDir)
         {
             case DownDirection.Ydown:
@@ -191,6 +203,16 @@ public class Map
         return new Vector3Int(Mathf.FloorToInt(floatVector.x + 0.001f), Mathf.FloorToInt(floatVector.y + 0.001f), Mathf.FloorToInt(floatVector.z + 0.001f));
     }
 
+    public static Vector3Int WorldToHalfGrid(Vector3 worldPos)
+    {
+        return GetIntVector3(worldPos * 2.0f);
+    }
+
+    public static Vector3 HalfGridToWorld(Vector3 halfGridPos)
+    {
+        return halfGridPos * 0.5f;
+    }
+
     public void SaveMapToFile(string filename)
     {
         if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
@@ -203,7 +225,7 @@ public class Map
         string mapJSON = "{\n";
 
         //METADATA
-        mapJSON += "\"metadata\": \"EMPTY\",\n";
+        mapJSON += "\"metadata\": " + GetMapMetadata();
 
         //Players
         mapJSON += GetPlayersJSON();
@@ -222,7 +244,14 @@ public class Map
         File.WriteAllText(filepath, mapJSON);
     }
 
-    string GetBlocksListJSON()
+    private string GetMapMetadata()
+    {
+        return "{\n" +
+               "\"version\": " + _currentMapVersion +
+        "\n},\n";
+    }
+
+    private string GetBlocksListJSON()
     {
         string blocksListJSON = "";
 
@@ -254,7 +283,7 @@ public class Map
         return blocksListJSON;
     }
 
-    string GetPlayersJSON()
+    private string GetPlayersJSON()
     {
         return "\"players\": {\n" +
                     "\"red\": {\n" +
@@ -267,13 +296,10 @@ public class Map
               "}\n},\n";
     }
 
-    string ConvertPlaceableToJSON(Placeable placeable)
+    private string ConvertPlaceableToJSON(Placeable placeable)
     {
         //start block
         string json = "{\n";
-
-        //block type TODO?
-        //json += "\"type\": 0,\n";
 
         //INFO
         json += "\"info\": {\n";
@@ -282,11 +308,9 @@ public class Map
         json += "\"list_id\": \"" + placeable.listID + "\",\n";
         json += "\"base_id\": \"" + placeable.baseID + "\",\n";
         json += "\"varient_id\": \"" + placeable.varientID + "\",\n";
-        //deprecate this, remove once no longer used
-        //json += "\"block_id\": " + b.blockID + ",\n";
 
         //position
-        json += GetPositionJSON(placeable.transform.position);
+        json += GetPositionJSON(WorldToHalfGrid(placeable.transform.position));
 
         //rotation
         json += GetRotationJSON(placeable.transform.rotation); //add comma to this function if adding more parts to block info
@@ -300,7 +324,7 @@ public class Map
         return json;
     }
 
-    string GetPositionJSON(Vector3 pos)
+    private string GetPositionJSON(Vector3 pos)
     {
         return "\"position\": {\n" +
             "\"x\": " + pos.x + ",\n" +
@@ -309,7 +333,7 @@ public class Map
             "},\n";
     }
 
-    string GetRotationJSON(Quaternion rot)
+    private string GetRotationJSON(Quaternion rot)
     {
         return "\"rotation\": {\n" +
             "\"w\": " + rot.w + ",\n" +

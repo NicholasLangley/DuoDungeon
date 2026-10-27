@@ -128,7 +128,7 @@ public class Block : Placeable
 
     public void SetGridPosition(Vector3Int pos)
     {
-        gridPosition = pos;
+        gridPosition = Map.WorldToHalfGrid(pos);
     }
 
     //entering from same level as block
