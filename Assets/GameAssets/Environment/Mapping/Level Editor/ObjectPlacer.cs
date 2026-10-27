@@ -63,6 +63,7 @@ public class ObjectPlacer : MonoBehaviour
     public List<string> wallListIDs;
 
     GameObject placementIndicatorArrow;
+    [SerializeField] Transform gridPlane;
 
     // Start is called before the first frame update
     void Start()
@@ -253,6 +254,9 @@ public void SetBlockList(UltimateList list)
             //start vs end point. radius or diameter? circle algorithm? ovals?
             CalculateEllipseModeGhosts(true);
         }
+        
+        //update grid to be around player cursor
+        gridPlane.transform.position = Map.GetIntVector3(GetCurrentIntersectPoint());
     }
 
     void CalculatePointModeGhost()
@@ -442,13 +446,6 @@ public void SetBlockList(UltimateList list)
         {
             hideGhosts();
         }
-    }
-
-    float calculatePointEllipseValue(Vector3 point, Vector3 ellipseCenter, float a, float b, float c)
-    {
-        return Mathf.Pow((point.x - ellipseCenter.x), 2.0f) / MathF.Pow(a, 2.0f) +
-               Mathf.Pow((point.y - ellipseCenter.y), 2.0f) / MathF.Pow(b, 2.0f) +
-               Mathf.Pow((point.z - ellipseCenter.z), 2.0f) / MathF.Pow(c, 2.0f);
     }
     
     #endregion
@@ -766,6 +763,26 @@ public void SetBlockList(UltimateList list)
     public void SetLevelIntersectionPlane(Vector3 normal, int level)
     {
         levelIntersectionPlane.SetNormalAndPosition(normal, normal * level );
+        AlignGridPlane(normal);
+        gridPlane.transform.position = normal * level;
+    }
+
+    void AlignGridPlane(Vector3 normal)
+    {
+        if (Mathf.Abs(Vector3.Dot(normal, Vector3.up)) > 0.99f)
+        {
+            gridPlane.rotation = Quaternion.identity;
+        }
+        // 2. XY Plane (Front/Back Wall)
+        else if (Mathf.Abs(Vector3.Dot(normal, Vector3.forward)) > 0.99f)
+        {
+            gridPlane.rotation = Quaternion.Euler(90f, 0f, 0f);
+        }
+        // 3. YZ Plane (Left/Right Wall)
+        else if (Mathf.Abs(Vector3.Dot(normal, Vector3.right)) > 0.99f)
+        {
+            gridPlane.rotation = Quaternion.Euler(0f, 0f, 90f);
+        }
     }
 
     public enum RotationDirection { RIGHT, LEFT, FORWARD, BACK,  RIGHTROLL, LEFTROLL}
