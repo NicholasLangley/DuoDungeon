@@ -54,6 +54,8 @@ public class MapBuilder
 
         //readPlayers
         ReadPlayers((JObject)mapJson["players"]);
+
+        //map.DebugMap();
     }
 
 

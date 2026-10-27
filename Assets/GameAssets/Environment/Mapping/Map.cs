@@ -44,8 +44,9 @@ public class Map
 
 
     #region static blocks
-    public void AddStaticBlock(Vector3Int position, Block block)
+    public void AddStaticBlock(Vector3Int pos, Block block)
     {
+        Vector3Int position = GetIntVector3(WorldToHalfGrid(pos));
         //overwrite
         if (currentStaticBlocks.ContainsKey(position)) 
         {
@@ -149,7 +150,22 @@ public class Map
         Vector3Int halfGridPos = WorldToHalfGrid(pos);
         Block staticBlock = GetStaticBlock(halfGridPos);
         Block complexBlockPart = GetComplexBlockPart(halfGridPos, requestor);
+        
+        foreach (Vector3Int position in currentStaticBlocks.Keys)
+        {
+            if(position == halfGridPos)
+            {
+                Debug.Log($"collision!: {position}");
+            }
+            if(position == pos)
+            {
+                Debug.Log($"OLD collision!: {position}");
+            }
+            
+            
+        }
 
+        
         if (staticBlock == null) { return complexBlockPart; }
         if (complexBlockPart == null) { return staticBlock; }
 
@@ -341,5 +357,24 @@ public class Map
             "\"y\": " + rot.y + ",\n" +
             "\"z\": " + rot.z + "\n" +
             "}\n";//add comma here if more fields added to block ie, components
+    }
+
+    public void DebugMap()
+    {
+        int odd = 0;
+        int even = 0;
+        foreach (Vector3Int position in currentStaticBlocks.Keys)
+        {
+
+            if (position.x % 2 != 0 || position.y % 2 != 0 || position.z % 2 != 0)
+            {
+                odd++;
+            }
+            else
+            {
+                even++;
+            }
+        }
+        Debug.Log("odd: "  + odd + ", even: " + even);
     }
 }
