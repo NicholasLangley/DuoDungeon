@@ -1,5 +1,7 @@
 {
-"metadata": "EMPTY",
+"metadata": {
+"version": 0.1
+},
 "players": {
 "red": {
 "position": {
@@ -31,16 +33,14 @@
 },
 "blocks": [
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -1,
+"x": -2,
 "y": 0,
-"z": -7
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -52,16 +52,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 1 - Bottom",
 "varient_id": "blank",
-"block_id": 3,
 "position": {
-"x": -1,
+"x": -2,
 "y": 0,
-"z": -6
+"z": -12
 },
 "rotation": {
 "w": -0.5,
@@ -73,16 +71,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 1 - Bottom",
 "varient_id": "blank",
-"block_id": 3,
 "position": {
-"x": -2,
+"x": -4,
 "y": 0,
-"z": -5
+"z": -10
 },
 "rotation": {
 "w": 0.5,
@@ -94,16 +90,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 2 - Low",
 "varient_id": "blank",
-"block_id": 4,
 "position": {
-"x": -2,
+"x": -4,
 "y": 0,
-"z": -4
+"z": -8
 },
 "rotation": {
 "w": 0.5,
@@ -115,16 +109,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 3 - High",
 "varient_id": "blank",
-"block_id": 5,
 "position": {
-"x": -2,
+"x": -4,
 "y": 0,
-"z": -3
+"z": -6
 },
 "rotation": {
 "w": -0.5,
@@ -136,12 +128,29 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 4 - Top",
 "varient_id": "blank",
-"block_id": 6,
+"position": {
+"x": -4,
+"y": 0,
+"z": -4
+},
+"rotation": {
+"w": -0.5,
+"x": 0.5,
+"y": -0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Full Length Stair",
+"varient_id": "blank",
 "position": {
 "x": -2,
 "y": 0,
@@ -157,37 +166,14 @@
 }
 ,
 {
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Full Length Stair",
-"varient_id": "blank",
-"block_id": 2,
-"position": {
-"x": -1,
-"y": 0,
-"z": -1
-},
-"rotation": {
-"w": -0.5,
-"x": 0.5,
-"y": -0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -3,
-"y": -1,
-"z": -7
+"x": -6,
+"y": -2,
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -199,16 +185,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.2",
 "varient_id": "blank",
-"block_id": 8,
 "position": {
-"x": -3,
-"y": -1,
-"z": -6
+"x": -6,
+"y": -2,
+"z": -12
 },
 "rotation": {
 "w": 0.7071068,
@@ -220,16 +204,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 1 - Bottom",
 "varient_id": "blank",
-"block_id": 3,
 "position": {
-"x": -2,
-"y": -1,
-"z": -5
+"x": -4,
+"y": -2,
+"z": -10
 },
 "rotation": {
 "w": 0.5,
@@ -241,15 +223,51 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 2 - Low",
 "varient_id": "blank",
-"block_id": 4,
 "position": {
-"x": -2,
-"y": -1,
+"x": -4,
+"y": -2,
+"z": -8
+},
+"rotation": {
+"w": 0.5,
+"x": 0.5,
+"y": 0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 3 - High",
+"varient_id": "blank",
+"position": {
+"x": -4,
+"y": -2,
+"z": -6
+},
+"rotation": {
+"w": 0.5,
+"x": 0.5,
+"y": 0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 4 - Top",
+"varient_id": "blank",
+"position": {
+"x": -4,
+"y": -2,
 "z": -4
 },
 "rotation": {
@@ -262,58 +280,14 @@
 }
 ,
 {
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 3 - High",
-"varient_id": "blank",
-"block_id": 5,
-"position": {
-"x": -2,
-"y": -1,
-"z": -3
-},
-"rotation": {
-"w": 0.5,
-"x": 0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"block_id": 6,
-"position": {
-"x": -2,
-"y": -1,
-"z": -2
-},
-"rotation": {
-"w": 0.5,
-"x": 0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Full Length Stair",
 "varient_id": "blank",
-"block_id": 2,
 "position": {
-"x": -3,
-"y": -1,
-"z": -1
+"x": -6,
+"y": -2,
+"z": -2
 },
 "rotation": {
 "w": 0.7071068,

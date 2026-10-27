@@ -1,5 +1,7 @@
 {
-"metadata": "EMPTY",
+"metadata": {
+"version": 0.1
+},
 "players": {
 "red": {
 "position": {
@@ -31,205 +33,33 @@
 },
 "blocks": [
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -4,
-"y": 0,
-"z": -7
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -4,
-"y": 1,
-"z": -7
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 1 - Bottom",
-"varient_id": "blank",
-"block_id": 3,
-"position": {
-"x": -3,
-"y": 0,
-"z": -6
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": -0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 2 - Low",
-"varient_id": "blank",
-"block_id": 4,
-"position": {
-"x": -26,
-"y": 0,
-"z": -24
-},
-"rotation": {
-"w": -0.5,
-"x": 0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 2 - Low",
-"varient_id": "blank",
-"block_id": 4,
-"position": {
-"x": -3,
-"y": 0,
-"z": -5
-},
-"rotation": {
-"w": 0.5,
-"x": 0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 3 - High",
-"varient_id": "blank",
-"block_id": 5,
-"position": {
-"x": -3,
-"y": 0,
-"z": -4
-},
-"rotation": {
-"w": 0.5,
-"x": 0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"block_id": 6,
-"position": {
-"x": -3,
-"y": 0,
-"z": -3
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": -0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"block_id": 6,
-"position": {
-"x": -12,
-"y": 0,
-"z": -16
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": -0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"block_id": 6,
-"position": {
-"x": -10,
+"x": -8,
 "y": 0,
 "z": -14
 },
 "rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": -0.5,
-"z": 0.5
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
 }
 }
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -3,
-"y": 0,
-"z": -2
+"x": -8,
+"y": 2,
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -241,16 +71,33 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
+"base_id": "Quarter Stair 1 - Bottom",
 "varient_id": "blank",
-"block_id": 6,
 "position": {
-"x": -4,
-"y": 1,
-"z": -6
+"x": -6,
+"y": 0,
+"z": -12
+},
+"rotation": {
+"w": -0.5,
+"x": -0.5,
+"y": -0.5,
+"z": 0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 2 - Low",
+"varient_id": "blank",
+"position": {
+"x": -52,
+"y": 0,
+"z": -48
 },
 "rotation": {
 "w": -0.5,
@@ -262,186 +109,111 @@
 }
 ,
 {
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 3 - High",
-"varient_id": "blank",
-"block_id": 5,
-"position": {
-"x": -4,
-"y": 1,
-"z": -5
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": -0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Quarter Stair 2 - Low",
 "varient_id": "blank",
-"block_id": 4,
 "position": {
-"x": -4,
-"y": 1,
-"z": -4
+"x": -6,
+"y": 0,
+"z": -10
 },
 "rotation": {
 "w": 0.5,
-"x": -0.5,
-"y": -0.5,
+"x": 0.5,
+"y": 0.5,
 "z": -0.5
 }
 }
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
-"base_id": "Quarter Stair 1 - Bottom",
+"base_id": "Quarter Stair 3 - High",
 "varient_id": "blank",
-"block_id": 3,
 "position": {
-"x": -4,
-"y": 1,
-"z": -3
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": -0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 1 - Bottom",
-"varient_id": "blank",
-"block_id": 3,
-"position": {
-"x": -35,
-"y": 1,
-"z": -21
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": -0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -5,
-"y": 1,
-"z": -2
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -3,
-"y": 2,
-"z": -7
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -3,
-"y": -1,
-"z": -7
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -3,
-"y": 0,
-"z": -18
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -5,
+"x": -6,
 "y": 0,
 "z": -8
 },
 "rotation": {
+"w": 0.5,
+"x": 0.5,
+"y": 0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 4 - Top",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": 0,
+"z": -6
+},
+"rotation": {
+"w": -0.5,
+"x": -0.5,
+"y": -0.5,
+"z": 0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 4 - Top",
+"varient_id": "blank",
+"position": {
+"x": -24,
+"y": 0,
+"z": -32
+},
+"rotation": {
+"w": -0.5,
+"x": -0.5,
+"y": -0.5,
+"z": 0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 4 - Top",
+"varient_id": "blank",
+"position": {
+"x": -20,
+"y": 0,
+"z": -28
+},
+"rotation": {
+"w": -0.5,
+"x": -0.5,
+"y": -0.5,
+"z": 0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": 0,
+"z": -4
+},
+"rotation": {
 "w": 1,
 "x": 0,
 "y": 0,
@@ -451,16 +223,204 @@
 }
 ,
 {
-"type": 0,
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 4 - Top",
+"varient_id": "blank",
+"position": {
+"x": -8,
+"y": 2,
+"z": -12
+},
+"rotation": {
+"w": -0.5,
+"x": 0.5,
+"y": 0.5,
+"z": 0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 3 - High",
+"varient_id": "blank",
+"position": {
+"x": -8,
+"y": 2,
+"z": -10
+},
+"rotation": {
+"w": 0.5,
+"x": -0.5,
+"y": -0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 2 - Low",
+"varient_id": "blank",
+"position": {
+"x": -8,
+"y": 2,
+"z": -8
+},
+"rotation": {
+"w": 0.5,
+"x": -0.5,
+"y": -0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 1 - Bottom",
+"varient_id": "blank",
+"position": {
+"x": -8,
+"y": 2,
+"z": -6
+},
+"rotation": {
+"w": 0.5,
+"x": -0.5,
+"y": -0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Quarter Stair 1 - Bottom",
+"varient_id": "blank",
+"position": {
+"x": -70,
+"y": 2,
+"z": -42
+},
+"rotation": {
+"w": 0.5,
+"x": -0.5,
+"y": -0.5,
+"z": -0.5
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -10,
+"y": 2,
+"z": -4
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": 4,
+"z": -14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": -2,
+"z": -14
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": 0,
+"z": -36
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -10,
+"y": 0,
+"z": -16
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.8",
 "varient_id": "blank",
-"block_id": 9,
 "position": {
-"x": -5,
-"y": 1,
-"z": -8
+"x": -10,
+"y": 2,
+"z": -16
 },
 "rotation": {
 "w": 0,

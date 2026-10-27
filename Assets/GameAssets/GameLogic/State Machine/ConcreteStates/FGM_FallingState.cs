@@ -91,7 +91,7 @@ public class FGM_FallingState : FullGridMoveableState
         }
         else
         {
-            //check for wall below
+            //check for wall below TODO this needs to be unified with the new half grid stuff
             Vector3 rayStart = fallDestination;
             switch (downDir)
             {

@@ -1,5 +1,7 @@
 {
-"metadata": "EMPTY",
+"metadata": {
+"version": 0.1
+},
 "players": {
 "red": {
 "position": {
@@ -31,16 +33,14 @@
 },
 "blocks": [
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Full Length Stair",
 "varient_id": "blank",
-"block_id": 2,
 "position": {
-"x": -4,
+"x": -8,
 "y": 0,
-"z": -10
+"z": -20
 },
 "rotation": {
 "w": -1,
@@ -52,16 +52,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -5,
+"x": -10,
 "y": 0,
-"z": -10
+"z": -20
 },
 "rotation": {
 "w": 1,
@@ -73,16 +71,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -3,
-"y": -1,
-"z": -10
+"x": -6,
+"y": -2,
+"z": -20
 },
 "rotation": {
 "w": 1,
@@ -94,15 +90,32 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -16,
-"y": -1,
+"x": -32,
+"y": -2,
+"z": -44
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
+"info": {
+"list_id": "Basic Block",
+"base_id": "Full Length Stair",
+"varient_id": "blank",
+"position": {
+"x": -6,
+"y": -2,
 "z": -22
 },
 "rotation": {
@@ -115,16 +128,33 @@
 }
 ,
 {
-"type": 0,
+"info": {
+"list_id": "Basic Block",
+"base_id": "cube",
+"varient_id": "blank",
+"position": {
+"x": -8,
+"y": -2,
+"z": -22
+},
+"rotation": {
+"w": 1,
+"x": 0,
+"y": 0,
+"z": 0
+}
+}
+}
+,
+{
 "info": {
 "list_id": "Basic Block",
 "base_id": "Full Length Stair",
 "varient_id": "blank",
-"block_id": 2,
 "position": {
-"x": -3,
-"y": -1,
-"z": -11
+"x": -10,
+"y": 0,
+"z": -22
 },
 "rotation": {
 "w": 1,
@@ -136,16 +166,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -4,
-"y": -1,
-"z": -11
+"x": -10,
+"y": -2,
+"z": -18
 },
 "rotation": {
 "w": 1,
@@ -157,37 +185,14 @@
 }
 ,
 {
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "Full Length Stair",
-"varient_id": "blank",
-"block_id": 2,
-"position": {
-"x": -5,
-"y": 0,
-"z": -11
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -5,
-"y": -1,
-"z": -9
+"x": -8,
+"y": -2,
+"z": -18
 },
 "rotation": {
 "w": 1,
@@ -199,16 +204,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -4,
-"y": -1,
-"z": -9
+"x": -6,
+"y": -2,
+"z": -18
 },
 "rotation": {
 "w": 1,
@@ -220,16 +223,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -3,
-"y": -1,
-"z": -9
+"x": -10,
+"y": -2,
+"z": -16
 },
 "rotation": {
 "w": 1,
@@ -241,37 +242,14 @@
 }
 ,
 {
-"type": 0,
-"info": {
-"list_id": "Basic Block",
-"base_id": "cube",
-"varient_id": "blank",
-"block_id": 0,
-"position": {
-"x": -5,
-"y": -1,
-"z": -8
-},
-"rotation": {
-"w": 1,
-"x": 0,
-"y": 0,
-"z": 0
-}
-}
-}
-,
-{
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -4,
-"y": -1,
-"z": -8
+"x": -8,
+"y": -2,
+"z": -16
 },
 "rotation": {
 "w": 1,
@@ -283,16 +261,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.8",
 "varient_id": "blank",
-"block_id": 9,
 "position": {
-"x": -3,
-"y": -1,
-"z": -8
+"x": -6,
+"y": -2,
+"z": -16
 },
 "rotation": {
 "w": 1,
@@ -304,16 +280,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -3,
-"y": -1,
-"z": -7
+"x": -6,
+"y": -2,
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -325,16 +299,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -5,
-"y": -1,
-"z": -7
+"x": -10,
+"y": -2,
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -346,16 +318,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -4,
-"y": -1,
-"z": -7
+"x": -8,
+"y": -2,
+"z": -14
 },
 "rotation": {
 "w": 1,
@@ -367,16 +337,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -5,
-"y": -1,
-"z": -6
+"x": -10,
+"y": -2,
+"z": -12
 },
 "rotation": {
 "w": 1,
@@ -388,16 +356,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "cube",
 "varient_id": "blank",
-"block_id": 0,
 "position": {
-"x": -4,
-"y": -1,
-"z": -6
+"x": -8,
+"y": -2,
+"z": -12
 },
 "rotation": {
 "w": 1,
@@ -409,16 +375,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -3,
-"y": -1,
-"z": -6
+"x": -6,
+"y": -2,
+"z": -12
 },
 "rotation": {
 "w": 1,
@@ -430,16 +394,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.1",
 "varient_id": "blank",
-"block_id": 7,
 "position": {
-"x": -4,
+"x": -8,
 "y": 0,
-"z": -6
+"z": -12
 },
 "rotation": {
 "w": 1,
@@ -451,16 +413,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -3,
-"y": -1,
-"z": -5
+"x": -6,
+"y": -2,
+"z": -10
 },
 "rotation": {
 "w": 1,
@@ -472,16 +432,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -4,
-"y": -1,
-"z": -5
+"x": -8,
+"y": -2,
+"z": -10
 },
 "rotation": {
 "w": 1,
@@ -493,16 +451,14 @@
 }
 ,
 {
-"type": 0,
 "info": {
 "list_id": "Basic Block",
 "base_id": "Partial 0.9",
 "varient_id": "blank",
-"block_id": 10,
 "position": {
-"x": -5,
-"y": -1,
-"z": -5
+"x": -10,
+"y": -2,
+"z": -10
 },
 "rotation": {
 "w": 1,
