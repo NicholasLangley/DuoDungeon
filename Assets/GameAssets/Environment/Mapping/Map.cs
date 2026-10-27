@@ -151,21 +151,6 @@ public class Map
         Block staticBlock = GetStaticBlock(halfGridPos);
         Block complexBlockPart = GetComplexBlockPart(halfGridPos, requestor);
         
-        foreach (Vector3Int position in currentStaticBlocks.Keys)
-        {
-            if(position == halfGridPos)
-            {
-                Debug.Log($"collision!: {position}");
-            }
-            if(position == pos)
-            {
-                Debug.Log($"OLD collision!: {position}");
-            }
-            
-            
-        }
-
-        
         if (staticBlock == null) { return complexBlockPart; }
         if (complexBlockPart == null) { return staticBlock; }
 
@@ -176,8 +161,7 @@ public class Map
 
     public Block GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
-        //TODO update to half grid
-        Vector3 gridPosition = WorldToHalfGrid(requestor.transform.position);
+        Vector3 gridPosition = requestor.transform.position;
         switch (downDir)
         {
             case DownDirection.Ydown:
@@ -200,6 +184,7 @@ public class Map
                 break;
         }
 
+        gridPosition = WorldToHalfGrid(gridPosition);
         Block complexBlock = GetComplexBlockPart(gridPosition, requestor);
         if (complexBlock != null ) { return complexBlock; }
         return (GetStaticBlock(GetIntVector3(gridPosition)));

@@ -77,11 +77,11 @@ public class FGM_FallingState : FullGridMoveableState
             modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
             return;
         }
-
+        
         Block startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
         Block destBlock = null;
         fallDestination = baseBlockPosition;
-
+        
         DownDirection downDir = _fgm.GetCurrentDownDirection();
         float landingHeightAdjustment = 0.0f;
 
@@ -183,7 +183,5 @@ public class FGM_FallingState : FullGridMoveableState
         }
         //stops lesser falls from being slower
         modifiedFallLerpDuration = (Vector3.Distance(fallDestination, startPos)) * modifiedFallLerpDuration;
-
-        
     }
 }
