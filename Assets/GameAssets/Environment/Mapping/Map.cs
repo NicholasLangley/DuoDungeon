@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEngine.UIElements;
+using Newtonsoft.Json.Linq;
 
 //The map uses a half grid (all postions multiplied by 2)
 //This means that even coordinates indicate grid allignment ie a full square
@@ -19,12 +19,20 @@ public class Map
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
 
-    public string _currentMapVersion = "0.1";
+    //metadata
+    public string _currentSaveVersion = "0.2";
+    //TODO set these in level editor
+    string mapAuthor = "Nicole Langley" ;
+    private string mapName { get; set; }
+    int version { get; set; }
+    
 
     public Map()
     {
         currentStaticBlocks = new Dictionary<Vector3Int, Block>();
         currentComplexBlocks = new List<ComplexBlock>();
+        
+        version = 0;
     }
 
     public void ClearMap()
@@ -214,7 +222,140 @@ public class Map
         return halfGridPos * 0.5f;
     }
 
+    //todo user saves should go to Application.persistentDataPath
     public void SaveMapToFile(string filename)
+    {
+        if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
+        {
+            //TODO allow this but mark map as incomplete/unplayable
+            Debug.Log("ERROR missing players from map, cannot save as is");
+            return;
+        }
+        
+        //todo set this in level editor instead
+        mapName = Path.GetFileNameWithoutExtension(filename);
+        
+        JObject saveJSON = new JObject();
+        saveJSON.Add("metadata", GetMapMetadataJSON());
+        saveJSON.Add("players", GetMapPlayersJSON());
+        saveJSON.Add("blocks", GetMapBlocksJSON());
+        saveJSON.Add("complexBlocks", GetMapComplexBlocksJSON());
+        saveJSON.Add("decor", GetMapDecorJSON());
+        saveJSON.Add("entities", GetMapEntitiesJSON());
+        
+        Debug.Log(saveJSON.ToString());
+    }
+
+    JObject GetMapMetadataJSON()
+    {
+        JObject metadata = new JObject(
+            new JProperty("name", mapName),
+            new JProperty("version", version += 1),
+            new JProperty("saveVersion", _currentSaveVersion),
+            new JProperty("date", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+            new JProperty("author", mapAuthor)
+            );
+        
+        return metadata;
+    }
+
+    JObject GetMapPlayersJSON()
+    {
+        JObject players = new JObject(
+            new JProperty("red", 
+                new JObject(new JProperty("position", 
+                    new JObject(
+                        new JProperty("x", redPlayerSpawn.x),
+                        new JProperty("y", redPlayerSpawn.y),
+                        new JProperty("z", redPlayerSpawn.z))
+                ),
+                new JProperty("rotation", 
+                    new JObject(
+                        new JProperty("w", redPlayerSpawnRotation.w),
+                        new JProperty("x", redPlayerSpawnRotation.x),
+                        new JProperty("y", redPlayerSpawnRotation.y),
+                        new JProperty("z", redPlayerSpawnRotation.z))
+                    )
+                )),
+            new JProperty("blue", new JObject(
+                new JProperty("position", 
+                    new JObject(
+                        new JProperty("x", bluePlayerSpawn.x),
+                        new JProperty("y", bluePlayerSpawn.y),
+                        new JProperty("z", bluePlayerSpawn.z))
+                ),
+                new JProperty("rotation", 
+                    new JObject(
+                        new JProperty("w", bluePlayerSpawnRotation.w),
+                        new JProperty("x", bluePlayerSpawnRotation.x),
+                        new JProperty("y", bluePlayerSpawnRotation.y),
+                        new JProperty("z", bluePlayerSpawnRotation.z))
+                )
+            )));
+        
+        return players;
+        
+        /*"players": {
+            "red": {
+                "position": {
+                    "x": -1,
+                    "y": 1,
+                    "z": -9
+                },
+                "rotation": {
+                    "w": 0.7071068,
+                    "x": 0,
+                    "y": -0.7071068,
+                    "z": 0
+                }
+
+            },
+            "blue": {
+                "position": {
+                    "x": -1,
+                    "y": 1,
+                    "z": -5
+                },
+                "rotation": {
+                    "w": 0.7071068,
+                    "x": 0,
+                    "y": 0.7071068,
+                    "z": 0
+                }
+            }
+        }*/
+    }
+    
+    JObject GetMapBlocksJSON()
+    {
+        JObject blocks = new JObject();
+
+        return blocks;
+    }
+    
+    JObject GetMapComplexBlocksJSON()
+    {
+        JObject complexBlocks = new JObject();
+
+        return complexBlocks;
+    }
+    
+    JObject GetMapDecorJSON()
+    {
+        JObject decor = new JObject();
+
+        return decor;
+    }
+    
+    JObject GetMapEntitiesJSON()
+    {
+        JObject entities = new JObject();
+
+        return entities;
+    }
+
+    #region old text based save
+    public void SaveMapToFileOLD(string filename)
     {
         if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
         {
@@ -226,13 +367,13 @@ public class Map
         string mapJSON = "{\n";
 
         //METADATA
-        mapJSON += "\"metadata\": " + GetMapMetadata();
+        mapJSON += "\"metadata\": " + GetMapMetadataOLD();
 
         //Players
-        mapJSON += GetPlayersJSON();
+        mapJSON += GetPlayersJSON_OLD();
 
         //Blocks Data
-        mapJSON += GetBlocksListJSON();
+        mapJSON += GetBlocksListJSON_OLD();
 
         //end file
         mapJSON += "\n}";
@@ -245,14 +386,14 @@ public class Map
         File.WriteAllText(filepath, mapJSON);
     }
 
-    private string GetMapMetadata()
+    private string GetMapMetadataOLD()
     {
         return "{\n" +
-               "\"version\": " + _currentMapVersion +
+               "\"version\": " + _currentSaveVersion +
         "\n},\n";
     }
 
-    private string GetBlocksListJSON()
+    private string GetBlocksListJSON_OLD()
     {
         string blocksListJSON = "";
 
@@ -267,7 +408,7 @@ public class Map
             //add comma after previous block
             if (!firstBlock) { blocksListJSON += ",\n"; }
             else { firstBlock = false; }
-            blocksListJSON += ConvertPlaceableToJSON(block);
+            blocksListJSON += ConvertPlaceableToJSON_OLD(block);
         }
         //complex
         foreach (ComplexBlock complexBlock in currentComplexBlocks)
@@ -275,7 +416,7 @@ public class Map
             //add comma after previous block
             if (!firstBlock) { blocksListJSON += ",\n"; }
             else { firstBlock = false; }
-            blocksListJSON += ConvertPlaceableToJSON(complexBlock);
+            blocksListJSON += ConvertPlaceableToJSON_OLD(complexBlock);
         }
 
         //finish blocks array
@@ -284,20 +425,20 @@ public class Map
         return blocksListJSON;
     }
 
-    private string GetPlayersJSON()
+    private string GetPlayersJSON_OLD()
     {
         return "\"players\": {\n" +
                     "\"red\": {\n" +
-                        GetPositionJSON(redPlayerSpawn) +
-                        GetRotationJSON(redPlayerSpawnRotation) +
+                        GetPositionJSON_OLD(redPlayerSpawn) +
+                        GetRotationJSON_OLD(redPlayerSpawnRotation) +
                     "\n},\n"    +
                     "\"blue\": {\n" +
-                        GetPositionJSON(bluePlayerSpawn) +
-                        GetRotationJSON(bluePlayerSpawnRotation) +
+                        GetPositionJSON_OLD(bluePlayerSpawn) +
+                        GetRotationJSON_OLD(bluePlayerSpawnRotation) +
               "}\n},\n";
     }
 
-    private string ConvertPlaceableToJSON(Placeable placeable)
+    private string ConvertPlaceableToJSON_OLD(Placeable placeable)
     {
         //start block
         string json = "{\n";
@@ -311,10 +452,10 @@ public class Map
         json += "\"varient_id\": \"" + placeable.varientID + "\",\n";
 
         //position
-        json += GetPositionJSON(WorldToHalfGrid(placeable.transform.position));
+        json += GetPositionJSON_OLD(WorldToHalfGrid(placeable.transform.position));
 
         //rotation
-        json += GetRotationJSON(placeable.transform.rotation); //add comma to this function if adding more parts to block info
+        json += GetRotationJSON_OLD(placeable.transform.rotation); //add comma to this function if adding more parts to block info
 
         //finish info
         json += "}\n";
@@ -325,7 +466,7 @@ public class Map
         return json;
     }
 
-    private string GetPositionJSON(Vector3 pos)
+    private string GetPositionJSON_OLD(Vector3 pos)
     {
         return "\"position\": {\n" +
             "\"x\": " + pos.x + ",\n" +
@@ -334,7 +475,7 @@ public class Map
             "},\n";
     }
 
-    private string GetRotationJSON(Quaternion rot)
+    private string GetRotationJSON_OLD(Quaternion rot)
     {
         return "\"rotation\": {\n" +
             "\"w\": " + rot.w + ",\n" +
@@ -343,6 +484,8 @@ public class Map
             "\"z\": " + rot.z + "\n" +
             "}\n";//add comma here if more fields added to block ie, components
     }
+    
+    #endregion
 
     public void DebugMap()
     {
