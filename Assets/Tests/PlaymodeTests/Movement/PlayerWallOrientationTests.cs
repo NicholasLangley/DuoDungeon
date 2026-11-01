@@ -29,7 +29,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerWallOrientationPartialStairClimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerWallOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerWallOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(10.0f);
 
@@ -101,7 +101,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerWallOrientationBasicMovementBlocked()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerWallOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerWallOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -143,7 +143,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerWallOrientationBasicFall()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerWallOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerWallOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -175,7 +175,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerTopBottomOrientationBasic()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/TopBottomOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/TopBottomOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(15.0f);
 
@@ -250,7 +250,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerLeftRightOrientationBasic()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/LeftRightOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/LeftRightOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(15.0f);
 
@@ -336,7 +336,7 @@ public class PlayerWallOrientationTests : CustomInputTestFixture
     public IEnumerator PlayerFrontBackOrientationBasic()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/FrontBackOrientationTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/FrontBackOrientationTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(15.0f);
 

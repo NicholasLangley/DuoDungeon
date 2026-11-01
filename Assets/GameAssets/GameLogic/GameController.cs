@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour
         //initialize map
         string levelString = LevelManager.currentLevelPath;
         if (levelString == null || string.Compare(levelString, "") == 0) { levelString = mapFilename; }
-        LoadLevel("/" + levelString + ".json");
+        LoadLevel(levelString);
 
         //TEMP FOR TESTING, eventually these will be loaded properly//
         foreach (FullGridMoveable fgm in _pushableObjects)

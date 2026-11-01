@@ -33,7 +33,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedFlatFullBlocks()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedBasicTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedBasicTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -97,7 +97,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedFullStairToFullBlock()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedBasicTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedBasicTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -128,7 +128,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedPartialToFullBlockNoClimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedBasicTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedBasicTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -162,7 +162,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedPartialToFullBlockClimbButBlocked()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedBasicTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedBasicTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -200,7 +200,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedFullStairToPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedPartialTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedPartialTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -232,7 +232,7 @@ public class PlayerMovementBlockedTests : CustomInputTestFixture
     public IEnumerator MovementBlockedPartialToPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementBlockedPartialTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementBlockedPartialTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 

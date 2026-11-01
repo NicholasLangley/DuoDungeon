@@ -1,7 +1,68 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json.Linq;
+
+/*key for save file json
+ listID,baseID,varientID,rotation(w,x,y,z)
+save file is format
+[
+  key: [positions[x,y,z]]
+  ...
+]
+*/
+public struct blockKey
+{
+    //properties
+    public string listID { get; set; }
+    public string blockID { get; set; }
+    public string varientID { get; set; }
+    public float rotationW { get; set; }
+    public float rotationX { get; set; }
+    public float rotationY { get; set; }
+    public float rotationZ { get; set; }
+
+    public blockKey(string list, string block, string varient, Quaternion rotation)
+    {
+        listID = list;
+        blockID = block;
+        varientID = varient;
+        rotationW = rotation.w;
+        rotationX = rotation.x;
+        rotationY = rotation.y;
+        rotationZ = rotation.z;
+    }
+
+    public blockKey(string keyString)
+    {
+        List<string> keys = new List<String> (keyString.Split(','));
+        listID = keys[0];
+        blockID = keys[1];
+        varientID = keys[2];
+        rotationW = float.Parse(keys[3]);
+        rotationX = float.Parse(keys[4]);
+        rotationY = float.Parse(keys[5]);
+        rotationZ = float.Parse(keys[6]);
+    }
+    
+    public string getKeyString()
+    {
+        return listID + "," + blockID + "," + varientID + "," + rotationW + "," + rotationX + "," + rotationY + "," + rotationZ;
+    }
+
+    public void parseKeyString(string keyString)
+    {
+        List<string> keys = new List<String> (keyString.Split(','));
+        listID = keys[0];
+        blockID = keys[1];
+        varientID = keys[2];
+        rotationW = float.Parse(keys[3]);
+        rotationX = float.Parse(keys[4]);
+        rotationY = float.Parse(keys[5]);
+        rotationZ = float.Parse(keys[6]);
+    }
+}
 
 //The map uses a half grid (all postions multiplied by 2)
 //This means that even coordinates indicate grid allignment ie a full square
@@ -233,17 +294,38 @@ public class Map
         }
         
         //todo set this in level editor instead
+        //TODO maybe actually use this
         mapName = Path.GetFileNameWithoutExtension(filename);
         
         JObject saveJSON = new JObject();
         saveJSON.Add("metadata", GetMapMetadataJSON());
         saveJSON.Add("players", GetMapPlayersJSON());
-        saveJSON.Add("blocks", GetMapBlocksJSON());
-        saveJSON.Add("complexBlocks", GetMapComplexBlocksJSON());
+        saveJSON.Add("gridBlocks", GetMapGridBlocksJSON());
         saveJSON.Add("decor", GetMapDecorJSON());
         saveJSON.Add("entities", GetMapEntitiesJSON());
         
-        Debug.Log(saveJSON.ToString());
+        //todo backups before overwrite
+        //todo set filepath better. also use the persistantDataPath for user proper permissions
+        string filepath = Application.streamingAssetsPath + "/" + filename + ".json";
+        //backup file if it already exists before overwrite
+        if (File.Exists(filepath))
+        {
+            
+            string backupFilepath = Application.persistentDataPath + "/" + filename + "_BACKUP.json";
+            try
+            {
+                File.Copy(filepath, backupFilepath, true);
+                Debug.Log($"Backup created successfully at: {backupFilepath}");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Failed to create backup: {e.Message}");
+                return; // Abort writing if backup fails (optional safety check)
+            }
+        }
+        
+        File.WriteAllText(filepath, saveJSON.ToString());
+        //Debug.Log(saveJSON.ToString());
     }
 
     JObject GetMapMetadataJSON()
@@ -297,47 +379,41 @@ public class Map
         
         /*"players": {
             "red": {
-                "position": {
-                    "x": -1,
-                    "y": 1,
-                    "z": -9
-                },
-                "rotation": {
-                    "w": 0.7071068,
-                    "x": 0,
-                    "y": -0.7071068,
-                    "z": 0
+                "position": {xyz},
+                "rotation": {wxyz}
                 }
-
             },
-            "blue": {
-                "position": {
-                    "x": -1,
-                    "y": 1,
-                    "z": -5
-                },
-                "rotation": {
-                    "w": 0.7071068,
-                    "x": 0,
-                    "y": 0.7071068,
-                    "z": 0
-                }
-            }
+            "blue"...
         }*/
     }
     
-    JObject GetMapBlocksJSON()
+    JObject GetMapGridBlocksJSON()
     {
         JObject blocks = new JObject();
 
+        foreach (Block block in currentStaticBlocks.Values)
+        {
+            addGridBlockToJObject(blocks, block);
+        }
+
+        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        {
+            addGridBlockToJObject(blocks, complexBlock);
+        }
+        
         return blocks;
     }
-    
-    JObject GetMapComplexBlocksJSON()
-    {
-        JObject complexBlocks = new JObject();
 
-        return complexBlocks;
+    public void addGridBlockToJObject(JObject blockList, Placeable block)
+    {
+        blockKey key = new blockKey(block.listID, block.baseID, block.varientID, block.transform.rotation);
+        string keyString = key.getKeyString();
+        if (!blockList.ContainsKey(keyString))
+        {
+            blockList.Add(keyString, new JArray());
+        }
+        Vector3 pos = block.transform.position;
+        ((JArray)blockList[keyString]).Add(new JArray{pos.x, pos.y, pos.z});
     }
     
     JObject GetMapDecorJSON()

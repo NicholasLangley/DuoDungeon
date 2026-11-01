@@ -23,10 +23,9 @@ public class MapBuilder
         mapParent = new GameObject("MapParent");
     }
 
-    public void LoadMap(string filename)
+    public void LoadMap(string filepath)
     {
         map.ClearMap();
-        string filepath = Application.streamingAssetsPath + "/" + filename;
         string mapJSON = File.ReadAllText(filepath);
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJSON);

@@ -29,7 +29,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerMovementNoBlocksOccupied()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -94,7 +94,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerMovementQuarterStairs()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(15.0f);
 
@@ -169,7 +169,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerMovementSmallSteps()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(10.0f);
 
@@ -230,7 +230,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerMovementBigSteps()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -304,7 +304,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerRotationBasic()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
@@ -353,7 +353,7 @@ public class PlayerMovementTests : CustomInputTestFixture
     public IEnumerator PlayerMovementPartialClimbFullStackedWithPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/MovementTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/MovementTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 

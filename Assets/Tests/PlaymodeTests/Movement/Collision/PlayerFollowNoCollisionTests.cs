@@ -29,7 +29,7 @@ public class PlayerFollowNoCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerFollowFullPartialPartialFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFolowTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFolowTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -111,7 +111,7 @@ public class PlayerFollowNoCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerFollowFullStairsFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFolowTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFolowTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -172,7 +172,7 @@ public class PlayerFollowNoCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerFollowPartialClimbs()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFolowTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFolowTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(15.0f);
 

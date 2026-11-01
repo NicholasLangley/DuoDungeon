@@ -28,7 +28,7 @@ public class PlayerFallTests : CustomInputTestFixture
     public IEnumerator PlayerFallFullFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
@@ -61,7 +61,7 @@ public class PlayerFallTests : CustomInputTestFixture
     public IEnumerator PlayerFallFullPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
@@ -94,7 +94,7 @@ public class PlayerFallTests : CustomInputTestFixture
     public IEnumerator PlayerFallPartialFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
@@ -130,7 +130,7 @@ public class PlayerFallTests : CustomInputTestFixture
     public IEnumerator PlayerFallPartialPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);
@@ -166,7 +166,7 @@ public class PlayerFallTests : CustomInputTestFixture
     public IEnumerator PlayerFallPartialZeroHeightExit()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerFallTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerFallTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetPlayerClassicDungeonCrawlerMode(true);
         gameController.SetTimeScaleMultiplier(20.0f);

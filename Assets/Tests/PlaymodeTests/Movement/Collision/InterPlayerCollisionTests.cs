@@ -32,7 +32,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerFullFlat()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -64,7 +64,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerPartialToPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -100,7 +100,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerIncreasingY()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -137,7 +137,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerDecreasingY()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -174,7 +174,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerFullToPartialSameY()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -212,7 +212,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerPartialClimbUpYFlat()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -249,7 +249,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToBlockedPlayerPartialClimbUpYpartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerToBlockedPlayerTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerToBlockedPlayerTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -291,7 +291,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestFullStair()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -324,7 +324,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestFullFromStair()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -359,7 +359,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestFlat()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -394,7 +394,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestPartialCLimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -430,7 +430,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestPartialCLimbToFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -467,7 +467,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestPartialCLimbToStackedPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -505,7 +505,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerToSameDestFlatPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayersToSameDestTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayersToSameDestTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -548,7 +548,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughFlat()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -581,7 +581,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughFlatPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -616,7 +616,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialToPartial()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -652,7 +652,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialFullClimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -689,7 +689,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialFullStackedClimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -727,7 +727,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -762,7 +762,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialDecreasingFull()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
@@ -798,7 +798,7 @@ public class InterPlayerCollisionTests : CustomInputTestFixture
     public IEnumerator PlayerPassthroughPartialPartialClimb()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.LoadLevel("/Autotests/PlayerPassthroughCollisionTestMap.json");
+        gameController.LoadLevel(Application.streamingAssetsPath + "/Autotests/PlayerPassthroughCollisionTestMap.json");
         yield return new WaitForSeconds(1.0f);
         gameController.SetTimeScaleMultiplier(20.0f);
 
