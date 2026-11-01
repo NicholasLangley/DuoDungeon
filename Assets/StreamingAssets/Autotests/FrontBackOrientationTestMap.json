@@ -1,283 +1,130 @@
 {
-"metadata": {
-"version": 0.1
-},
-"players": {
-"red": {
-"position": {
-"x": 0,
-"y": 0,
-"z": -7
-},
-"rotation": {
-"w": 0,
-"x": 0,
-"y": 0.7071068,
-"z": 0.7071068
-}
-
-},
-"blue": {
-"position": {
-"x": 1,
-"y": 0,
-"z": -7
-},
-"rotation": {
-"w": 0.7071068,
-"x": -0.7071068,
-"y": 0,
-"z": 0
-}
-}
-},
-"blocks": [
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Partial 0.1",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 0,
-"z": -16
-},
-"rotation": {
-"w": 0,
-"x": 0,
-"y": -0.7071068,
-"z": 0.7071068
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Full Length Stair",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 0,
-"z": -16
-},
-"rotation": {
-"w": -0.7071068,
-"x": 0,
-"y": -0.7071068,
-"z": 0
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 1 - Bottom",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 2,
-"z": -14
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 2 - Low",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 4,
-"z": -14
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 3 - High",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 6,
-"z": -14
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 8,
-"z": -14
-},
-"rotation": {
-"w": -0.5,
-"x": -0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Full Length Stair",
-"varient_id": "blank",
-"position": {
-"x": 0,
-"y": 10,
-"z": -16
-},
-"rotation": {
-"w": -0.7071068,
-"x": 0,
-"y": -0.7071068,
-"z": 0
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Partial 0.1",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 0,
-"z": -12
-},
-"rotation": {
-"w": 0.5,
-"x": 0.5,
-"y": 0.5,
-"z": 0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 1 - Bottom",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 2,
-"z": -14
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 2 - Low",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 4,
-"z": -14
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 3 - High",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 6,
-"z": -14
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 4 - Top",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 8,
-"z": -14
-},
-"rotation": {
-"w": 0.5,
-"x": -0.5,
-"y": 0.5,
-"z": -0.5
-}
-}
-}
-,
-{
-"info": {
-"list_id": "Basic Block",
-"base_id": "Quarter Stair 2 - Low",
-"varient_id": "blank",
-"position": {
-"x": 2,
-"y": 10,
-"z": -12
-},
-"rotation": {
-"w": 0,
-"x": 0,
-"y": 0.7071068,
-"z": 0.7071068
-}
-}
-}
-
-]
+  "metadata": {
+    "name": "FrontBackOrientationTestMap",
+    "version": 1,
+    "saveVersion": "0.2",
+    "date": "2026-11-01 15:42:39",
+    "author": "Nicole Langley"
+  },
+  "players": {
+    "red": {
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -7.0
+      },
+      "rotation": {
+        "w": 0.0,
+        "x": 0.0,
+        "y": 0.7071068,
+        "z": 0.7071068
+      }
+    },
+    "blue": {
+      "position": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": -7.0
+      },
+      "rotation": {
+        "w": 0.7071068,
+        "x": -0.7071068,
+        "y": 0.0,
+        "z": 0.0
+      }
+    }
+  },
+  "gridBlocks": {
+    "Basic Block,Partial 0.1,blank,0,0,-0.7071068,0.7071068": [
+      [
+        1.0,
+        0.0,
+        -8.0
+      ]
+    ],
+    "Basic Block,Full Length Stair,blank,-0.7071068,0,-0.7071068,0": [
+      [
+        0.0,
+        0.0,
+        -8.0
+      ],
+      [
+        0.0,
+        5.0,
+        -8.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 1 - Bottom,blank,-0.5,-0.5,0.5,0.5": [
+      [
+        0.0,
+        1.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 2 - Low,blank,-0.5,-0.5,0.5,0.5": [
+      [
+        0.0,
+        2.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 3 - High,blank,-0.5,-0.5,0.5,0.5": [
+      [
+        0.0,
+        3.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 4 - Top,blank,-0.5,-0.5,0.5,0.5": [
+      [
+        0.0,
+        4.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Partial 0.1,blank,0.5,0.5,0.5,0.5": [
+      [
+        1.0,
+        0.0,
+        -6.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 1 - Bottom,blank,0.5,-0.5,0.5,-0.5": [
+      [
+        1.0,
+        1.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 2 - Low,blank,0.5,-0.5,0.5,-0.5": [
+      [
+        1.0,
+        2.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 3 - High,blank,0.5,-0.5,0.5,-0.5": [
+      [
+        1.0,
+        3.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 4 - Top,blank,0.5,-0.5,0.5,-0.5": [
+      [
+        1.0,
+        4.0,
+        -7.0
+      ]
+    ],
+    "Basic Block,Quarter Stair 2 - Low,blank,0,0,0.7071068,0.7071068": [
+      [
+        1.0,
+        5.0,
+        -6.0
+      ]
+    ]
+  },
+  "decor": {},
+  "entities": {}
 }

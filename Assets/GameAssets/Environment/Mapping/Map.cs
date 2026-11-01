@@ -81,7 +81,7 @@ public class Map
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
 
     //metadata
-    public string _currentSaveVersion = "0.2";
+    public static string _currentNewSaveVersion = "0.2";
     //TODO set these in level editor
     string mapAuthor = "Nicole Langley" ;
     private string mapName { get; set; }
@@ -284,7 +284,7 @@ public class Map
     }
 
     //todo user saves should go to Application.persistentDataPath
-    public void SaveMapToFile(string filename)
+    public void SaveMapToFile(string filepath)
     {
         if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
         {
@@ -295,7 +295,7 @@ public class Map
         
         //todo set this in level editor instead
         //TODO maybe actually use this
-        mapName = Path.GetFileNameWithoutExtension(filename);
+        mapName = Path.GetFileNameWithoutExtension(filepath);
         
         JObject saveJSON = new JObject();
         saveJSON.Add("metadata", GetMapMetadataJSON());
@@ -306,12 +306,11 @@ public class Map
         
         //todo backups before overwrite
         //todo set filepath better. also use the persistantDataPath for user proper permissions
-        string filepath = Application.streamingAssetsPath + "/" + filename + ".json";
         //backup file if it already exists before overwrite
         if (File.Exists(filepath))
         {
-            
-            string backupFilepath = Application.persistentDataPath + "/" + filename + "_BACKUP.json";
+
+            string backupFilepath = filepath + "_" + System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".backup";
             try
             {
                 File.Copy(filepath, backupFilepath, true);
@@ -333,7 +332,7 @@ public class Map
         JObject metadata = new JObject(
             new JProperty("name", mapName),
             new JProperty("version", version += 1),
-            new JProperty("saveVersion", _currentSaveVersion),
+            new JProperty("saveVersion", _currentNewSaveVersion),
             new JProperty("date", System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
             new JProperty("author", mapAuthor)
             );
@@ -465,7 +464,7 @@ public class Map
     private string GetMapMetadataOLD()
     {
         return "{\n" +
-               "\"version\": " + _currentSaveVersion +
+               "\"version\": " + _currentNewSaveVersion +
         "\n},\n";
     }
 

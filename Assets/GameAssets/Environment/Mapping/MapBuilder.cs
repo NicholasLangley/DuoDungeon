@@ -30,9 +30,41 @@ public class MapBuilder
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJSON);
 
-        //TODO METADATA STUFF//
-        Debug.Log("version: " + mapJson["metadata"]["version"]);
+        //TODO maybe other METADATA STUFF//
+        //change load function to match compatible versions
+        //TODO maybe clean up old versions if I deprecate them
+        switch ((string)mapJson["metadata"]["saveVersion"])
+        {
+            case "0.2":
+                LoadMapVersion0_2(mapJson);
+                break;
+            case "0.1":
+                LoadMapVersion0_1(mapJson);
+                break;
+            default:
+                //TODO error message to user
+                Debug.Log("Unknown map format: " + mapJson["metadata"]["saveVersion"]);
+                LoadMapVersion0_1(mapJson);
+                break;    
+            //return;
+        }
 
+        //update map to newest version (backup of last version will be made / overwritten)
+        if ((string)mapJson["metadata"]["saveVersion"] != Map._currentNewSaveVersion)
+        {
+            Debug.Log("updating map from version " + (string)mapJson["metadata"]["saveVersion"] + " to version " + Map._currentNewSaveVersion);
+            map.SaveMapToFile(filepath);
+        }
+    }
+
+    void LoadMapVersion0_2(JObject mapJson)
+    {
+        
+    }
+    
+    //todo deprecate
+    void LoadMapVersion0_1(JObject mapJson)
+    {
         //read and create blocks
         //todo refactor to:
         //use flyweight pattern
@@ -56,8 +88,7 @@ public class MapBuilder
 
         //map.DebugMap();
     }
-
-
+    
     private void ReadPlayers(JObject playerJObject)
     {
         map.redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
