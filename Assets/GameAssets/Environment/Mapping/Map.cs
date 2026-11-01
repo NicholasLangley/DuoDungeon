@@ -12,21 +12,21 @@ save file is format
   ...
 ]
 */
-public struct blockKey
+public struct PlaceableKey
 {
     //properties
     public string listID { get; set; }
-    public string blockID { get; set; }
+    public string baseID { get; set; }
     public string varientID { get; set; }
     public float rotationW { get; set; }
     public float rotationX { get; set; }
     public float rotationY { get; set; }
     public float rotationZ { get; set; }
 
-    public blockKey(string list, string block, string varient, Quaternion rotation)
+    public PlaceableKey(string list, string @base, string varient, Quaternion rotation)
     {
         listID = list;
-        blockID = block;
+        baseID = @base;
         varientID = varient;
         rotationW = rotation.w;
         rotationX = rotation.x;
@@ -34,11 +34,11 @@ public struct blockKey
         rotationZ = rotation.z;
     }
 
-    public blockKey(string keyString)
+    public PlaceableKey(string keyString)
     {
         List<string> keys = new List<String> (keyString.Split(','));
         listID = keys[0];
-        blockID = keys[1];
+        baseID = keys[1];
         varientID = keys[2];
         rotationW = float.Parse(keys[3]);
         rotationX = float.Parse(keys[4]);
@@ -48,14 +48,14 @@ public struct blockKey
     
     public string getKeyString()
     {
-        return listID + "," + blockID + "," + varientID + "," + rotationW + "," + rotationX + "," + rotationY + "," + rotationZ;
+        return listID + "," + baseID + "," + varientID + "," + rotationW + "," + rotationX + "," + rotationY + "," + rotationZ;
     }
 
     public void parseKeyString(string keyString)
     {
         List<string> keys = new List<String> (keyString.Split(','));
         listID = keys[0];
-        blockID = keys[1];
+        baseID = keys[1];
         varientID = keys[2];
         rotationW = float.Parse(keys[3]);
         rotationX = float.Parse(keys[4]);
@@ -81,11 +81,11 @@ public class Map
     public Quaternion redPlayerSpawnRotation, bluePlayerSpawnRotation;
 
     //metadata
-    public static string _currentNewSaveVersion = "0.2";
-    //TODO set these in level editor
+    public static string _currentNewSaveVersion = "0.25";
+    //TODO set these in level editor, maybe keep list of previous editors?
     string mapAuthor = "Nicole Langley" ;
-    private string mapName { get; set; }
-    int version { get; set; }
+    public string mapName { get; set; }
+    public int version { get; set; }
     
 
     public Map()
@@ -405,13 +405,13 @@ public class Map
 
     public void addGridBlockToJObject(JObject blockList, Placeable block)
     {
-        blockKey key = new blockKey(block.listID, block.baseID, block.varientID, block.transform.rotation);
+        PlaceableKey key = new PlaceableKey(block.listID, block.baseID, block.varientID, block.transform.rotation);
         string keyString = key.getKeyString();
         if (!blockList.ContainsKey(keyString))
         {
             blockList.Add(keyString, new JArray());
         }
-        Vector3 pos = block.transform.position;
+        Vector3 pos = Map.WorldToHalfGrid(block.transform.position);
         ((JArray)blockList[keyString]).Add(new JArray{pos.x, pos.y, pos.z});
     }
     
@@ -562,6 +562,7 @@ public class Map
     
     #endregion
 
+    //todo make this more useful maybe
     public void DebugMap()
     {
         int odd = 0;

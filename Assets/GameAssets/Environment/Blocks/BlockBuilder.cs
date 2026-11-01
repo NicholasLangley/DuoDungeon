@@ -15,12 +15,24 @@ public class BlockBuilder
         ultimateList = lists;
     }
 
-    public GameObject BuildBlock(JToken blockEntry)
+    //todo probably have to abandon for flyweight
+    public GameObject BuildBlock(PlaceableKey key, float x, float y, float z)
+    {
+        GameObject newBlock = GeneratePrefab(key.listID, key.baseID , key.varientID);
+
+        newBlock.transform.position = Map.HalfGridToWorld(new Vector3(x,y,z));
+        newBlock.transform.rotation = new Quaternion(key.rotationX, key.rotationY, key.rotationZ, key.rotationW);
+
+        return newBlock;
+    }
+    
+    //todo deprecate fully and remove with load version 0.1
+    public GameObject BuildBlockOLD(JToken blockEntry)
     {
         GameObject newBlock = GeneratePrefab((string)blockEntry["list_id"], (string)blockEntry["base_id"], (string)blockEntry["varient_id"]);
 
-        setBlockPosition(newBlock, blockEntry["position"]);
-        setBlockRotation(newBlock, blockEntry["rotation"]);
+        setBlockPositionOLD(newBlock, blockEntry["position"]);
+        setBlockRotationOLD(newBlock, blockEntry["rotation"]);
 
         return newBlock;
     }
@@ -35,7 +47,8 @@ public class BlockBuilder
         return prefab;
     }
 
-    public void setBlockPosition(GameObject block, JToken position)
+    //todo deprecate with load 0.1
+    public void setBlockPositionOLD(GameObject block, JToken position)
     {
         Vector3 blockPos = Map.HalfGridToWorld(parseJSONPosition(position));
         block.transform.position = blockPos;
@@ -46,7 +59,8 @@ public class BlockBuilder
         return new Vector3((int)pos["x"], (int)pos["y"], (int)pos["z"]);
     }
 
-    public void setBlockRotation(GameObject block, JToken rotation)
+    //todo deprecate with load 0.1
+    public void setBlockRotationOLD(GameObject block, JToken rotation)
     {
         Quaternion blockRotation = parseJSONRotation(rotation);
         block.transform.rotation = blockRotation;

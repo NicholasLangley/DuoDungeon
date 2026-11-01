@@ -35,18 +35,13 @@ public class MapBuilder
         //TODO maybe clean up old versions if I deprecate them
         switch ((string)mapJson["metadata"]["saveVersion"])
         {
-            case "0.2":
-                LoadMapVersion0_2(mapJson);
-                break;
-            case "0.1":
-                LoadMapVersion0_1(mapJson);
+            case "0.25":
+                LoadMapVersion0_25(mapJson);
                 break;
             default:
                 //TODO error message to user
                 Debug.Log("Unknown map format: " + mapJson["metadata"]["saveVersion"]);
-                LoadMapVersion0_1(mapJson);
-                break;    
-            //return;
+                return;
         }
 
         //update map to newest version (backup of last version will be made / overwritten)
@@ -55,11 +50,52 @@ public class MapBuilder
             Debug.Log("updating map from version " + (string)mapJson["metadata"]["saveVersion"] + " to version " + Map._currentNewSaveVersion);
             map.SaveMapToFile(filepath);
         }
+        //map.DebugMap();
     }
 
-    void LoadMapVersion0_2(JObject mapJson)
+    void LoadMapVersion0_25(JObject mapJson)
     {
-        
+        LoadMetadata(mapJson);
+        LoadMapBlocks(mapJson);
+        LoadPlayerSpawns((JObject)mapJson["players"]);
+    }
+
+    void LoadMetadata(JObject mapJson)
+    {
+        //todo do we need to do anything anything else with the metadata? author(s)?
+        map.mapName = mapJson["metadata"]["name"].ToString();
+        map.version = (int)mapJson["metadata"]["version"];
+    }
+
+    void LoadMapBlocks(JObject mapJson)
+    {
+        //todo refactor to flyweight pattern for rendering
+        foreach (KeyValuePair<string, JToken> blockTemplate in (JObject)mapJson["gridBlocks"])
+        {
+            PlaceableKey key = new PlaceableKey(blockTemplate.Key);
+            
+            JArray positionsArray = (JArray)blockTemplate.Value;
+            foreach (JToken position in positionsArray)
+            {
+                JArray positionArray = (JArray)position;
+                GameObject newBlockObject = blockBuilder.BuildBlock(key, (int)positionArray[0],  (int)positionArray[1], (int)positionArray[2]);
+                
+                Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
+                Placeable placeable = newBlockObject.GetComponent<Placeable>();
+                if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
+                else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetPosition(worldPosition); }
+                newBlockObject.transform.parent = mapParent.transform;
+            }
+        }
+    }
+    
+    private void LoadPlayerSpawns(JObject playerJObject)
+    {
+        map.redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
+        map.redPlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["red"]["rotation"]);
+
+        map.bluePlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["blue"]["position"]);
+        map.bluePlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["blue"]["rotation"]);
     }
     
     //todo deprecate
@@ -74,7 +110,7 @@ public class MapBuilder
         //--- block specific (positions, etc.)
         foreach (JObject blockObject in mapJson["blocks"])
         {
-            GameObject newBlockObject = blockBuilder.BuildBlock(blockObject["info"]);
+            GameObject newBlockObject = blockBuilder.BuildBlockOLD(blockObject["info"]);
             //block already converted to world in BlockBuilder
             Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
             Placeable placeable = newBlockObject.GetComponent<Placeable>();
@@ -84,17 +120,6 @@ public class MapBuilder
         }
 
         //readPlayers
-        ReadPlayers((JObject)mapJson["players"]);
-
-        //map.DebugMap();
-    }
-    
-    private void ReadPlayers(JObject playerJObject)
-    {
-        map.redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
-        map.redPlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["red"]["rotation"]);
-
-        map.bluePlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["blue"]["position"]);
-        map.bluePlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["blue"]["rotation"]);
+        LoadPlayerSpawns((JObject)mapJson["players"]);
     }
 }
