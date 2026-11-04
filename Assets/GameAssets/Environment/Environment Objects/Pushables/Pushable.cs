@@ -72,7 +72,7 @@ public class Pushable : FullGridMoveable
 
      #endregion
 
-    public bool AttemptPush(Vector3 pushDirectionVector, Block pushedBlockComponent)
+    public bool AttemptPush(Vector3 pushDirectionVector, BlockOLD pushedBlockOldComponent)
     {
         pushDirection = getLocalPushDirection(pushDirectionVector);
 

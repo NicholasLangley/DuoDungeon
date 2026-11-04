@@ -574,15 +574,15 @@ public void SetBlockList(UltimateList list)
                 break;
             }
 
-            Block preExistingBlock = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
-            if (preExistingBlock != null)
+            BlockOLD preExistingBlockOld = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
+            if (preExistingBlockOld != null)
             {
                 string preExistingListID;
                 string preExistingBaseID;
                 string preExistingVarID;
 
                 Vector3Int rootPosition = positionCheck;
-                ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
+                ComplexBlock preExistingComplexBlock = preExistingBlockOld.GetComponentInParent<ComplexBlock>();
                 if (preExistingComplexBlock != null)
                 {
                     //skip rest of loop iteration if already collided with block
@@ -596,11 +596,11 @@ public void SetBlockList(UltimateList list)
                 }
                 else
                 {
-                    preExistingListID = preExistingBlock.listID;
-                    preExistingBaseID = preExistingBlock.baseID;
-                    preExistingVarID = preExistingBlock.varientID;
+                    preExistingListID = preExistingBlockOld.listID;
+                    preExistingBaseID = preExistingBlockOld.baseID;
+                    preExistingVarID = preExistingBlockOld.varientID;
                 }
-                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
+                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockOld.gameObject.transform.rotation);
                 commands.Add(removeCmd);
             }
         }
@@ -617,11 +617,11 @@ public void SetBlockList(UltimateList list)
     public void PlaceBlock(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
     {
         GameObject newBlockObject = Instantiate(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), mapTransform.transform);
-        Block newBlock = newBlockObject.GetComponent<Block>();
-        if (newBlock != null)
+        BlockOLD newBlockOld = newBlockObject.GetComponent<BlockOLD>();
+        if (newBlockOld != null)
         {
-            newBlock.listID = listID;
-            map.AddStaticBlock(position, newBlock);
+            newBlockOld.listID = listID;
+            map.AddStaticBlock(position, newBlockOld);
         }
         else
         {
@@ -674,12 +674,12 @@ public void SetBlockList(UltimateList list)
         }
         List<Command> commands = new List<Command>();
 
-        Block preExistingBlock = map.GetBlockAtGridPosition(position, null, Vector3.down);
+        BlockOLD preExistingBlockOld = map.GetBlockAtGridPosition(position, null, Vector3.down);
 
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
 
-        if (preExistingBlock != null)
+        if (preExistingBlockOld != null)
         {
             Vector3Int rootPosition = position;
 
@@ -687,7 +687,7 @@ public void SetBlockList(UltimateList list)
             string preExistingBaseID;
             string preExistingVarID;
 
-            ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
+            ComplexBlock preExistingComplexBlock = preExistingBlockOld.GetComponentInParent<ComplexBlock>();
             if (preExistingComplexBlock != null)
             {
                 rootPosition = Map.GetIntVector3(preExistingComplexBlock.transform.position);
@@ -697,12 +697,12 @@ public void SetBlockList(UltimateList list)
             }
             else
             {
-                preExistingListID = preExistingBlock.listID;
-                preExistingBaseID = preExistingBlock.baseID;
-                preExistingVarID = preExistingBlock.varientID;
+                preExistingListID = preExistingBlockOld.listID;
+                preExistingBaseID = preExistingBlockOld.baseID;
+                preExistingVarID = preExistingBlockOld.varientID;
             }
 
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.gameObject.transform.rotation);
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockOld.gameObject.transform.rotation);
             commands.Add(removeCmd);
         }
         //checked for player collision

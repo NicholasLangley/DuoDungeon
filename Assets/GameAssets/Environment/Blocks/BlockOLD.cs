@@ -2,114 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class BlockSide
-{
-    public enum EdgeEnterType { WALK, HOP, NONE }
-    public enum CenterType { GROUND, NOT_GROUND }
-
-    [Header("CenterType")]
-    public CenterType centerType;
-    public float centerHeight;
-
-    [Header("Forward")]
-    public EdgeEnterType forwardEdgeType;
-    public float forwardEdgeHeight;
-
-    [Header("Backward")]
-    public EdgeEnterType backwardEdgeType;
-    public float backwardEdgeHeight;
-
-    [Header("Left")]
-    public EdgeEnterType leftEdgeType;
-    public float leftEdgeHeight;
-
-    [Header("Right")]
-    public EdgeEnterType rightEdgeType;
-    public float rightEdgeHeight;
-
-    public BlockSide()
-    {
-        centerType = CenterType.GROUND;
-        centerHeight = 0;
-
-        forwardEdgeType = EdgeEnterType.WALK;
-        forwardEdgeHeight = 0;
-
-        backwardEdgeType = EdgeEnterType.WALK;
-        backwardEdgeHeight = 0;
-
-        leftEdgeType = EdgeEnterType.WALK;
-        leftEdgeHeight = 0;
-
-        rightEdgeType = EdgeEnterType.WALK; 
-        rightEdgeHeight = 0;
-    }
-    public void AddHeightOffset(float offset)
-    {
-        centerHeight += offset;
-        forwardEdgeHeight += offset;
-        backwardEdgeHeight += offset;
-        leftEdgeHeight += offset;
-        rightEdgeHeight += offset;
-    }
-
-    public bool CheckIfSideExtendsToNextGrid()
-    {
-        return (centerHeight > 1.0f || forwardEdgeHeight > 1.0f || backwardEdgeHeight > 1.0f || leftEdgeHeight > 1.0f || rightEdgeHeight > 1.0f);
-    }
-
-    public void CopySide(BlockSide side)
-    {
-        centerType = side.centerType;
-        centerHeight = side.centerHeight;
-
-        forwardEdgeType = side.forwardEdgeType;
-        forwardEdgeHeight = side.forwardEdgeHeight;
-
-        backwardEdgeType = side.backwardEdgeType;
-        backwardEdgeHeight = side.backwardEdgeHeight;
-
-        leftEdgeType = side.leftEdgeType;
-        leftEdgeHeight = side.leftEdgeHeight;
-
-        rightEdgeType = side.rightEdgeType;
-        rightEdgeHeight = side.rightEdgeHeight;
-    }
-}
-
-[System.Serializable]
-public class BlockSideDefinitions
-{
-    public BlockSide topSide, leftSide, rightSide, bottomSide, frontSide, backSide;
-
-    public BlockSideDefinitions()
-    {
-        topSide = new BlockSide();
-        leftSide = new BlockSide();
-        rightSide = new BlockSide();
-        bottomSide = new BlockSide();
-        frontSide = new BlockSide();
-        backSide = new BlockSide();
-    }
-    public void CopyBlockSides(BlockSideDefinitions sides)
-    {
-        topSide.CopySide(sides.topSide);
-        leftSide.CopySide(sides.leftSide);
-        rightSide.CopySide(sides.rightSide);
-        bottomSide.CopySide(sides.bottomSide);
-        frontSide.CopySide(sides.frontSide);
-        backSide.CopySide(sides.backSide);
-    }
-}
-
-public class Block : Placeable
+public class BlockOLD : PlaceableMonoBehaviour
 {
     [SerializeField]    
     public BlockSideDefinitions blockSides;
 
-    [SerializeField]
-    public bool blocksAllMovement;
+    //[SerializeField]
+    //public bool blocksAllMovement;
     
     public Vector3Int gridPosition, worldPosition;
 
@@ -133,17 +32,17 @@ public class Block : Placeable
     
     public bool canEntityEnter(FullGridMoveable e)
     {
-        if (blocksAllMovement) { Debug.Log("blocks all movement"); return false; }
+        //if (blocksAllMovement) { Debug.Log("blocks all movement"); return false; }
 
         DownDirection downDir = e.GetCurrentDownDirection();
 
         float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(worldPosition, downDir);
 
-        Block entityCurrentBlock = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
+        BlockOLD entityCurrentBlockOld = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
         float entityExitHeight;
-        if (entityCurrentBlock != null)
+        if (entityCurrentBlockOld != null)
         {
-            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlock.worldPosition, downDir) + entityCurrentBlock.CalculateAttemptedExitEdgeHeight(worldPosition, e.transform.up, downDir);
+            entityExitHeight = GetPositionsDownOrientedHeight(entityCurrentBlockOld.worldPosition, downDir) + entityCurrentBlockOld.CalculateAttemptedExitEdgeHeight(worldPosition, e.transform.up, downDir);
         }
         else { entityExitHeight = GetPositionsDownOrientedHeight(e.transform.position, downDir); }
         //if player climbing up a level and still has to climb this block

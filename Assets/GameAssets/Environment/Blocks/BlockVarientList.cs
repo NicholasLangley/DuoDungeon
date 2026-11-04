@@ -36,8 +36,8 @@ public class BlockVarientList : ScriptableObject
     {
         GameObject baseBlock = Instantiate(CommonPropertiesAndScriptsObject);
 
-        Block blockComponent = baseBlock.GetComponent<Block>();
-        if (blockComponent != null) { blockComponent.varientID = varientID; }
+        BlockOLD blockOldComponent = baseBlock.GetComponent<BlockOLD>();
+        if (blockOldComponent != null) { blockOldComponent.varientID = varientID; }
 
         Instantiate(varientDictionary[varientID], baseBlock.transform);
         

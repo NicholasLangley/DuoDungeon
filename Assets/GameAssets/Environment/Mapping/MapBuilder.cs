@@ -81,9 +81,9 @@ public class MapBuilder
                 GameObject newBlockObject = blockBuilder.BuildBlock(key, (int)positionArray[0],  (int)positionArray[1], (int)positionArray[2]);
                 
                 Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
-                Placeable placeable = newBlockObject.GetComponent<Placeable>();
-                if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-                else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetPosition(worldPosition); }
+                PlaceableMonoBehaviour placeableMonoBehaviour = newBlockObject.GetComponent<PlaceableMonoBehaviour>();
+                if (ComplexBlockListIDs.Contains(placeableMonoBehaviour.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
+                else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
                 newBlockObject.transform.parent = mapParent.transform;
             }
         }
@@ -113,9 +113,9 @@ public class MapBuilder
             GameObject newBlockObject = blockBuilder.BuildBlockOLD(blockObject["info"]);
             //block already converted to world in BlockBuilder
             Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
-            Placeable placeable = newBlockObject.GetComponent<Placeable>();
-            if (ComplexBlockListIDs.Contains(placeable.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-            else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<Block>()); newBlockObject.GetComponent<Block>().SetPosition(worldPosition); }
+            PlaceableMonoBehaviour placeableMonoBehaviour = newBlockObject.GetComponent<PlaceableMonoBehaviour>();
+            if (ComplexBlockListIDs.Contains(placeableMonoBehaviour.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
+            else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 

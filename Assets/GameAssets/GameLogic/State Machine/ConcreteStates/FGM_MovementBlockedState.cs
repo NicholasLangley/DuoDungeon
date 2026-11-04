@@ -27,22 +27,22 @@ public class FGM_MovementBlockedState : FullGridMoveableState
 
         //modify dest height to match edge of srcblock
         DownDirection downDir = _fgm.GetCurrentDownDirection();
-        Block srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
-        if (srcBlock != null) 
+        BlockOLD srcBlockOld = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
+        if (srcBlockOld != null) 
         {
             switch (downDir)
             {
                 case DownDirection.Ydown:
                 case DownDirection.Yup:
-                    bumpDest.y = srcBlock.transform.position.y + _fgm.transform.up.y * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.y = srcBlockOld.transform.position.y + _fgm.transform.up.y * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Xleft:
                 case DownDirection.Xright:
-                    bumpDest.x = srcBlock.transform.position.x + _fgm.transform.up.x * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.x = srcBlockOld.transform.position.x + _fgm.transform.up.x * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Zforward:
                 case DownDirection.Zback:
-                    bumpDest.z = srcBlock.transform.position.z + _fgm.transform.up.z * srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.z = srcBlockOld.transform.position.z + _fgm.transform.up.z * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
             }
              

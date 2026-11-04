@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Wall : Placeable
+public class Wall : PlaceableMonoBehaviour
 {
     //How far the wall extends out from the center line (total width is 2x thickness)
     [SerializeField]

@@ -23,9 +23,9 @@ public class BlockSelector : MonoBehaviour
 
             string baseID;
             string varientID;
-            Placeable placeable = objectGameObject.GetComponent<Placeable>();
-            baseID = placeable.baseID;
-            varientID = placeable.varientID;
+            PlaceableMonoBehaviour placeableMonoBehaviour = objectGameObject.GetComponent<PlaceableMonoBehaviour>();
+            baseID = placeableMonoBehaviour.baseID;
+            varientID = placeableMonoBehaviour.varientID;
             /*ComplexBlock complexBlock = objectGameObject.GetComponent<ComplexBlock>();
             if(complexBlock != null)
             {

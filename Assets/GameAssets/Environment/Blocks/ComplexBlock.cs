@@ -13,11 +13,11 @@ public class ComponentBlockDefinition
 }
 
 //Blocks that may move / occupy multiple grid spaces at once. Will calculate sub blocks that conform to the grid
-public class ComplexBlock : Placeable
+public class ComplexBlock : PlaceableMonoBehaviour
 {
     GameObject gridSplitBlocksParent;
 
-    List<Block> gridBlocks;
+    List<BlockOLD> gridBlocks;
 
     [SerializeField]
     List<ComponentBlockDefinition> componentBlocks;
@@ -44,7 +44,7 @@ public class ComplexBlock : Placeable
         gridSplitBlocksParent.transform.localPosition = Vector3.zero;
         gridSplitBlocksParent.transform.localRotation = Quaternion.identity;
 
-        gridBlocks = new List<Block>();
+        gridBlocks = new List<BlockOLD>();
 
         float distanceOffsetFromGrid = 0.0f;
         //used to find side of block affected, offset will be in the opposite direction of this
@@ -64,11 +64,11 @@ public class ComplexBlock : Placeable
         {
             foreach (ComponentBlockDefinition componentBlock in componentBlocks)
             {
-                Block singleBlock = gridSplitBlocksParent.AddComponent<Block>();
-                singleBlock.blockSides = new BlockSideDefinitions();
-                singleBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                singleBlock.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
-                gridBlocks.Add(singleBlock);
+                BlockOLD singleBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
+                singleBlockOld.blockSides = new BlockSideDefinitions();
+                singleBlockOld.blockSides.CopyBlockSides(componentBlock.sides);
+                singleBlockOld.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
+                gridBlocks.Add(singleBlockOld);
             }
             return;
         }
@@ -77,39 +77,39 @@ public class ComplexBlock : Placeable
         foreach (ComponentBlockDefinition componentBlock in componentBlocks)
         {
             //The block that is still in the initial unoffset block grid
-            Block transformAlignedBlock = gridSplitBlocksParent.AddComponent<Block>();
-            transformAlignedBlock.blockSides = new BlockSideDefinitions();
-            transformAlignedBlock.blockSides.CopyBlockSides(componentBlock.sides);
-            transformAlignedBlock.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
+            BlockOLD transformAlignedBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
+            transformAlignedBlockOld.blockSides = new BlockSideDefinitions();
+            transformAlignedBlockOld.blockSides.CopyBlockSides(componentBlock.sides);
+            transformAlignedBlockOld.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
 
-            BlockSide topOffsetSide = transformAlignedBlock.GetOrientedTopSide(gravityDir);
+            BlockSide topOffsetSide = transformAlignedBlockOld.GetOrientedTopSide(gravityDir);
             topOffsetSide.AddHeightOffset(distanceOffsetFromGrid);
      
-            BlockSide bottomOffsetSide = transformAlignedBlock.GetOrientedTopSide(-gravityDir);
+            BlockSide bottomOffsetSide = transformAlignedBlockOld.GetOrientedTopSide(-gravityDir);
             bottomOffsetSide.AddHeightOffset(-distanceOffsetFromGrid);
 
-            gridBlocks.Add(transformAlignedBlock);
+            gridBlocks.Add(transformAlignedBlockOld);
 
             if(topOffsetSide.CheckIfSideExtendsToNextGrid())
             {
                 //the block that forms due to the offset pushing the component block into a new grid
-                Block OffsetBlock = gridSplitBlocksParent.AddComponent<Block>();
-                OffsetBlock.blockSides = new BlockSideDefinitions();
-                OffsetBlock.blockSides.CopyBlockSides(componentBlock.sides);
-                OffsetBlock.SetPosition(Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir));
+                BlockOLD offsetBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
+                offsetBlockOld.blockSides = new BlockSideDefinitions();
+                offsetBlockOld.blockSides.CopyBlockSides(componentBlock.sides);
+                offsetBlockOld.SetPosition(Map.GetGridSpace(transform.position + (transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)) - gravityDir));
                 
-                topOffsetSide = OffsetBlock.GetOrientedTopSide(gravityDir);
+                topOffsetSide = offsetBlockOld.GetOrientedTopSide(gravityDir);
                 topOffsetSide.AddHeightOffset(distanceOffsetFromGrid - 1.0f);
 
-                bottomOffsetSide = OffsetBlock.GetOrientedTopSide(-gravityDir);
+                bottomOffsetSide = offsetBlockOld.GetOrientedTopSide(-gravityDir);
                 bottomOffsetSide.AddHeightOffset(-distanceOffsetFromGrid + 1.0f);
 
-                gridBlocks.Add(OffsetBlock);
+                gridBlocks.Add(offsetBlockOld);
             }
         }
     }
 
-    public List<Block> GetGridBlocks()
+    public List<BlockOLD> GetGridBlocks()
     {
         return gridBlocks;
     }
