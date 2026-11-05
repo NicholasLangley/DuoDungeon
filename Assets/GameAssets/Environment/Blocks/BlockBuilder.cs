@@ -6,6 +6,8 @@ using Newtonsoft.Json.Linq;
 using System;
 
 
+//deprecated probably
+/*
 public class BlockBuilder
 {
     UltimateList ultimateList;
@@ -71,3 +73,4 @@ public class BlockBuilder
         return new Quaternion((float)rotation["x"], (float)rotation["y"], (float)rotation["z"], (float)rotation["w"]);
     }
 }
+*/

@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 public class ObjectPlacer : MonoBehaviour
 {
-    GameObject currentBlock;
+    Placeable currentBlock;
     string currentListID, currentBlockBaseID, currentBlockVarientID;
 
     GameObject objectPlacementIndicator;
@@ -19,7 +19,6 @@ public class ObjectPlacer : MonoBehaviour
 
     Plane levelIntersectionPlane;
     public Map map;
-    GameObject mapTransform;
 
     [SerializeField] GameObject redPlayerModelPrefab, bluePlayerModelPrefab, placementArrow;
     public GameObject redPlayerPlacementIndicator, bluePlayerPlacementIndicator;
@@ -54,10 +53,12 @@ public class ObjectPlacer : MonoBehaviour
     
     Vector3Int _drawStartPosition;
     [SerializeField] float maxDrawDistanceBetweenBlocks;
-    List<Vector3Int> _ghostDrawPositionList;
-    private GameObject _ghostParent;
-    private GameObject _ghostSelectedBlock;
-    List<Transform> _ghostTransformList;
+    List<Vector3> _ghostDrawPositionList;
+    //private GameObject _ghostParent;
+    private GameObject _ghostRotator;
+    private Placeable _ghostSelectedPlaceable;
+    List<Vector3> _ghostWorldPlacePositionList;
+    private bool _hidingGhosts; 
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -75,14 +76,15 @@ public class ObjectPlacer : MonoBehaviour
         isRotating = false;
         levelIntersectionPlane = new Plane();
         SetLevelIntersectionPlane(Vector3.up, 0);
-        mapTransform = new GameObject();
+        _ghostRotator = new GameObject("ghostRotator");
         redPlayerPlacementIndicator = Instantiate(redPlayerModelPrefab);
         bluePlayerPlacementIndicator = Instantiate(bluePlayerModelPrefab);
         placementIndicatorArrow = Instantiate(placementArrow);
         _currentlyDrawing = false;
-        _ghostDrawPositionList = new List<Vector3Int>();
-        _ghostTransformList = new List<Transform>();
-        _ghostParent = new GameObject(name: "ghost parent");
+        _ghostDrawPositionList = new List<Vector3>();
+        _ghostWorldPlacePositionList = new List<Vector3>();
+        _hidingGhosts = true;
+        //_ghostParent = new GameObject(name: "ghost parent");
     }
 
     // Update is called once per frame
@@ -92,8 +94,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             HandleRotation();
         }
-        CalculateProjectedGhostPlacements();
-        PlacePlacementIndicatorGhosts();
+        DrawGhosts();
     }
     
     #region Set Objects
@@ -103,9 +104,9 @@ public void SetBlockList(UltimateList list)
         ultimateList = list;
     }
 
-    public void SetBlock(GameObject block, string listID, string baseID, string varientID)
+    public void SetBlock(Placeable placeable, string listID, string baseID, string varientID)
     {
-        currentBlock = block;
+        currentBlock = placeable;
         currentListID = listID;
         currentBlockBaseID = baseID;
         currentBlockVarientID = varientID;
@@ -114,19 +115,20 @@ public void SetBlockList(UltimateList list)
         {
             _currentPlacementType = ObjectType.wall;
             SetWallPlacerMode(true);
-            SetProjectedGhostObject(block);
+            SetProjectedGhostObject(placeable);
         }
         else
         {
-            SetProjectedGhostObject(block);
+            SetProjectedGhostObject(placeable);
             _currentPlacementType = ObjectType.block;
             SetWallPlacerMode(false);
             
+            //todo fix complex
             //for now limit complex blocks to point drawmode,
             //since they can occupy multiple blocks and I don't want to deal with draw collisions
             // could maybe add a variable to the blocks on if point mode is enabled or not?
-            ComplexBlock complexBlockBeingPlaced = _ghostSelectedBlock.GetComponent<ComplexBlock>();
-            if (complexBlockBeingPlaced != null)
+            //ComplexBlock complexBlockBeingPlaced = _ghostSelectedPlaceable.GetComponent<ComplexBlock>();
+            if (false)//complexBlockBeingPlaced != null)
             {
                 pointDrawModeLimited = true;
                 _currentDrawMode = DrawMode.point;
@@ -143,32 +145,35 @@ public void SetBlockList(UltimateList list)
     {
         if(isRedPlayer)
         {
+            //todo fix player ghost
             _currentPlacementType = ObjectType.redPlayer;
-            SetProjectedGhostObject(redPlayerModelPrefab);
+            SetProjectedGhostObject(null); //redPlayerModelPrefab);
         }
         else
         {
             _currentPlacementType = ObjectType.bluePlayer;
-            SetProjectedGhostObject(bluePlayerModelPrefab);
+            SetProjectedGhostObject(null);//bluePlayerModelPrefab);
         }
         SetWallPlacerMode(false);
         pointDrawModeLimited = true;
         _currentDrawMode = DrawMode.point;
     }
 
-    void SetProjectedGhostObject(GameObject obj)
+    void SetProjectedGhostObject(Placeable placeable)
     {
-        if (_ghostSelectedBlock != null) { GameObject.Destroy(_ghostSelectedBlock.gameObject); }
-        _ghostSelectedBlock = Instantiate(obj);
-        _ghostSelectedBlock.name = "Ghost Block Blueprint";
-        _ghostSelectedBlock.transform.parent = _ghostParent.transform;
-        //clear ghost list so it can be recreated with the new block type
+        _ghostSelectedPlaceable = placeable;
+        
+        /*if (_ghostSelectedPlaceable != null) { GameObject.Destroy(_ghostSelectedPlaceable.gameObject); }
+        _ghostSelectedPlaceable = Instantiate(obj);
+        _ghostSelectedPlaceable.name = "Ghost Block Blueprint";
+        _ghostSelectedPlaceable.transform.parent = _ghostParent.transform;
+        clear ghost list so it can be recreated with the new block type
         while (_ghostTransformList.Count > 0)
         {
             Transform ghostToExorcise = _ghostTransformList[0];
             _ghostTransformList.RemoveAt(0);
             GameObject.Destroy(ghostToExorcise.gameObject);
-        }
+        }*/
     }
 
     void SetWallPlacerMode(bool isWallPlacerMode)
@@ -217,8 +222,9 @@ public void SetBlockList(UltimateList list)
     #region DrawingCalculations
 
     //possible performance improvement: calculate every x frames
-    void CalculateProjectedGhostPlacements()
+    void DrawGhosts()
     {
+        //calculate ghosts
         //single point where intersecting plane
         if (!_currentlyDrawing || _currentDrawMode == DrawMode.point)
         {
@@ -254,7 +260,10 @@ public void SetBlockList(UltimateList list)
             //start vs end point. radius or diameter? circle algorithm? ovals?
             CalculateEllipseModeGhosts(true);
         }
+
+        _ghostWorldPlacePositionList = new List<Vector3>(_ghostDrawPositionList);
         
+        //TODO draw the ghosts with batch rendering here
         //update grid to be around player cursor
         gridPlane.transform.position = Map.GetIntVector3(GetCurrentIntersectPoint());
     }
@@ -264,7 +273,7 @@ public void SetBlockList(UltimateList list)
         Vector3 intersectionPos = GetCurrentIntersectPoint();
         if (intersectionPos != Vector3.negativeInfinity)
         {
-                _ghostDrawPositionList = new List<Vector3Int>();
+                _ghostDrawPositionList = new List<Vector3>();
                 _ghostDrawPositionList.Add(Map.GetIntVector3(intersectionPos));
                 unHideGhosts();
         }
@@ -287,7 +296,7 @@ public void SetBlockList(UltimateList list)
                 return;
             }
             
-            _ghostDrawPositionList = new List<Vector3Int>();
+            _ghostDrawPositionList = new List<Vector3>();
             Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
             Vector3 lineVector = drawEndPosition - _drawStartPosition;
             lineVector.Normalize();
@@ -318,7 +327,7 @@ public void SetBlockList(UltimateList list)
                 return;
             }
             
-            _ghostDrawPositionList = new List<Vector3Int>();
+            _ghostDrawPositionList = new List<Vector3>();
             Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
         
             //since positions will always be on the same plane, one of the axis will have the same value for both
@@ -380,7 +389,7 @@ public void SetBlockList(UltimateList list)
                 return;
             }
             
-            _ghostDrawPositionList = new List<Vector3Int>();
+            _ghostDrawPositionList = new List<Vector3>();
             Vector3Int drawEndPosition = Map.GetIntVector3(intersectionPos);
         
             //get bounds
@@ -451,46 +460,46 @@ public void SetBlockList(UltimateList list)
     #endregion
 
     //possible performance improvement: render every x frames
+    /*
     void PlacePlacementIndicatorGhosts()
     {
-        if (_ghostSelectedBlock == null) { return; }
+        if (_ghostSelectedPlaceable == null) { return; }
+
         //dynamically resize list, reuse game objects where possible
         //first shrink gameobjects to fit (if list bigger)
-        while (_ghostDrawPositionList.Count < _ghostTransformList.Count)
+        while (_ghostDrawPositionList.Count < _ghostWorldPositionList.Count)
         {
-            Transform ghostToExorcise = _ghostTransformList[0];
-            _ghostTransformList.RemoveAt(0);
+            Transform ghostToExorcise = _ghostWorldPositionList[0];
+            _ghostWorldPositionList.RemoveAt(0);
             GameObject.Destroy(ghostToExorcise.gameObject);
         }
         //then reuse existing ghosts
         int i = 0;
-        while (i < _ghostTransformList.Count)
+        while (i < _ghostWorldPositionList.Count)
         {
-            _ghostTransformList[i].position = _ghostDrawPositionList[i];
+            _ghostWorldPositionList[i].position = _ghostDrawPositionList[i];
             i++;
         }
         //finally create new ghosts if needed
-        while (_ghostTransformList.Count < _ghostDrawPositionList.Count)
+        while (_ghostWorldPositionList.Count < _ghostDrawPositionList.Count)
         {
-            GameObject newGhost = Instantiate(_ghostSelectedBlock, _ghostParent.transform);
+            GameObject newGhost = Instantiate(_ghostSelectedPlaceable, _ghostParent.transform);
             newGhost.name = "Ghost " + i;
             newGhost.transform.position = _ghostDrawPositionList[i];
-            _ghostTransformList.Add(newGhost.transform);
+            _ghostWorldPositionList.Add(newGhost.transform);
             i++;
         }
-    }
+    }*/
     void HandleRotation() 
     {
-        //todo rotate each ghost individually
-
         objectPlacementRotationTimer += Time.deltaTime;
         Quaternion currentRotation = Quaternion.Lerp(startRotation, destRotation,
             objectPlacementRotationTimer / objectPlacementRotationDuration);
-        _ghostSelectedBlock.transform.rotation = currentRotation;
-        foreach (Transform ghostTransform in _ghostTransformList)
+        _ghostRotator.transform.rotation = currentRotation;
+        /*foreach (Transform ghostTransform in _ghostWorldPositionList)
         {
             ghostTransform.rotation = currentRotation;
-        }
+        }*/
         if (objectPlacementRotationTimer > objectPlacementRotationDuration)
         {
             isRotating = false;
@@ -510,10 +519,10 @@ public void SetBlockList(UltimateList list)
         CommandGroup commandGroup = new CommandGroup();
         AllCommands.Add(commandGroup);
         //for each projected block
-        foreach (Transform ghostTransform in _ghostTransformList)
+        foreach (Vector3 ghostPos in _ghostWorldPlacePositionList)
         {
             //get place commands and add to command group in order
-            List<Command> commands = PlaceCurrentObject(ghostTransform.position);
+            List<Command> commands = PlaceCurrentObject(ghostPos);
             foreach (Command command in commands)
             {
                 commandGroup.AddCommand(command);
@@ -525,13 +534,15 @@ public void SetBlockList(UltimateList list)
     //todo swap to Place ProjectedBlocks
     public List<Command> PlaceCurrentObject(Vector3 pos)
     {
+        //todo maybe queue this place instead 
         if (EventSystem.current.IsPointerOverGameObject() || isRotating) { return null; }
 
         List<Command> commands = new List<Command>();
 
-        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(pos), _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(pos, _ghostSelectedBlock.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
-        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(pos), _ghostSelectedBlock.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
+        //todo need to queue final rotation instead if place is queued
+        if (_currentPlacementType == ObjectType.block && currentBlock != null) { commands = GetPlaceBlockCommands(Map.GetIntVector3(pos), _ghostRotator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.wall && currentBlock != null) { commands = GetPlaceWallCommands(pos, _ghostRotator.transform.rotation, currentListID, currentBlockBaseID, currentBlockVarientID); }
+        else if (_currentPlacementType == ObjectType.redPlayer || _currentPlacementType == ObjectType.bluePlayer) { commands = GetPlacePlayerCommand(Map.GetIntVector3(pos), _ghostRotator.transform.rotation, (_currentPlacementType == ObjectType.redPlayer)); }
 
         if (commands.Count > 0) 
         {
@@ -550,16 +561,19 @@ public void SetBlockList(UltimateList list)
         List<Command> commands = new List<Command>();
 
         List<Vector3Int> positionsToCheck;
-        ComplexBlock complexBlockBeingPlaced = _ghostSelectedBlock.GetComponent<ComplexBlock>();
+        
+        //fix complex
+        /*
+        ComplexBlock complexBlockBeingPlaced = _ghostSelectedPlaceable.GetComponent<ComplexBlock>();
         if (complexBlockBeingPlaced != null)
         {
             positionsToCheck = complexBlockBeingPlaced.getSubBlockPositions(position);
         }
         else
-        {
-            positionsToCheck = new List<Vector3Int>();
-            positionsToCheck.Add(position);
-        }
+        {*/
+        positionsToCheck = new List<Vector3Int>();
+        positionsToCheck.Add(position);
+        //}
 
         List<ComplexBlock> alreadyCollidedComplexBlocks = new List<ComplexBlock>();
         bool canPlaceBlock = true;
@@ -574,14 +588,16 @@ public void SetBlockList(UltimateList list)
                 break;
             }
 
-            BlockOLD preExistingBlockOld = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
-            if (preExistingBlockOld != null)
+            BlockInstance? preExistingBlockInstance = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
+            if (preExistingBlockInstance != null)
             {
                 string preExistingListID;
                 string preExistingBaseID;
                 string preExistingVarID;
 
                 Vector3Int rootPosition = positionCheck;
+                //TODO reintegrate complex
+                /*
                 ComplexBlock preExistingComplexBlock = preExistingBlockOld.GetComponentInParent<ComplexBlock>();
                 if (preExistingComplexBlock != null)
                 {
@@ -595,12 +611,12 @@ public void SetBlockList(UltimateList list)
                     preExistingVarID = preExistingComplexBlock.varientID;
                 }
                 else
-                {
-                    preExistingListID = preExistingBlockOld.listID;
-                    preExistingBaseID = preExistingBlockOld.baseID;
-                    preExistingVarID = preExistingBlockOld.varientID;
-                }
-                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockOld.gameObject.transform.rotation);
+                {*/
+                preExistingListID = preExistingBlockInstance.Value.blockData.listID; //preExistingBlockInstance.blockData.listID;
+                preExistingBaseID = preExistingBlockInstance.Value.blockData.baseID;
+                preExistingVarID = preExistingBlockInstance.Value.blockData.varientID;
+                //}
+                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockInstance.Value.rotation);
                 commands.Add(removeCmd);
             }
         }
@@ -614,14 +630,19 @@ public void SetBlockList(UltimateList list)
         return commands;
     }
 
-    public void PlaceBlock(Vector3Int position, Quaternion rotation, string listID, string baseID, string varientID)
+    public void PlaceBlock(Vector3 worldPosition, Quaternion rotation, string listID, string baseID, string varientID)
     {
+        //TODO complex blocks
+        BlockInstance blockInstance = new BlockInstance(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), rotation);
+        map.AddBlockToWorldPos(worldPosition, blockInstance);
+        
+        /*
         GameObject newBlockObject = Instantiate(ultimateList.GetMasterList(listID).GetBlock(baseID, varientID), mapTransform.transform);
         BlockOLD newBlockOld = newBlockObject.GetComponent<BlockOLD>();
         if (newBlockOld != null)
         {
             newBlockOld.listID = listID;
-            map.AddStaticBlock(position, newBlockOld);
+            map.AddBlockToWorldPos(position, newBlockOld);
         }
         else
         {
@@ -631,6 +652,7 @@ public void SetBlockList(UltimateList list)
         }
         newBlockObject.transform.position = position;
         newBlockObject.transform.rotation = rotation;
+        */
     }
 
     public void RemoveBlock(Vector3Int position)
@@ -665,29 +687,30 @@ public void SetBlockList(UltimateList list)
         //TODO
     }
 
-    List<Command> GetPlacePlayerCommand(Vector3Int position, Quaternion rotation, bool isRedPlayer)
+    List<Command> GetPlacePlayerCommand(Vector3Int worldPosition, Quaternion rotation, bool isRedPlayer)
     {
-        if (IsPositionOutOfBounds(position))
+        if (IsPositionOutOfBounds(worldPosition))
         {
             Debug.Log("player out of bounds");
             return null;
         }
         List<Command> commands = new List<Command>();
 
-        BlockOLD preExistingBlockOld = map.GetBlockAtGridPosition(position, null, Vector3.down);
+        BlockInstance? preExistingBlock = map.GetBlockAtGridPosition(worldPosition, null, Vector3.down);
 
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
 
-        if (preExistingBlockOld != null)
+        if (preExistingBlock != null)
         {
-            Vector3Int rootPosition = position;
+            Vector3Int rootPosition = worldPosition;
 
             string preExistingListID;
             string preExistingBaseID;
             string preExistingVarID;
 
-            ComplexBlock preExistingComplexBlock = preExistingBlockOld.GetComponentInParent<ComplexBlock>();
+            //TODO complex
+            /*ComplexBlock preExistingComplexBlock = preExistingBlock.GetComponentInParent<ComplexBlock>();
             if (preExistingComplexBlock != null)
             {
                 rootPosition = Map.GetIntVector3(preExistingComplexBlock.transform.position);
@@ -696,28 +719,28 @@ public void SetBlockList(UltimateList list)
                 preExistingVarID = preExistingComplexBlock.varientID;
             }
             else
-            {
-                preExistingListID = preExistingBlockOld.listID;
-                preExistingBaseID = preExistingBlockOld.baseID;
-                preExistingVarID = preExistingBlockOld.varientID;
-            }
+            {*/
+            preExistingListID = preExistingBlock.Value.blockData.listID;
+            preExistingBaseID = preExistingBlock.Value.blockData.baseID;
+            preExistingVarID = preExistingBlock.Value.blockData.varientID;
+            //}
 
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockOld.gameObject.transform.rotation);
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.Value.rotation);
             commands.Add(removeCmd);
         }
         //checked for player collision
-        if(isRedPlayer && position == Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position))
+        if(isRedPlayer && worldPosition == Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position))
         {
             PlacePlayerCommand moveOtherPlayerCmd = new PlacePlayerCommand(this, oldPlayerPos, oldPlayerRot, !isRedPlayer, Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position), bluePlayerPlacementIndicator.transform.rotation);
             commands.Add(moveOtherPlayerCmd);
         }
-        else if (!isRedPlayer && position == Map.GetIntVector3(redPlayerPlacementIndicator.transform.position))
+        else if (!isRedPlayer && worldPosition == Map.GetIntVector3(redPlayerPlacementIndicator.transform.position))
         {
             PlacePlayerCommand moveOtherPlayerCmd = new PlacePlayerCommand(this, oldPlayerPos, oldPlayerRot, isRedPlayer, Map.GetIntVector3(redPlayerPlacementIndicator.transform.position), redPlayerPlacementIndicator.transform.rotation);
             commands.Add(moveOtherPlayerCmd);
         }
 
-        PlacePlayerCommand cmd = new PlacePlayerCommand(this, position, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot);
+        PlacePlayerCommand cmd = new PlacePlayerCommand(this, worldPosition, rotation, isRedPlayer, oldPlayerPos, oldPlayerRot);
         commands.Add(cmd);
 
         return commands;
@@ -745,15 +768,13 @@ public void SetBlockList(UltimateList list)
     }
 
         void hideGhosts()
-    {
-        if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(false); }
-        _ghostParent.SetActive(false);
-    }
+        {
+            _hidingGhosts = true;
+        }
 
     void unHideGhosts()
     {
-        if (_ghostSelectedBlock != null) { _ghostSelectedBlock.SetActive(true); }
-        _ghostParent.SetActive(true);
+        _hidingGhosts = false;
     }
     
     #endregion
@@ -823,10 +844,10 @@ public void SetBlockList(UltimateList list)
                 break;
         }
 
-        startRotation = _ghostSelectedBlock.transform.rotation;
-        _ghostSelectedBlock.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
-        destRotation = _ghostSelectedBlock.transform.rotation;
-        _ghostSelectedBlock.transform.rotation = startRotation;
+        startRotation = _ghostRotator.transform.rotation;
+        _ghostRotator.transform.RotateAround(transform.position, rotationAxis, rotationAmount);
+        destRotation = _ghostRotator.transform.rotation;
+        _ghostRotator.transform.rotation = startRotation;
         objectPlacementRotationTimer = 0.0f;
         isRotating = true;
     }

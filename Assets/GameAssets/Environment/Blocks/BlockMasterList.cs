@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//list of all bas
 [CreateAssetMenu(fileName = "BlockMasterListScriptableObject", menuName = "ScriptableObjects/BlockMasterList")]
 public class BlockMasterList : ScriptableObject
 {
@@ -22,10 +23,10 @@ public class BlockMasterList : ScriptableObject
         }
     }
 
-    public GameObject GetBlock(string baseID, string varientID)
+    public BlockData GetBlock(string baseID, string varientID)
     {
         if (blocksDictionary == null) { GenerateDict(); }
-        return blocksDictionary[baseID].GetBlock(varientID);
+        return blocksDictionary[baseID].GetVarient(varientID);
     }
 
     public int GetLength()

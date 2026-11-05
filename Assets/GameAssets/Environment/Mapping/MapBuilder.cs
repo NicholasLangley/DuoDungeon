@@ -10,17 +10,12 @@ public class MapBuilder
     
     //note: all blocks are saved / loaded with their adjusted halfGrid positions and this will need to be converted to world positions on instantiation
     Map map;
-    BlockBuilder blockBuilder;
-    GameObject mapParent;
     //list IDs for blocks that aren't static in the grid
     List<string> ComplexBlockListIDs = new List<string> { "Pushable" };
 
-    public MapBuilder(BlockBuilder bb, Map m)
+    public MapBuilder(Map m)
     {
         map = m;
-        blockBuilder = bb;
-
-        mapParent = new GameObject("MapParent");
     }
 
     public void LoadMap(string filepath)
@@ -74,31 +69,59 @@ public class MapBuilder
         {
             PlaceableKey key = new PlaceableKey(blockTemplate.Key);
             
+            BlockData blockData = map.LoadBlockData(key.listID, key.baseID, key.varientID);
+            if (blockData == null)
+            {
+                //TODO log to file / error message user?
+                Debug.Log("WARNING: blockData for  " + key.getKeyString() +  " not found");
+                continue;
+            }
+            
             JArray positionsArray = (JArray)blockTemplate.Value;
+            
             foreach (JToken position in positionsArray)
             {
                 JArray positionArray = (JArray)position;
+                
+                Vector3Int halfGridPos = new Vector3Int((int)positionArray[0],  (int)positionArray[1], (int)positionArray[2]);
+                BlockInstance block = new BlockInstance(blockData, new Quaternion(key.rotationX, key.rotationY, key.rotationZ, key.rotationW));
+                map.AddBlockToHalfGridPos(halfGridPos, block);
+                
+                
+                //DEPRECATED
+                /*
                 GameObject newBlockObject = blockBuilder.BuildBlock(key, (int)positionArray[0],  (int)positionArray[1], (int)positionArray[2]);
                 
                 Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
                 PlaceableMonoBehaviour placeableMonoBehaviour = newBlockObject.GetComponent<PlaceableMonoBehaviour>();
                 if (ComplexBlockListIDs.Contains(placeableMonoBehaviour.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-                else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
-                newBlockObject.transform.parent = mapParent.transform;
+                else { map.AddBlockToWorldPos(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
+                newBlockObject.transform.parent = mapParent.transform;*/
             }
         }
     }
     
     private void LoadPlayerSpawns(JObject playerJObject)
     {
-        map.redPlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["red"]["position"]);
-        map.redPlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["red"]["rotation"]);
+        map.redPlayerSpawn = parseJSONPosition(playerJObject["red"]["position"]);
+        map.redPlayerSpawnRotation = ParseJSONRotation(playerJObject["red"]["rotation"]);
 
-        map.bluePlayerSpawn = BlockBuilder.parseJSONPosition(playerJObject["blue"]["position"]);
-        map.bluePlayerSpawnRotation = BlockBuilder.parseJSONRotation(playerJObject["blue"]["rotation"]);
+        map.bluePlayerSpawn = parseJSONPosition(playerJObject["blue"]["position"]);
+        map.bluePlayerSpawnRotation = ParseJSONRotation(playerJObject["blue"]["rotation"]);
     }
     
-    //todo deprecate
+    public static Vector3 parseJSONPosition(JToken pos)
+    {
+        return new Vector3((int)pos["x"], (int)pos["y"], (int)pos["z"]);
+    }
+    
+    public static Quaternion ParseJSONRotation(JToken rotation)
+    {
+        return new Quaternion((float)rotation["x"], (float)rotation["y"], (float)rotation["z"], (float)rotation["w"]);
+    }
+
+    
+    /*todo deprecate
     void LoadMapVersion0_1(JObject mapJson)
     {
         //read and create blocks
@@ -115,11 +138,11 @@ public class MapBuilder
             Vector3Int worldPosition = Map.GetIntVector3(newBlockObject.transform.position);
             PlaceableMonoBehaviour placeableMonoBehaviour = newBlockObject.GetComponent<PlaceableMonoBehaviour>();
             if (ComplexBlockListIDs.Contains(placeableMonoBehaviour.listID)) { map.AddComplexBlock(newBlockObject.GetComponent<ComplexBlock>()); }
-            else { map.AddStaticBlock(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
+            else { map.AddBlockToWorldPos(worldPosition, newBlockObject.GetComponent<BlockOLD>()); newBlockObject.GetComponent<BlockOLD>().SetPosition(worldPosition); }
             newBlockObject.transform.parent = mapParent.transform;
         }
 
         //readPlayers
         LoadPlayerSpawns((JObject)mapJson["players"]);
-    }
+    }*/
 }

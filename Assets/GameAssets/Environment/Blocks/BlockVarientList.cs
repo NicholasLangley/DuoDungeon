@@ -6,46 +6,38 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(fileName = "BlockVarientListScriptableObject", menuName = "ScriptableObjects/BlockVarientList")]
 public class BlockVarientList : ScriptableObject
 {
+    //deprecated
     //The common properties and scripts shared by all varients
     //examples include: The Pushable script for pushables, the block script (block side heights and properties, etc.)
     //This way any changes just have to be made once for all varients
-    [SerializeField]
+    /*[SerializeField]
     [FormerlySerializedAs("BlockPropertiesAndScriptsObject")]
-    GameObject CommonPropertiesAndScriptsObject;
+    GameObject CommonPropertiesAndScriptsObject;*/
 
     [SerializeField]
     public string baseID;
-    [SerializeField]
-    [FormerlySerializedAs("blockVarients")]
-    List<GameObject> varients;
+
+    [SerializeField] private List<BlockData> varientBlockDataObjects;
     
 
-    Dictionary<string, GameObject> varientDictionary;
+    Dictionary<string, BlockData> varientDictionary;
 
     public void generateDict()
     {
-        varientDictionary = new Dictionary<string, GameObject>();
-        foreach (GameObject varientObj in varients)
+        varientDictionary = new Dictionary<string, BlockData>();
+        foreach (BlockData varientData in varientBlockDataObjects)
         {
-            VarientID id = varientObj.GetComponent<VarientID>();
-            varientDictionary.Add(id.varientID, varientObj);
+            varientDictionary.Add(varientData.varientID, varientData);
         }
     }
 
-    public GameObject GetBlock(string varientID)
+    public BlockData GetVarient(string varientID)
     {
-        GameObject baseBlock = Instantiate(CommonPropertiesAndScriptsObject);
-
-        BlockOLD blockOldComponent = baseBlock.GetComponent<BlockOLD>();
-        if (blockOldComponent != null) { blockOldComponent.varientID = varientID; }
-
-        Instantiate(varientDictionary[varientID], baseBlock.transform);
-        
-        return baseBlock;
+        return varientDictionary[varientID];
     }
 
     public int GetLength()
     {
-        return varients.Count;
+        return varientDictionary.Count;
     }
 }

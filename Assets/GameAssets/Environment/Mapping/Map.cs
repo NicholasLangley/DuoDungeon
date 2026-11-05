@@ -73,8 +73,14 @@ public struct PlaceableKey
 //that the map class must convert to internal halfGrid positions ASAP
 public class Map
 {
-    Dictionary<Vector3Int, BlockOLD> currentStaticBlocks;
+    //TODO maybe only load this temporarily while loading the maps? only if performance really tanks eventually from having poone of every block loaded, even unused ones
+    UltimateList ultimateList;
+    
+    //todo can these be combined? idk since complex have more logic
+    Dictionary<Vector3Int, BlockInstance> currentStaticBlocks;
     List<ComplexBlock> currentComplexBlocks;
+    //todo lists for rendering
+    
     Dictionary<Vector3Int, Wall> currentWalls;
 
     public Vector3 redPlayerSpawn, bluePlayerSpawn;
@@ -88,21 +94,21 @@ public class Map
     public int version { get; set; }
     
 
-    public Map()
+    public Map(UltimateList ultimateList)
     {
-        currentStaticBlocks = new Dictionary<Vector3Int, BlockOLD>();
+        currentStaticBlocks = new Dictionary<Vector3Int, BlockInstance>();
         currentComplexBlocks = new List<ComplexBlock>();
         
         version = 0;
+
+        this.ultimateList = ultimateList;
     }
 
     public void ClearMap()
     {
-        foreach (BlockOLD block in currentStaticBlocks.Values)
-        {
-            GameObject.Destroy(block.gameObject);
-        }
+
         currentStaticBlocks.Clear();
+        //TODO clear rendering lists
 
         foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
@@ -113,38 +119,51 @@ public class Map
 
 
     #region static blocks
-    public void AddStaticBlock(Vector3Int pos, BlockOLD blockOld)
+    public void AddBlockToWorldPos(Vector3 worldPos,  BlockInstance block)
     {
-        Vector3Int position = GetIntVector3(WorldToHalfGrid(pos));
+        Vector3Int halfGridPosition = WorldToHalfGrid(worldPos);
+        AddBlockToHalfGridPos(halfGridPosition, block);
+    }
+
+    public void AddBlockToHalfGridPos(Vector3Int halfGridPos, BlockInstance block)
+    {
         //overwrite
-        if (currentStaticBlocks.ContainsKey(position)) 
+        if (currentStaticBlocks.ContainsKey(halfGridPos)) 
         {
-            GameObject.Destroy(currentStaticBlocks[position].gameObject);
-            currentStaticBlocks.Remove(position); 
+            RemoveBlockFromHalfGrid(halfGridPos);
         }
-
-        currentStaticBlocks.Add(position, blockOld);
+        currentStaticBlocks.Add(halfGridPos, block);
+        //TODO update renderers
+        //todo seperate complex logic???
     }
 
-    private void RemoveStaticBlock(Vector3Int position)
+    private void RemoveBlockFromWorld(Vector3 worldPos)
     {
-        if (currentStaticBlocks.ContainsKey(position))
+        Vector3Int halfGridPosition = WorldToHalfGrid(worldPos);
+        RemoveBlockFromHalfGrid(halfGridPosition);
+    }
+    
+    private void RemoveBlockFromHalfGrid(Vector3Int halfGridPos)
+    {
+        if (currentStaticBlocks.ContainsKey(halfGridPos))
         {
-            GameObject.Destroy(currentStaticBlocks[position].gameObject);
-            currentStaticBlocks.Remove(position);
+            currentStaticBlocks.Remove(halfGridPos);
+            //todo update renderers
         }
+        //todo seperate complex logic????
     }
 
-    private BlockOLD GetStaticBlock(Vector3Int position)
+    private BlockInstance? GetStaticBlock(Vector3Int halfGridPosition)
     {
-        if (currentStaticBlocks.ContainsKey(position)) { return currentStaticBlocks[position]; }
+        if (currentStaticBlocks.ContainsKey(halfGridPosition)) { return currentStaticBlocks[halfGridPosition]; }
 
         return null;
     }
 
-    private BlockOLD GetStaticBlock(Vector3 position)
+    private BlockInstance? GetStaticBlock(Vector3 worldPosition)
     {
-        return (GetStaticBlock(Map.GetIntVector3(position)));
+        Vector3Int halfGridPosition = WorldToHalfGrid(worldPosition);
+        return (GetStaticBlock(Map.GetIntVector3(halfGridPosition)));
     }
     #endregion
 
@@ -160,6 +179,8 @@ public class Map
         currentComplexBlocks.Add(complexBlock);
     }
 
+    //todo fix complex blocks
+    /*
     private BlockOLD GetComplexBlockPart(Vector3 position, GameObject requestor)
     {
         return GetComplexBlockPart(Map.GetIntVector3(position), requestor);
@@ -190,45 +211,50 @@ public class Map
         ComplexBlock  complex = blockOldPart.GetComponentInParent<ComplexBlock>();
         currentComplexBlocks.Remove(complex);
         GameObject.Destroy(complex.gameObject);
-    }
+    }*/
 
     #endregion
 
     public void RemoveBlockAtLocation(Vector3 pos)
     {
         Vector3 position = WorldToHalfGrid(pos);
-        BlockOLD blockOld = GetBlockAtGridPosition(position, null, Vector3.down);
-        if (blockOld == null){ return; }
-        if (blockOld.GetComponentInParent<ComplexBlock>() != null)
+        BlockInstance? block = GetBlockAtGridPosition(position, null, Vector3.down);
+        if (block == null){ return; }
+        /*
+         TODO reintegrate
+        if (block.GetComponentInParent<ComplexBlock>() != null)
         {
             RemoveComplexBlockAtLocation(position);
         }
-        else
-        {
-            RemoveStaticBlock(Map.GetIntVector3(position));
-        }
+        else*/
+        RemoveBlockFromWorld(Map.GetIntVector3(position));
     }
 
-    public BlockOLD GetBlockAtGridPosition(Vector3 pos, GameObject requestor, Vector3 downVector)
+    public BlockInstance? GetBlockAtGridPosition(Vector3 worldPos, GameObject requestor, Vector3 downVector)
     {
-        return GetBlockAtGridPosition(Map.GetIntVector3(pos), requestor, downVector);
+        return GetBlockAtGridPosition(Map.GetIntVector3(worldPos), requestor, downVector);
     }
 
-    public BlockOLD GetBlockAtGridPosition(Vector3Int pos, GameObject requestor, Vector3 downVector)
+    public BlockInstance? GetBlockAtGridPosition(Vector3Int worldPos, GameObject requestor, Vector3 downVector)
     {
-        Vector3Int halfGridPos = WorldToHalfGrid(pos);
-        BlockOLD staticBlockOld = GetStaticBlock(halfGridPos);
-        BlockOLD complexBlockOldPart = GetComplexBlockPart(halfGridPos, requestor);
+        Vector3Int halfGridPos = WorldToHalfGrid(worldPos);
+        BlockInstance? staticBlock = GetStaticBlock(halfGridPos);
+        // todo fix
+        //BlockOLD complexBlockOldPart = GetComplexBlockPart(halfGridPos, requestor);
         
-        if (staticBlockOld == null) { return complexBlockOldPart; }
+        /*
+         TODO reintegrate complex blocks
+        if (staticBlock == null) { return complexBlockOldPart; }
         if (complexBlockOldPart == null) { return staticBlockOld; }
 
         //need to find highest block relative to requestor and return that
         if (staticBlockOld.GetOrientedTopSide(downVector).centerHeight > complexBlockOldPart.GetOrientedTopSide(downVector).centerHeight) { return staticBlockOld; }
         return complexBlockOldPart;
+        */
+        return staticBlock;
     }
 
-    public BlockOLD GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
+    public BlockInstance? GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
         Vector3 gridPosition = requestor.transform.position;
         switch (downDir)
@@ -254,8 +280,9 @@ public class Map
         }
 
         gridPosition = WorldToHalfGrid(gridPosition);
-        BlockOLD complexBlockOld = GetComplexBlockPart(gridPosition, requestor);
-        if (complexBlockOld != null ) { return complexBlockOld; }
+        //TODO fix complex
+        //BlockOLD complexBlockOld = GetComplexBlockPart(gridPosition, requestor);
+        //if (complexBlockOld != null ) { return complexBlockOld; }
         return (GetStaticBlock(GetIntVector3(gridPosition)));
     }
 
@@ -283,6 +310,8 @@ public class Map
         return halfGridPos * 0.5f;
     }
 
+    #region saving / loading
+    
     //todo user saves should go to Application.persistentDataPath
     public void SaveMapToFile(string filepath)
     {
@@ -390,29 +419,31 @@ public class Map
     {
         JObject blocks = new JObject();
 
-        foreach (BlockOLD block in currentStaticBlocks.Values)
+        foreach (Vector3Int halfGridPos in currentStaticBlocks.Keys)
         {
-            addGridBlockToJObject(blocks, block);
+            addGridBlockToJObject(blocks, halfGridPos, currentStaticBlocks[halfGridPos]);
         }
 
+        /*
+         TODO fix complex
         foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
             addGridBlockToJObject(blocks, complexBlock);
         }
+        */
         
         return blocks;
     }
 
-    public void addGridBlockToJObject(JObject blockList, PlaceableMonoBehaviour block)
+    public void addGridBlockToJObject(JObject blockList, Vector3Int halfGridPos, BlockInstance block)
     {
-        PlaceableKey key = new PlaceableKey(block.listID, block.baseID, block.varientID, block.transform.rotation);
+        PlaceableKey key = new PlaceableKey(block.blockData.listID, block.blockData.baseID, block.blockData.varientID, block.rotation);
         string keyString = key.getKeyString();
         if (!blockList.ContainsKey(keyString))
         {
             blockList.Add(keyString, new JArray());
         }
-        Vector3 pos = Map.WorldToHalfGrid(block.transform.position);
-        ((JArray)blockList[keyString]).Add(new JArray{pos.x, pos.y, pos.z});
+        ((JArray)blockList[keyString]).Add(new JArray{halfGridPos.x, halfGridPos.y, halfGridPos.z});
     }
     
     JObject GetMapDecorJSON()
@@ -428,136 +459,14 @@ public class Map
 
         return entities;
     }
-
-    #region old text based save
-    public void SaveMapToFileOLD(string filename)
+    
+    public BlockData LoadBlockData (string listID, string baseID, string varientID)
     {
-        if(redPlayerSpawn == null || redPlayerSpawnRotation == null || bluePlayerSpawn == null || bluePlayerSpawnRotation == null)
-        {
-            //TODO allow this but mark map as incomplete/unplayable
-            Debug.Log("ERROR missing players from map, cannot save as is");
-            return;
-        }
+        //TODO if needed need to laod / unload the full list. then only keep the necessary flyweights around
+        // should be a minor performance improvement if the list becomes too massive
+        BlockData data = ultimateList.GetMasterList(listID).GetBlock(baseID, varientID);
 
-        string mapJSON = "{\n";
-
-        //METADATA
-        mapJSON += "\"metadata\": " + GetMapMetadataOLD();
-
-        //Players
-        mapJSON += GetPlayersJSON_OLD();
-
-        //Blocks Data
-        mapJSON += GetBlocksListJSON_OLD();
-
-        //end file
-        mapJSON += "\n}";
-
-        Debug.Log(mapJSON);
-        //save file to text
-        string filepath = Application.streamingAssetsPath + "/" + filename + ".json";
-
-        //overwrites file if it already exists
-        File.WriteAllText(filepath, mapJSON);
-    }
-
-    private string GetMapMetadataOLD()
-    {
-        return "{\n" +
-               "\"version\": " + _currentNewSaveVersion +
-        "\n},\n";
-    }
-
-    private string GetBlocksListJSON_OLD()
-    {
-        string blocksListJSON = "";
-
-        //start of blocks array
-        blocksListJSON += "\"blocks\": [\n";
-
-        bool firstBlock = true;
-        //fill blocks array
-        //static
-        foreach (BlockOLD block in currentStaticBlocks.Values)
-        {
-            //add comma after previous block
-            if (!firstBlock) { blocksListJSON += ",\n"; }
-            else { firstBlock = false; }
-            blocksListJSON += ConvertPlaceableToJSON_OLD(block);
-        }
-        //complex
-        foreach (ComplexBlock complexBlock in currentComplexBlocks)
-        {
-            //add comma after previous block
-            if (!firstBlock) { blocksListJSON += ",\n"; }
-            else { firstBlock = false; }
-            blocksListJSON += ConvertPlaceableToJSON_OLD(complexBlock);
-        }
-
-        //finish blocks array
-        blocksListJSON += "\n]";
-
-        return blocksListJSON;
-    }
-
-    private string GetPlayersJSON_OLD()
-    {
-        return "\"players\": {\n" +
-                    "\"red\": {\n" +
-                        GetPositionJSON_OLD(redPlayerSpawn) +
-                        GetRotationJSON_OLD(redPlayerSpawnRotation) +
-                    "\n},\n"    +
-                    "\"blue\": {\n" +
-                        GetPositionJSON_OLD(bluePlayerSpawn) +
-                        GetRotationJSON_OLD(bluePlayerSpawnRotation) +
-              "}\n},\n";
-    }
-
-    private string ConvertPlaceableToJSON_OLD(PlaceableMonoBehaviour placeableMonoBehaviour)
-    {
-        //start block
-        string json = "{\n";
-
-        //INFO
-        json += "\"info\": {\n";
-
-        //blockID
-        json += "\"list_id\": \"" + placeableMonoBehaviour.listID + "\",\n";
-        json += "\"base_id\": \"" + placeableMonoBehaviour.baseID + "\",\n";
-        json += "\"varient_id\": \"" + placeableMonoBehaviour.varientID + "\",\n";
-
-        //position
-        json += GetPositionJSON_OLD(WorldToHalfGrid(placeableMonoBehaviour.transform.position));
-
-        //rotation
-        json += GetRotationJSON_OLD(placeableMonoBehaviour.transform.rotation); //add comma to this function if adding more parts to block info
-
-        //finish info
-        json += "}\n";
-
-        //finish block
-        json += "}\n";
-
-        return json;
-    }
-
-    private string GetPositionJSON_OLD(Vector3 pos)
-    {
-        return "\"position\": {\n" +
-            "\"x\": " + pos.x + ",\n" +
-            "\"y\": " + pos.y + ",\n" +
-            "\"z\": " + pos.z + "\n" +
-            "},\n";
-    }
-
-    private string GetRotationJSON_OLD(Quaternion rot)
-    {
-        return "\"rotation\": {\n" +
-            "\"w\": " + rot.w + ",\n" +
-            "\"x\": " + rot.x + ",\n" +
-            "\"y\": " + rot.y + ",\n" +
-            "\"z\": " + rot.z + "\n" +
-            "}\n";//add comma here if more fields added to block ie, components
+        return data;
     }
     
     #endregion

@@ -17,7 +17,8 @@ public class ComplexBlock : PlaceableMonoBehaviour
 {
     GameObject gridSplitBlocksParent;
 
-    List<BlockOLD> gridBlocks;
+    //todo fix
+    //List<BlockOLD> gridBlocks;
 
     [SerializeField]
     List<ComponentBlockDefinition> componentBlocks;
@@ -44,7 +45,8 @@ public class ComplexBlock : PlaceableMonoBehaviour
         gridSplitBlocksParent.transform.localPosition = Vector3.zero;
         gridSplitBlocksParent.transform.localRotation = Quaternion.identity;
 
-        gridBlocks = new List<BlockOLD>();
+        //todo fix
+        //gridBlocks = new List<BlockOLD>();
 
         float distanceOffsetFromGrid = 0.0f;
         //used to find side of block affected, offset will be in the opposite direction of this
@@ -64,11 +66,11 @@ public class ComplexBlock : PlaceableMonoBehaviour
         {
             foreach (ComponentBlockDefinition componentBlock in componentBlocks)
             {
-                BlockOLD singleBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
+                /*todo fix BlockOLD singleBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
                 singleBlockOld.blockSides = new BlockSideDefinitions();
                 singleBlockOld.blockSides.CopyBlockSides(componentBlock.sides);
                 singleBlockOld.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
-                gridBlocks.Add(singleBlockOld);
+                gridBlocks.Add(singleBlockOld);*/
             }
             return;
         }
@@ -77,7 +79,8 @@ public class ComplexBlock : PlaceableMonoBehaviour
         foreach (ComponentBlockDefinition componentBlock in componentBlocks)
         {
             //The block that is still in the initial unoffset block grid
-            BlockOLD transformAlignedBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
+            //todo fix
+            /*BlockOLD transformAlignedBlockOld = gridSplitBlocksParent.AddComponent<BlockOLD>();
             transformAlignedBlockOld.blockSides = new BlockSideDefinitions();
             transformAlignedBlockOld.blockSides.CopyBlockSides(componentBlock.sides);
             transformAlignedBlockOld.SetPosition(Map.GetGridSpace(transform.position + transform.rotation * new Vector3(componentBlock.offsetFromCenter.x, componentBlock.offsetFromCenter.y, componentBlock.offsetFromCenter.z)));
@@ -106,13 +109,15 @@ public class ComplexBlock : PlaceableMonoBehaviour
 
                 gridBlocks.Add(offsetBlockOld);
             }
+            */
         }
     }
 
+    /*todo fix
     public List<BlockOLD> GetGridBlocks()
     {
         return gridBlocks;
-    }
+    }*/
 
     //takes an on grid position and retruns a list of all the subblocks based on that position
     //used for on grid block placement, don't use for in game off grid calculations

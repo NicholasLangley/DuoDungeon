@@ -121,6 +121,8 @@ public class BaseBlockData : ScriptableObject
 [CreateAssetMenu(fileName = "blockData", menuName = "Blocks/BlockData")]
 public class BlockData : Placeable
 {
+    //placeable parent has list, base and varient ids
+    
     [SerializeField] public BaseBlockData baseBlockData;
     [SerializeField] public Mesh mesh;
     [SerializeField] public Material material;

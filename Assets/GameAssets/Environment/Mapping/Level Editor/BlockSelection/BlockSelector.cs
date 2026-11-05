@@ -19,13 +19,13 @@ public class BlockSelector : MonoBehaviour
         {
             GameObject newButton = Instantiate(blockButtonPrefab, blockButtonGrid.transform);
             BlockSelectionButton blockButton = newButton.GetComponent<BlockSelectionButton>();
-            GameObject objectGameObject = varientList.GetBlock("blank");
+            BlockData blockData = varientList.GetVarient("blank");
 
             string baseID;
             string varientID;
-            PlaceableMonoBehaviour placeableMonoBehaviour = objectGameObject.GetComponent<PlaceableMonoBehaviour>();
-            baseID = placeableMonoBehaviour.baseID;
-            varientID = placeableMonoBehaviour.varientID;
+            Placeable placeable = blockData;
+            baseID = placeable.baseID;
+            varientID = placeable.varientID;
             /*ComplexBlock complexBlock = objectGameObject.GetComponent<ComplexBlock>();
             if(complexBlock != null)
             {
@@ -39,14 +39,14 @@ public class BlockSelector : MonoBehaviour
                 varientID = block.varientID;
             }*/
             
-            blockButton.SetBlock(objectGameObject, varientList.baseID);
-            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.block, blockMasterList.listID, baseID, varientID));
+            blockButton.SetBlock(placeable, varientList.baseID);
+            newButton.GetComponent<Button>().onClick.AddListener(() => selectBlock(blockButton.placeable, blockMasterList.listID, baseID, varientID));
         }
     }
 
-    public void selectBlock(GameObject block, string listID, string baseID, string varientID)
+    public void selectBlock(Placeable placeable, string listID, string baseID, string varientID)
     {
-        blockPlacer.SetBlock(block, listID, baseID, varientID);
+        blockPlacer.SetBlock(placeable, listID, baseID, varientID);
     }
 
 

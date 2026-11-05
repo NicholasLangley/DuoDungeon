@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockOLD : PlaceableMonoBehaviour
+//deprecated
+public class BlockOLDDeprecated : PlaceableMonoBehaviour
 {
     [SerializeField]    
     public BlockSideDefinitions blockSides;

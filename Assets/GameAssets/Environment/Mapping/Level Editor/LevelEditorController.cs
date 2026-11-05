@@ -16,7 +16,6 @@ public class LevelEditorController : MonoBehaviour
     List<string> wallListIDs;
     [SerializeField]
     BlockSelector blockSelector;
-    BlockBuilder blockBuilder;
 
     [SerializeField]
     ObjectPlacer objectPlacer;
@@ -28,9 +27,8 @@ public class LevelEditorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        map = new Map();
-        blockBuilder = new BlockBuilder(ultimateList);
-        mapBuilder = new MapBuilder(blockBuilder, map);
+        map = new Map(ultimateList);
+        mapBuilder = new MapBuilder(map);
         objectPlacer.map = map;
         objectPlacer.SetBlockList(ultimateList);
         objectPlacer.wallListIDs =  wallListIDs;

@@ -11,7 +11,7 @@ public class BlockSelectionButton : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI text;
 
-    public GameObject block;
+    public Placeable placeable;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +25,9 @@ public class BlockSelectionButton : MonoBehaviour
         
     }
 
-    public void SetBlock(GameObject B, string name)
+    public void SetBlock(Placeable placeable, string name)
     {
-        block = B;
+        this.placeable = placeable;
         text.text = name;
     }
     
