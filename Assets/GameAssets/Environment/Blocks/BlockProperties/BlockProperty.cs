@@ -7,9 +7,3 @@ public abstract class BlockProperty : ScriptableObject
     // Can leave this empty as just a minimal tag 
     // or add functions / properties to inform behaviors
 }
-
-[CreateAssetMenu(fileName = "IceBlockProperty", menuName = "Blocks/BlockProperties/IceBlockProperty")]
-public class IceBlockProperty : BlockProperty
-{
-    
-}
