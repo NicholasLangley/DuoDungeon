@@ -172,30 +172,30 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         nextPos = GetCenterOfBlock(nextPos, downDir);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
-        BlockOLD currentBlockOld = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
-        float exitHeight = currentBlockOld != null ? currentBlockOld.CalculateAttemptedExitEdgeHeight(nextPos, transform.up, GetCurrentDownDirection()) : 0;
+        BlockInstance? currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        float exitHeight = currentBlock != null ? BlockMath.GetBlockExitHeight((BlockInstance)currentBlock, GetCenterOfBlock(transform.position, downDir), nextPos, transform.up, GetCurrentDownDirection()) : 0;
         nextPos += transform.up * exitHeight;
         nextPos = GetCenterOfBlock(nextPos, downDir);
 
         //check for stairs going down
         //TODO test for going up a block into a down staircase (example: /\  full stair configuration)
-        BlockOLD straightForwardDestBlockOld = map.GetBlockAtGridPosition(nextPos, gameObject, gravityDirection);
+        BlockInstance? straightForwardDestBlock = map.GetBlockAtGridPosition(nextPos, gameObject, gravityDirection);
         //if straight forward block is not ground in itself need to check if below block is a staircase for smooth movement
-        if (straightForwardDestBlockOld == null || /*!straightForwardDestBlockOld.blocksAllMovement &&*/ (straightForwardDestBlockOld.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND))
+        if (straightForwardDestBlock == null || /*!straightForwardDestBlockOld.blocksAllMovement &&*/ (straightForwardDestBlock.Value.blockData.GetOrientedTopSide(-transform.up, straightForwardDestBlock.Value.rotation).centerType != CenterType.GROUND))
         {
             Vector3 belowDest = nextPos - transform.up;
 
-            BlockOLD belowDestBlockOld = map.GetBlockAtGridPosition(belowDest, gameObject, gravityDirection);
-            if (belowDestBlockOld != null && (belowDestBlockOld.GetOrientedTopSide(-transform.up).centerType == CenterType.GROUND) && belowDestBlockOld.canEntityEnter(this))
+            BlockInstance? belowDestBlock = map.GetBlockAtGridPosition(belowDest, gameObject, gravityDirection);
+            if (belowDestBlock != null && (belowDestBlock.Value.blockData.GetOrientedTopSide(-transform.up, belowDestBlock.Value.rotation).centerType == CenterType.GROUND) && BlockMath.CanEntityEnter(this, GetCenterOfBlock(transform.position, downDir), (BlockInstance)belowDestBlock, belowDest))
             {
                 nextPos = belowDest;
-                nextPos += transform.up * belowDestBlockOld.GetMidBlockHeight(-transform.up);
+                nextPos += transform.up * BlockMath.GetMidBlockHeight((BlockInstance)belowDestBlock, -transform.up);
             }
         }
         //block exists and is full (player will try to climb ontop of it if possible)
-        else if (straightForwardDestBlockOld != null && exitHeight < 1.0f)
+        else if (straightForwardDestBlock != null && exitHeight < 1.0f)
         {
-            float entryHeight = straightForwardDestBlockOld.CalculateAttemptedEntryEdgeHeight(transform, GetCurrentDownDirection());
+            float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform, GetCurrentDownDirection());
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
             {
                 nextPos += transform.up;

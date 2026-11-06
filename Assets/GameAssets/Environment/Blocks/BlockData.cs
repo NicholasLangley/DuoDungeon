@@ -127,6 +127,34 @@ public class BlockData : Placeable
     [SerializeField] public Mesh mesh;
     [SerializeField] public Material material;
     [SerializeField] public List<BlockProperty> properties = new List<BlockProperty>();
+
+    public BlockSide GetOrientedTopSide(Vector3 downVector, Quaternion blockRotation)
+    {
+        Vector3 blockOrientedDownVector = Quaternion.Inverse(blockRotation) * downVector;
+        DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
+        
+        switch (downDir)
+        {
+            default:
+                //Debug.Log("top");
+                return baseBlockData.blockSides.topSide;
+            case DownDirection.Yup:
+                //Debug.Log("bottom");
+                return baseBlockData.blockSides.bottomSide;
+            case DownDirection.Xleft:
+                //Debug.Log("right");
+                return baseBlockData.blockSides.rightSide;
+            case DownDirection.Xright:
+                //Debug.Log("left");
+                return baseBlockData.blockSides.leftSide;
+            case DownDirection.Zforward:
+                //Debug.Log("back");
+                return baseBlockData.blockSides.backSide;
+            case DownDirection.Zback:
+                // Debug.Log("front");
+                return baseBlockData.blockSides.frontSide;
+        }
+    }
 }
 
 //a particular instance of a block containing its blockFlyweightData, and its  rotation

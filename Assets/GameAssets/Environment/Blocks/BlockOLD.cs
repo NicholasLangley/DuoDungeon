@@ -39,7 +39,7 @@ public class BlockOLDDeprecated : PlaceableMonoBehaviour
 
         float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(e.transform, downDir) + GetPositionsDownOrientedHeight(worldPosition, downDir);
 
-        BlockOLD entityCurrentBlockOld = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
+        BlockOLDDeprecated entityCurrentBlockOld = e.map.GetCurrentlyOccupiedBlock(e.gameObject, e.GetCurrentDownDirection());
         float entityExitHeight;
         if (entityCurrentBlockOld != null)
         {
