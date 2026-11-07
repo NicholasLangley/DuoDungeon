@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
   m_Name: Sphere - Varient List
   m_EditorClassIdentifier: 
-  BlockPropertiesAndScriptsObject: {fileID: 8354670881088687699, guid: b2bccd9227b09c04692f886c8abbec7c, type: 3}
   baseID: sphere
-  blockVarients:
-  - {fileID: 581105177497003801, guid: 44d32fd07373c404786f96e460aacae9, type: 3}
+  varientBlockDataObjects:
+  - {fileID: 11400000, guid: a97800145a73828bd8ef8cb58e247804, type: 2}

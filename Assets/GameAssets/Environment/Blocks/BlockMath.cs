@@ -7,7 +7,80 @@ using UnityEngine;
 //replaces the old gameobject based block methods
 public static class BlockMath
 {
-    public static float GetBlockExitHeight(BlockInstance currentBlock, Vector3 entitiesCurrentWorldGridPos, Vector3 entitiesNextPos,
+    public static float GetBlockEntryHeight(BlockInstance blockBeingEntered, Vector3 entitiesCurrentWorldGridPos, Vector3 entitiesNextPos,
+        Vector3 entityUpVector, DownDirection entityDownDir)//(Transform entityTransform, DownDirection entityDownDir)
+    {
+        //need the entites relative direction + normal and the forward vector of the block side to determine which side of the blockside its exiting from
+        // //normal vector should be entities down vector passing from entity throough block
+        Vector3 normalVector = -entityUpVector;
+        //relative direction is the direction with the vertical direction removed, so which horizontal direction the entity is moving relative to the space its in and its down direction
+        Vector3 relativeDirection = entitiesNextPos - entitiesCurrentWorldGridPos;
+        
+        switch (entityDownDir)
+        {
+            default:
+            case DownDirection.Yup:
+                relativeDirection.y = 0;
+                break;
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                relativeDirection.x = 0;
+                break;
+            case DownDirection.Zforward:
+            case DownDirection.Zback:
+                relativeDirection.z = 0;
+                break;
+        }
+        
+        //the vector pointing from the center of a block side to its forward edge
+        //comparing the relativeDirection to the forward vector (using the normal) we can figure out which edge of the block is being exited from
+        Vector3 forwardVector;
+
+        Vector3 blockOrientedDownVector = Quaternion.Inverse(blockBeingEntered.rotation) * normalVector;
+        DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
+
+        //every case except for the forward / back sides have the same forward vector
+        //formerly just transform.forward
+        switch (downDir)
+        {
+            default:
+            case DownDirection.Yup:
+            case DownDirection.Xleft:
+            case DownDirection.Xright:
+                forwardVector = blockBeingEntered.rotation * Vector3.forward;
+                break;
+            case DownDirection.Zforward:
+                forwardVector = blockBeingEntered.rotation * -Vector3.up;
+                break;
+            case DownDirection.Zback:
+                forwardVector = blockBeingEntered.rotation * Vector3.up;
+                break;
+        }
+
+        float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
+
+        BlockSide side = blockBeingEntered.blockData.GetOrientedTopSide(normalVector, blockBeingEntered.rotation);
+        //Debug.Log("forward: " + forwardVector + "\n normal: " + normalVector + "\n relative: " + relativeDirection + "\n signedAngle: " + angleFromForwardVector);
+        //forward
+        if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
+        {
+            return side.forwardEdgeHeight;
+        }
+        //right
+        if(angleFromForwardVector >= 10f && angleFromForwardVector <= 120f)
+        {
+            return side.rightEdgeHeight;
+        }
+        //back
+        if (angleFromForwardVector >= 120f || angleFromForwardVector <= -120f)
+        {
+            return side.backwardEdgeHeight;
+        }
+        //left
+        return side.leftEdgeHeight;
+    }
+    
+    public static float GetBlockExitHeight(BlockInstance blockBeingLeft, Vector3 entitiesCurrentWorldGridPos, Vector3 entitiesNextPos,
         Vector3 entityUpVector, DownDirection entityDownDir)
     {
         //need the entites relative direction + normal and the forward vector of the block side to determine which side of the blockside its exiting from
@@ -35,7 +108,7 @@ public static class BlockMath
         //comparing the relativeDirection to the forward vector (using the normal) we can figure out which edge of the block is being exited from
         Vector3 forwardVector;
         
-        Vector3 blockOrientedDownVector = Quaternion.Inverse(currentBlock.rotation) * normalVector;
+        Vector3 blockOrientedDownVector = Quaternion.Inverse(blockBeingLeft.rotation) * normalVector;
         DownDirection downDir = Entity.ConvertVectorToDownDirection(blockOrientedDownVector);
         switch (downDir)
         {
@@ -45,19 +118,19 @@ public static class BlockMath
             case DownDirection.Yup:
             case DownDirection.Xleft:
             case DownDirection.Xright:
-                forwardVector = currentBlock.rotation * Vector3.forward;
+                forwardVector = blockBeingLeft.rotation * Vector3.forward;
                 break;
             case DownDirection.Zforward:
-                forwardVector = currentBlock.rotation * -Vector3.up;
+                forwardVector = blockBeingLeft.rotation * -Vector3.up;
                 break;
             case DownDirection.Zback:
-                forwardVector = currentBlock.rotation * Vector3.up;
+                forwardVector = blockBeingLeft.rotation * Vector3.up;
                 break;
         }
         
         float angleFromForwardVector = Vector3.SignedAngle(forwardVector, relativeDirection, normalVector);
 
-        BlockSide side = currentBlock.blockData.GetOrientedTopSide(normalVector, currentBlock.rotation);
+        BlockSide side = blockBeingLeft.blockData.GetOrientedTopSide(normalVector, blockBeingLeft.rotation);
 
         //forward
         if (angleFromForwardVector < 10f && angleFromForwardVector > -10f)
@@ -82,7 +155,7 @@ public static class BlockMath
     {
         DownDirection downDir = fgm.GetCurrentDownDirection();
 
-        float enteringEdgeHeight = CalculateAttemptedEntryEdgeHeight(fgm.transform, downDir) + GetPositionsDownOrientedHeight(destBlockPos, downDir);
+        float enteringEdgeHeight = GetBlockEntryHeight(destBlock, fgm.transform.position, destBlockPos, fgm.transform.up, downDir) + GetPositionsDownOrientedHeight(destBlockPos, downDir);
         
         //get exit height from currentblock
         BlockInstance? entityCurrentBlock = fgm.map.GetCurrentlyOccupiedBlock(fgm.gameObject, fgm.GetCurrentDownDirection());
@@ -124,4 +197,41 @@ public static class BlockMath
         return block.blockData.GetOrientedTopSide(entityDownVector, block.rotation).centerHeight;
     }
     
+    public static float GetPositionsDownOrientedHeight(Vector3 pos, DownDirection downDir)
+    {
+        switch (downDir)
+        {
+            default:
+                return pos.y;
+            case DownDirection.Yup:
+                return pos.y * -1f;
+            case DownDirection.Xleft:
+                return pos.x;
+            case DownDirection.Xright:
+                return pos.x * -1f;
+            case DownDirection.Zforward:
+                return pos.z * -1f;
+            case DownDirection.Zback:
+                return pos.z;
+        }
+    }
+    
+    static bool IsEntityClimbingStackedBlock(Vector3 blockPos, Vector3 entityPos, DownDirection downDir)
+    {
+        float blockDownOrientedHeight = GetPositionsDownOrientedHeight(blockPos, downDir);
+        float entityDownOrientedHeight = GetPositionsDownOrientedHeight(entityPos, downDir);
+        
+        if (blockDownOrientedHeight - Mathf.Floor(entityDownOrientedHeight) >= 0.99f) { return true; }
+        return false;
+    }
+
+    static bool IsEntityClimbingOrStayingSameHeight(Vector3 blockPos, Vector3 entityPos, DownDirection downDir)
+    {
+        float blockDownOrientedHeight = GetPositionsDownOrientedHeight(blockPos, downDir);
+        float entityDownOrientedHeight = GetPositionsDownOrientedHeight(entityPos, downDir);
+
+        //transform.position.y >= Mathf.Floor(e.transform.position.y))
+        if (blockDownOrientedHeight >= Mathf.Floor(entityDownOrientedHeight)) { return true; }
+        return false;
+    }
 }

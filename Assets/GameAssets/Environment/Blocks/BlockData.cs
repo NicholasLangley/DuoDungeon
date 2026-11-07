@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using UnityEditor;
 using UnityEngine;
 
@@ -108,15 +109,6 @@ public class BlockSideDefinitions
     }
 }
 
-
-//contains the base info shared between all blocks of a specific shape
-[CreateAssetMenu(fileName = "baseBlockData", menuName = "Blocks/BaseBlockData")]
-public class BaseBlockData : ScriptableObject
-{
-    [SerializeField]    
-    public BlockSideDefinitions blockSides;
-}
-
 //the specific version of a block that contains the mesh and material used and any special data
 [CreateAssetMenu(fileName = "blockData", menuName = "Blocks/BlockData")]
 public class BlockData : Placeable
@@ -155,18 +147,31 @@ public class BlockData : Placeable
                 return baseBlockData.blockSides.frontSide;
         }
     }
+
+    public string GetIdString()
+    {
+        return listID + ":" + baseID + ":" + varientID;
+    }
 }
 
 //a particular instance of a block containing its blockFlyweightData, and its  rotation
 //position is used as the map key so doesn't need to be stored here
+//index is the specific index of the transform in the FlyweightRenderer list. used for disabling / updating the transform if needed
 public struct BlockInstance
 {
     public BlockData blockData;
     public Quaternion rotation;
+    public int rendererIndex;
     
     public BlockInstance(BlockData blockData, Quaternion rotation)
         {
         this.blockData = blockData;
         this.rotation = rotation;
+        rendererIndex = -1;
         }
+
+    public void SetRenderIndex(int i)
+    {
+        rendererIndex = i;
+    }
 }

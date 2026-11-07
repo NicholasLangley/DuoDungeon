@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
   m_Name: Cube - Varient List
   m_EditorClassIdentifier: 
-  BlockPropertiesAndScriptsObject: {fileID: 6536781763193779614, guid: 9107ced86bc447b4f839a91f7eae1f9f, type: 3}
   baseID: cube
-  blockVarients:
-  - {fileID: 4532370135384009348, guid: 3ef39e87e6cb3b147b62e527b1e5fe60, type: 3}
+  varientBlockDataObjects:
+  - {fileID: 11400000, guid: 9a97fa4523b9d3239980e7936e6f9005, type: 2}

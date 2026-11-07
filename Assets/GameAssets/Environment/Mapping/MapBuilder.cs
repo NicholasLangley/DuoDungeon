@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
 
@@ -9,18 +7,18 @@ public class MapBuilder
 {
     
     //note: all blocks are saved / loaded with their adjusted halfGrid positions and this will need to be converted to world positions on instantiation
-    Map map;
+    Map _map;
     //list IDs for blocks that aren't static in the grid
     List<string> ComplexBlockListIDs = new List<string> { "Pushable" };
 
     public MapBuilder(Map m)
     {
-        map = m;
+        _map = m;
     }
 
     public void LoadMap(string filepath)
     {
-        map.ClearMap();
+        _map.ClearMap();
         string mapJSON = File.ReadAllText(filepath);
         //map parsing starts here
         JObject mapJson = JObject.Parse(mapJSON);
@@ -39,11 +37,11 @@ public class MapBuilder
                 return;
         }
 
-        //update map to newest version (backup of last version will be made / overwritten)
+        //update map to the newest version (backup of last version will be made / overwritten)
         if ((string)mapJson["metadata"]["saveVersion"] != Map._currentNewSaveVersion)
         {
             Debug.Log("updating map from version " + (string)mapJson["metadata"]["saveVersion"] + " to version " + Map._currentNewSaveVersion);
-            map.SaveMapToFile(filepath);
+            _map.SaveMapToFile(filepath);
         }
         //map.DebugMap();
     }
@@ -58,8 +56,8 @@ public class MapBuilder
     void LoadMetadata(JObject mapJson)
     {
         //todo do we need to do anything anything else with the metadata? author(s)?
-        map.mapName = mapJson["metadata"]["name"].ToString();
-        map.version = (int)mapJson["metadata"]["version"];
+        _map.mapName = mapJson["metadata"]["name"].ToString();
+        _map.version = (int)mapJson["metadata"]["version"];
     }
 
     void LoadMapBlocks(JObject mapJson)
@@ -69,7 +67,7 @@ public class MapBuilder
         {
             PlaceableKey key = new PlaceableKey(blockTemplate.Key);
             
-            BlockData blockData = map.LoadBlockData(key.listID, key.baseID, key.varientID);
+            BlockData blockData = _map.LoadBlockData(key.listID, key.baseID, key.varientID);
             if (blockData == null)
             {
                 //TODO log to file / error message user?
@@ -85,7 +83,7 @@ public class MapBuilder
                 
                 Vector3Int halfGridPos = new Vector3Int((int)positionArray[0],  (int)positionArray[1], (int)positionArray[2]);
                 BlockInstance block = new BlockInstance(blockData, new Quaternion(key.rotationX, key.rotationY, key.rotationZ, key.rotationW));
-                map.AddBlockToHalfGridPos(halfGridPos, block);
+                _map.AddBlockToHalfGridPos(halfGridPos, block);
                 
                 
                 //DEPRECATED
@@ -103,11 +101,11 @@ public class MapBuilder
     
     private void LoadPlayerSpawns(JObject playerJObject)
     {
-        map.redPlayerSpawn = parseJSONPosition(playerJObject["red"]["position"]);
-        map.redPlayerSpawnRotation = ParseJSONRotation(playerJObject["red"]["rotation"]);
+        _map.redPlayerSpawn = parseJSONPosition(playerJObject["red"]["position"]);
+        _map.redPlayerSpawnRotation = ParseJSONRotation(playerJObject["red"]["rotation"]);
 
-        map.bluePlayerSpawn = parseJSONPosition(playerJObject["blue"]["position"]);
-        map.bluePlayerSpawnRotation = ParseJSONRotation(playerJObject["blue"]["rotation"]);
+        _map.bluePlayerSpawn = parseJSONPosition(playerJObject["blue"]["position"]);
+        _map.bluePlayerSpawnRotation = ParseJSONRotation(playerJObject["blue"]["rotation"]);
     }
     
     public static Vector3 parseJSONPosition(JToken pos)

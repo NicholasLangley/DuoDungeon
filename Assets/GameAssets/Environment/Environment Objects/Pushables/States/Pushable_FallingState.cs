@@ -78,15 +78,15 @@ public class Pushable_FallingState : FullGridMoveableState
             return;
         }
 
-        BlockOLD startingBlockOld = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
-        BlockOLD destBlockOld;
+        BlockInstance? startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
+        BlockInstance? destBlock;
         fallDestination = baseBlockPosition;
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        if (startingBlockOld != null && startingBlockOld.GetOrientedTopSide(_fgm.gravityDirection).centerType == CenterType.GROUND)
+        if (startingBlock != null && startingBlock.Value.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.Value.rotation).centerType == CenterType.GROUND)
         {
-            destBlockOld = startingBlockOld;
+            destBlock = startingBlock;
         }
         else
         {
@@ -115,33 +115,33 @@ public class Pushable_FallingState : FullGridMoveableState
                     break;
             }
             
-            destBlockOld = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
+            destBlock = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
         }
         
-        if (destBlockOld != null)
+        if (destBlock != null)
         {
             switch (downDir)
             {
                 //YDown
                 default:
-                    fallDestination.y += destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.y += BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
                 case DownDirection.Yup:
-                    fallDestination.y -= destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.y -= BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
 
                 case DownDirection.Xright:
-                    fallDestination.x -= destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.x -= BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
                 case DownDirection.Xleft:
-                    fallDestination.x += destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.x += BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
 
                 case DownDirection.Zforward:
-                    fallDestination.z -= destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.z -= BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
                 case DownDirection.Zback:
-                    fallDestination.z += destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+                    fallDestination.z += BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
                     break;
             }
             //stops lesser falls from being slower

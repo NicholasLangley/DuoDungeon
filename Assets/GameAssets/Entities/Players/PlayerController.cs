@@ -121,13 +121,14 @@ public class PlayerController : ICommandable
         //check if blocking object is a pushable object
         if (redBlocked && !redBlockedByWall)
         {
-            BlockOLD destinationBlockOld =
+            BlockInstance? destinationBlock =
                 redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
-            if (destinationBlockOld != null &&
-                destinationBlockOld.transform.parent.gameObject.GetComponent<Pushable>() != null)
+            if (destinationBlock != null && PushableBlockProperty.IsPushable(destinationBlock.Value.blockData))
             {
-                Pushable pushable = destinationBlockOld.transform.parent.gameObject.GetComponent<Pushable>();
-                bool pushing = pushable.AttemptPush(redPlayer.GetHorizontalMoveVector(), destinationBlockOld);
+                Debug.Log("red attempting push! NEED to implement");
+                //todo reimplement pushables via properties
+                //Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
+                bool pushing = false;//pushable.AttemptPush(redPlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing)
                 {
                     redBlocked = false;
@@ -137,13 +138,15 @@ public class PlayerController : ICommandable
 
         if (blueBlocked && !blueBlockedByWall)
         {
-            BlockOLD destinationBlockOld =
+            BlockInstance? destinationBlock =
                 bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
-            if (destinationBlockOld != null &&
-                destinationBlockOld.transform.parent.gameObject.GetComponent<Pushable>() != null)
+            if (destinationBlock != null &&
+                PushableBlockProperty.IsPushable(destinationBlock.Value.blockData))
             {
-                Pushable pushable = destinationBlockOld.transform.parent.gameObject.GetComponent<Pushable>();
-                bool pushing = pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlockOld);
+                Debug.Log("blue attempting push! NEED to implement");
+                //todo reimplement pushables via properties
+                //Pushable pushable = destinationBlock.transform.parent.gameObject.GetComponent<Pushable>();
+                bool pushing = false;//pushable.AttemptPush(bluePlayer.GetHorizontalMoveVector(), destinationBlock);
                 if (pushing)
                 {
                     blueBlocked = false;

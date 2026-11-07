@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
   m_Name: Partial 0.5 - Varient List
   m_EditorClassIdentifier: 
-  BlockPropertiesAndScriptsObject: {fileID: 7516471492362843991, guid: 4796981fbce67214db3411925b3edc8f, type: 3}
   baseID: Partial 0.5
-  blockVarients:
-  - {fileID: 2623216816058205481, guid: 881974465c1cc714794d4eb0dbd3ac84, type: 3}
+  varientBlockDataObjects:
+  - {fileID: 11400000, guid: a9664aabd4d6d52258e80d1f05a7886e, type: 2}

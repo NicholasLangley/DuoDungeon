@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a59d5df7777934189bbe3e87d85c57, type: 3}
   m_Name: pushableTestVarientList
   m_EditorClassIdentifier: 
-  BlockPropertiesAndScriptsObject: {fileID: 7898028207437761554, guid: c2b19d3e4cd07234aa001aa114ce70f3, type: 3}
   baseID: pushableTest
-  blockVarients:
-  - {fileID: 3743110162171882370, guid: e67dc645b0a8b4b48956b303f639b55d, type: 3}
+  varientBlockDataObjects:
+  - {fileID: 11400000, guid: 38ccf16f84292993593ee2578ec20472, type: 2}

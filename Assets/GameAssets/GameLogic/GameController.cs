@@ -13,7 +13,6 @@ public class GameController : MonoBehaviour
     MapBuilder mapBuilder;
     [SerializeField]
     UltimateList ultimateList;
-    BlockBuilder blockBuilder;
 
     //Turn variables
     Stack<Turn> previousTurns;
@@ -155,14 +154,13 @@ public class GameController : MonoBehaviour
             map.ClearMap();
             _pushableObjects = new List<Pushable>();
         }
-        map = new Map();
-        blockBuilder = new BlockBuilder(ultimateList);
-        mapBuilder = new MapBuilder(blockBuilder, map);
+        map = new Map(ultimateList);
+        mapBuilder = new MapBuilder(map);
 
         //blocks only
         mapBuilder.LoadMap(filename);
 
-        List<ComplexBlock> complexBlocks = map.GetComplexBlocksList();
+        /*List<ComplexBlock> complexBlocks = map.GetComplexBlocksList();
         foreach (ComplexBlock block in complexBlocks)
         {
             Pushable pushableComponent = block.gameObject.GetComponent<Pushable>();
@@ -170,7 +168,7 @@ public class GameController : MonoBehaviour
             {
                 _pushableObjects.Add(pushableComponent);
             }
-        }
+        }*/
 
         //spawn Players
         playerController.SpawnPlayers(map);

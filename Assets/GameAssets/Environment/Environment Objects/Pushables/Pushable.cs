@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//TODO use block properties instead? or keep this for instantiation?
 public class Pushable : FullGridMoveable
 {
     public bool toBePushedThisRound;
@@ -15,7 +15,8 @@ public class Pushable : FullGridMoveable
         stateMachine = new StateMachine();
 
         idleState = new FGM_ComplexBlock_IdleState(this, stateMachine, complexBlock);
-        movementState = new Pushable_MovementState(this, stateMachine);
+        //TODO fix if needed ,but this might all be deprecated
+        //movementState = new Pushable_MovementState(this, stateMachine);
         movementBlockedState = new FGM_MovementBlockedState(this, stateMachine);
         rotationState = new FGM_RotationState(this, stateMachine);
         fallingState = new Pushable_FallingState(this, stateMachine);
@@ -72,7 +73,7 @@ public class Pushable : FullGridMoveable
 
      #endregion
 
-    public bool AttemptPush(Vector3 pushDirectionVector, BlockOLD pushedBlockOldComponent)
+    public bool AttemptPush(Vector3 pushDirectionVector)
     {
         pushDirection = getLocalPushDirection(pushDirectionVector);
 

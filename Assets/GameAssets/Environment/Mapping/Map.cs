@@ -78,8 +78,9 @@ public class Map
     
     //todo can these be combined? idk since complex have more logic
     Dictionary<Vector3Int, BlockInstance> currentStaticBlocks;
-    List<ComplexBlock> currentComplexBlocks;
-    //todo lists for rendering
+    //List<ComplexBlock> currentComplexBlocks;
+    private GameObject _rendererParent;
+    private Dictionary<string, FlyweightRenderer> _renderers;
     
     Dictionary<Vector3Int, Wall> currentWalls;
 
@@ -97,7 +98,9 @@ public class Map
     public Map(UltimateList ultimateList)
     {
         currentStaticBlocks = new Dictionary<Vector3Int, BlockInstance>();
-        currentComplexBlocks = new List<ComplexBlock>();
+        _rendererParent = new  GameObject("FlyweightRenderers");
+        _renderers = new Dictionary<string, FlyweightRenderer>();
+        //currentComplexBlocks = new List<ComplexBlock>();
         
         version = 0;
 
@@ -108,13 +111,13 @@ public class Map
     {
 
         currentStaticBlocks.Clear();
-        //TODO clear rendering lists
+        ResetRenderers();
 
-        foreach (ComplexBlock complexBlock in currentComplexBlocks)
+        /*foreach (ComplexBlock complexBlock in currentComplexBlocks)
         {
             GameObject.Destroy(complexBlock.gameObject);
         }
-        currentComplexBlocks.Clear();
+        currentComplexBlocks.Clear();*/
     }
 
 
@@ -133,8 +136,32 @@ public class Map
             RemoveBlockFromHalfGrid(halfGridPos);
         }
         currentStaticBlocks.Add(halfGridPos, block);
-        //TODO update renderers
-        //todo seperate complex logic???
+        
+        //get / create renderer for mesh
+        AddBlockToRenderer( HalfGridToWorld(halfGridPos), block);
+        
+
+        //todo separate complex logic???
+    }
+
+    public void AddBlockToRenderer(Vector3 worldPos, BlockInstance block)
+    {
+        FlyweightRenderer renderer;
+        if (_renderers.ContainsKey(block.blockData.GetIdString()))
+        {
+            renderer = _renderers[block.blockData.GetIdString()];
+        }
+        else
+        {
+            GameObject newRenderer = new GameObject("Renderer: " + block.blockData.GetIdString());
+            newRenderer.transform.SetParent(_rendererParent.transform);
+            renderer = newRenderer.AddComponent<FlyweightRenderer>();
+            renderer.SetMesh(block.blockData.mesh);
+            renderer.SetMaterial(block.blockData.material);
+            _renderers.Add(block.blockData.GetIdString(), renderer);
+        }
+        block.SetRenderIndex(renderer.GetNextIndex());
+        renderer.AddTransform(new FlyweightTransform(worldPos, block.rotation));
     }
 
     private void RemoveBlockFromWorld(Vector3 worldPos)
@@ -147,10 +174,22 @@ public class Map
     {
         if (currentStaticBlocks.ContainsKey(halfGridPos))
         {
+            //disable renderer index (note since block is removed entirely from map this is permanent)
+            //render index is orphaned
+            BlockInstance block = currentStaticBlocks[halfGridPos];
+            DisableBlockInRenderer(block.blockData.GetIdString(), block.rendererIndex);
+            
             currentStaticBlocks.Remove(halfGridPos);
-            //todo update renderers
         }
         //todo seperate complex logic????
+    }
+
+    public void DisableBlockInRenderer(string idString, int index)
+    {
+        if (_renderers.ContainsKey(idString))
+        {
+            _renderers[idString].DisableTransform(index);
+        }
     }
 
     private BlockInstance? GetStaticBlock(Vector3Int halfGridPosition)
@@ -171,12 +210,12 @@ public class Map
 
     public List<ComplexBlock> GetComplexBlocksList()
     {
-        return currentComplexBlocks;
+        return null;//currentComplexBlocks;
     }
 
     public void AddComplexBlock(ComplexBlock complexBlock)
     {
-        currentComplexBlocks.Add(complexBlock);
+        //currentComplexBlocks.Add(complexBlock);
     }
 
     //todo fix complex blocks
@@ -489,5 +528,14 @@ public class Map
             }
         }
         Debug.Log("odd: "  + odd + ", even: " + even);
+    }
+
+    public void ResetRenderers()
+    {
+        foreach (FlyweightRenderer renderer in _renderers.Values)
+        {
+            GameObject.Destroy(renderer.gameObject);
+        }
+        _renderers.Clear();
     }
 }

@@ -7,9 +7,11 @@ public class FGM_MovementBlockedState : FullGridMoveableState
     float movementLerpTimer = 0;
     Vector3 srcPosition;
     Vector3 bumpDest;
+    private FullGridMoveable fgm;
 
     public FGM_MovementBlockedState(FullGridMoveable fgm, StateMachine stateMachine) : base(fgm, stateMachine)
     {
+        this.fgm = fgm;
     }
 
     public override void AnimationTriggerEvent()
@@ -27,22 +29,22 @@ public class FGM_MovementBlockedState : FullGridMoveableState
 
         //modify dest height to match edge of srcblock
         DownDirection downDir = _fgm.GetCurrentDownDirection();
-        BlockOLD srcBlockOld = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
-        if (srcBlockOld != null) 
+        BlockInstance? srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
+        if (srcBlock != null) 
         {
             switch (downDir)
             {
                 case DownDirection.Ydown:
                 case DownDirection.Yup:
-                    bumpDest.y = srcBlockOld.transform.position.y + _fgm.transform.up.y * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.y = fgm.GetCenterOfBlock(fgm.transform.position, fgm.GetCurrentDownDirection()).y + _fgm.transform.up.y * BlockMath.GetBlockExitHeight((BlockInstance)srcBlock, fgm.GetCurrentBlockPosition(), attemptedDestination, fgm.transform.up, fgm.GetCurrentDownDirection()); //srcBlock.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Xleft:
                 case DownDirection.Xright:
-                    bumpDest.x = srcBlockOld.transform.position.x + _fgm.transform.up.x * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.x = fgm.GetCenterOfBlock(fgm.transform.position, fgm.GetCurrentDownDirection()).x + _fgm.transform.up.x * BlockMath.GetBlockExitHeight((BlockInstance)srcBlock, fgm.GetCurrentBlockPosition(), attemptedDestination, fgm.transform.up, fgm.GetCurrentDownDirection());
                     break;
                 case DownDirection.Zforward:
                 case DownDirection.Zback:
-                    bumpDest.z = srcBlockOld.transform.position.z + _fgm.transform.up.z * srcBlockOld.CalculateAttemptedExitEdgeHeight(attemptedDestination, _fgm.transform.up, _fgm.GetCurrentDownDirection());
+                    bumpDest.z = fgm.GetCenterOfBlock(fgm.transform.position, fgm.GetCurrentDownDirection()).z + _fgm.transform.up.z * BlockMath.GetBlockExitHeight((BlockInstance)srcBlock, fgm.GetCurrentBlockPosition(), attemptedDestination, fgm.transform.up, fgm.GetCurrentDownDirection());
                     break;
             }
              

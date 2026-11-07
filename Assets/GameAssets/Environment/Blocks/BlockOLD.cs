@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //deprecated
+
 public class BlockOLDDeprecated : PlaceableMonoBehaviour
 {
     [SerializeField]    
@@ -13,7 +14,7 @@ public class BlockOLDDeprecated : PlaceableMonoBehaviour
     
     public Vector3Int gridPosition, worldPosition;
 
-    // Start is called before the first frame update
+   /* // Start is called before the first frame update
     void Awake()
     {
 
@@ -273,4 +274,5 @@ public class BlockOLDDeprecated : PlaceableMonoBehaviour
         if (blockDownOrientedHeight >= Mathf.Floor(entityDownOrientedHeight)) { return true; }
         return false;
     }
+    */
 }

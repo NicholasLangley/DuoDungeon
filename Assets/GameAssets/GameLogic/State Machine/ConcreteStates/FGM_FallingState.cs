@@ -78,16 +78,16 @@ public class FGM_FallingState : FullGridMoveableState
             return;
         }
         
-        BlockOLD startingBlockOld = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
-        BlockOLD destBlockOld = null;
+        BlockInstance? startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
+        BlockInstance? destBlock = null;
         fallDestination = baseBlockPosition;
         
         DownDirection downDir = _fgm.GetCurrentDownDirection();
         float landingHeightAdjustment = 0.0f;
 
-        if (startingBlockOld != null && startingBlockOld.GetOrientedTopSide(_fgm.gravityDirection).centerType == CenterType.GROUND)
+        if (startingBlock != null && startingBlock.Value.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.Value.rotation).centerType == CenterType.GROUND)
         {
-            destBlockOld = startingBlockOld;
+            destBlock = startingBlock;
         }
         else
         {
@@ -147,14 +147,14 @@ public class FGM_FallingState : FullGridMoveableState
                         fallDestination.z -= 1;
                         break;
                 }
-                destBlockOld = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
+                destBlock = _fgm.map.GetBlockAtGridPosition(fallDestination, _fgm.gameObject, _fgm.gravityDirection);
             }
         }
         
         //get dest block height to fall to
-        if (destBlockOld != null)
+        if (destBlock != null)
         {
-            landingHeightAdjustment = destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
+            landingHeightAdjustment = BlockMath.GetMidBlockHeight(destBlock.Value, _fgm.gravityDirection);
         }
         
         switch (downDir)

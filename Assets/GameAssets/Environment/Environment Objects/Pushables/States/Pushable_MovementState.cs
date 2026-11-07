@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//possibly deprecated
+//TODO reimplement pushables
+/*
 public class Pushable_MovementState : FullGridMoveableState
 {
     Vector3 srcPosition;
@@ -121,12 +124,12 @@ public class Pushable_MovementState : FullGridMoveableState
         }
 
         //If moving into a partial block and able to climb down (not fall)
-        /*if (destBlock != null) 
-        {
-            Debug.Log("src exit: " + srcBlockExitHeight + "src pos height: " + Block.GetPositionsDownOrientedHeight(srcPosition, downDir));
-            Debug.Log("dest enter: " + destBlockEnterHeight + "dest pos height: " + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir));
-            Debug.Log("TOTAL: " + (srcBlockExitHeight - destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(srcPosition, downDir) - Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)));
-        }*/
+        //if (destBlock != null) 
+        //{
+        //    Debug.Log("src exit: " + srcBlockExitHeight + "src pos height: " + Block.GetPositionsDownOrientedHeight(srcPosition, downDir));
+        //    Debug.Log("dest enter: " + destBlockEnterHeight + "dest pos height: " + Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir));
+        //    Debug.Log("TOTAL: " + (srcBlockExitHeight - destBlockEnterHeight + Block.GetPositionsDownOrientedHeight(srcPosition, downDir) - Block.GetPositionsDownOrientedHeight(destBlock.gridPosition, downDir)));
+        //}
         if (destBlockOld != null && srcBlockExitHeight + Mathf.Floor(BlockOLD.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + BlockOLD.GetPositionsDownOrientedHeight(destBlockOld.worldPosition, downDir)) <= _fgm.maxStairClimbHeight)
         {
             float destBlockHeight = destBlockOld.GetMidBlockHeight(_fgm.gravityDirection);
@@ -154,7 +157,7 @@ public class Pushable_MovementState : FullGridMoveableState
             }
         }
         //climbing up to a null block
-        else if (destBlockOld == null && Mathf.FloorToInt(BlockOLD.GetPositionsDownOrientedHeight(destPosition, downDir)) - Mathf.FloorToInt(BlockOLD.GetPositionsDownOrientedHeight(halfwayPosition, downDir)) > 0) { /*Debug.Log("climb up to null")*/; return; }
+        else if (destBlockOld == null && Mathf.FloorToInt(BlockOLD.GetPositionsDownOrientedHeight(destPosition, downDir)) - Mathf.FloorToInt(BlockOLD.GetPositionsDownOrientedHeight(halfwayPosition, downDir)) > 0) { Debug.Log("climb up to null"); return; }
         else
         {
             switch (downDir)
@@ -256,4 +259,4 @@ public class Pushable_MovementState : FullGridMoveableState
             _stateMachine.changeState(_fgm.idleState); 
         }
     }
-}
+}*/

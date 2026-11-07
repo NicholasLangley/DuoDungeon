@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c922a75bc366225d4b53c13b171994cb, type: 3}
+  m_Name: baseData - partial0.2
+  m_EditorClassIdentifier: 
+  blockSides:
+    topSide:
+      centerType: 0
+      centerHeight: 0.2
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0.2
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0.2
+      leftEdgeType: 0
+      leftEdgeHeight: 0.2
+      rightEdgeType: 0
+      rightEdgeHeight: 0.2
+    leftSide:
+      centerType: 0
+      centerHeight: 0
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 0
+    rightSide:
+      centerType: 0
+      centerHeight: 0
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0
+      leftEdgeType: 0
+      leftEdgeHeight: 0
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    bottomSide:
+      centerType: 0
+      centerHeight: 1
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 1
+      rightEdgeType: 0
+      rightEdgeHeight: 1
+    frontSide:
+      centerType: 0
+      centerHeight: 0
+      forwardEdgeType: 0
+      forwardEdgeHeight: 1
+      backwardEdgeType: 0
+      backwardEdgeHeight: 0
+      leftEdgeType: 0
+      leftEdgeHeight: 0
+      rightEdgeType: 0
+      rightEdgeHeight: 0
+    backSide:
+      centerType: 0
+      centerHeight: 0
+      forwardEdgeType: 0
+      forwardEdgeHeight: 0
+      backwardEdgeType: 0
+      backwardEdgeHeight: 1
+      leftEdgeType: 0
+      leftEdgeHeight: 0
+      rightEdgeType: 0
+      rightEdgeHeight: 0

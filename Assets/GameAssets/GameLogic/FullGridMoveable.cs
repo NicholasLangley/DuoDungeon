@@ -94,10 +94,10 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     /////////////////////////////////////////////////////////
 
     #region IMoveable
+    //TODO this doesnt account for orientation
     public Vector3Int GetCurrentBlockPosition()
     {
-        Vector3 currentVec3 = transform.position;
-        currentVec3.y = Mathf.FloorToInt(currentVec3.y);
+        Vector3 currentVec3 = GetCenterOfBlock(transform.position, GetCurrentDownDirection());
         return Map.GetIntVector3(currentVec3);
     }
     public void MoveTo(MovementDirection dir)
@@ -195,7 +195,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         //block exists and is full (player will try to climb ontop of it if possible)
         else if (straightForwardDestBlock != null && exitHeight < 1.0f)
         {
-            float entryHeight = straightForwardDestBlock.CalculateAttemptedEntryEdgeHeight(transform, GetCurrentDownDirection());
+            float entryHeight = BlockMath.GetBlockEntryHeight((BlockInstance)straightForwardDestBlock, transform.position, nextPos, transform.up, GetCurrentDownDirection());
             if (entryHeight > 0.99f && (entryHeight - exitHeight) < maxStairClimbHeight)
             {
                 nextPos += transform.up;
@@ -210,16 +210,19 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     {
         //Debug.Log("current: " + GetCurrentBlockPosition() + " dest: " + destinationToCheck);
         //block collision
-        BlockOLD destinationBlockOld = map.GetBlockAtGridPosition(destinationToCheck, gameObject, gravityDirection);
-        if (destinationBlockOld != null)
+        BlockInstance? destinationBlock = map.GetBlockAtGridPosition(destinationToCheck, gameObject, gravityDirection);
+        if (destinationBlock != null)
         {
-            if (!destinationBlockOld.canEntityEnter(this)) { return true; }
-            if (destinationBlockOld.GetMidBlockHeight(-transform.up) > 0.25)
+            if (!BlockMath.CanEntityEnter(this, GetCenterOfBlock(transform.position, GetCurrentDownDirection()), (BlockInstance)destinationBlock, destinationToCheck)) { return true; }
+            //checking for headbonks I think
+            if (BlockMath.GetMidBlockHeight((BlockInstance)destinationBlock, -transform.up) > 0.25)
             {
                 Vector3 headCheckPos = destinationToCheck;
                 headCheckPos += transform.up;
-                BlockOLD headCheckBlockOld = map.GetBlockAtGridPosition(Map.GetIntVector3(headCheckPos), gameObject, transform.up);
-                if (headCheckBlockOld != null) { return true; }
+                BlockInstance? headCheckBlock = map.GetBlockAtGridPosition(Map.GetIntVector3(headCheckPos), gameObject, transform.up);
+                //note in thory if the head block is only at the "top" of its space this will mean heads are bonking on empty space
+                //TODO maybe expand?
+                if (headCheckBlock != null) { return true; }
             }
         }
 
@@ -236,12 +239,14 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
 
         //remove height to get logical center of current block
         initialPos = GetCenterOfBlock(initialPos, downDir);
+        Vector3 nextPos = GetInitialNextDestinationBlock(dir, initialPos);
 
         //if in a partial block find exit height (if height >= 1 then the player has gone up a level and we'll check for collision there)
-        BlockOLD currentBlockOld = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
-        float exitHeight = currentBlockOld != null ? currentBlockOld.CalculateAttemptedExitEdgeHeight(initialPos, transform.up, GetCurrentDownDirection()) : 0;
+        BlockInstance? currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        float exitHeight = currentBlock != null ? BlockMath.GetBlockExitHeight((BlockInstance)currentBlock, initialPos, nextPos, transform.up, GetCurrentDownDirection()) : 0;
         initialPos += transform.up * exitHeight;
 
+        //TODO don't raycast this anymore, wall blocks will be grabbable via map
 		Vector3 rayDir = GetHorizontalMoveVector();
 
         foreach(float rayStartHeight in collisionRayHeights)
@@ -271,15 +276,15 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
     {
         DownDirection downDir = GetCurrentDownDirection();
 
-        float downDirectionEntityHeight = BlockOLD.GetPositionsDownOrientedHeight(transform.position, downDir);
+        float downDirectionEntityHeight = BlockMath.GetPositionsDownOrientedHeight(transform.position, downDir);
 
-        BlockOLD currentBlockOld = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
-        if (currentBlockOld != null && (currentBlockOld.GetOrientedTopSide(gravityDirection).centerType == CenterType.GROUND))
+        BlockInstance? currentBlock = map.GetCurrentlyOccupiedBlock(gameObject, GetCurrentDownDirection());
+        if (currentBlock != null && (((BlockInstance)currentBlock).blockData.GetOrientedTopSide(gravityDirection, ((BlockInstance)currentBlock).rotation).centerType == CenterType.GROUND))
         {
-            float blockDownDirectionHeight = BlockOLD.GetPositionsDownOrientedHeight(currentBlockOld.worldPosition, downDir);
+            float blockDownDirectionHeight = BlockMath.GetPositionsDownOrientedHeight(GetCenterOfBlock(transform.position, downDir), downDir);
 
             //In block but floating above it and need to fall
-            if (downDirectionEntityHeight - blockDownDirectionHeight - currentBlockOld.GetMidBlockHeight(gravityDirection) > 0.01f) 
+            if (downDirectionEntityHeight - blockDownDirectionHeight - BlockMath.GetMidBlockHeight((BlockInstance)currentBlock, gravityDirection) > 0.01f) 
             {
                 /*Debug.Log("floating in block");*/
                 //Debug.Log("Entity Height: " + downDirectionEntityHeight + "\nBlock Height: " + blockDownDirectionHeight + "\nMidBlock Height: " + currentBlock.GetMidBlockHeight(gravityDirection)); 
@@ -288,7 +293,7 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
             return true;
         }
         //floating in empty block
-        else if (currentBlockOld == null)
+        else if (currentBlock == null)
         {
             switch (downDir)
             {
@@ -310,9 +315,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
         Vector3Int groundPos =  GetBelowBlockPosition(Map.GetIntVector3(transform.position), downDir);
         
 
-        BlockOLD groundBlockOld = map.GetBlockAtGridPosition(groundPos, gameObject, gravityDirection);
+        BlockInstance? groundBlock = map.GetBlockAtGridPosition(groundPos, gameObject, gravityDirection);
 
-        if (groundBlockOld == null || (groundBlockOld.GetOrientedTopSide(-transform.up).centerType != CenterType.GROUND) || groundBlockOld.GetMidBlockHeight(-transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
+        if (groundBlock == null || (groundBlock.Value.blockData.GetOrientedTopSide(-transform.up, groundBlock.Value.rotation).centerType != CenterType.GROUND) || BlockMath.GetMidBlockHeight((BlockInstance)groundBlock, -transform.up) < 0.99f) { /*Debug.Log("fall no block below");*/ return false; }
 
         return true;
     }
@@ -331,9 +336,9 @@ public abstract class FullGridMoveable : MonoBehaviour, IMoveable, IClimbable, I
                     {
                         DownDirection downDir = GetCurrentDownDirection();
 
-                        float downDirectionEntityHeight = BlockOLD.GetPositionsDownOrientedHeight(transform.position, downDir);
+                        float downDirectionEntityHeight = BlockMath.GetPositionsDownOrientedHeight(transform.position, downDir);
 
-                        float wallDownDirectionHeight = BlockOLD.GetPositionsDownOrientedHeight(wall.gameObject.transform.position, downDir);
+                        float wallDownDirectionHeight = BlockMath.GetPositionsDownOrientedHeight(wall.gameObject.transform.position, downDir);
 
                         //above wall but floating above it and need to fall
                         if (downDirectionEntityHeight - wallDownDirectionHeight - wall.thickness > 0.01f)
