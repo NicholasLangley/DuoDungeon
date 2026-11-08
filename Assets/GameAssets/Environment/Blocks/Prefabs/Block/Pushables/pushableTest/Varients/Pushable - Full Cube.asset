@@ -17,7 +17,7 @@ MonoBehaviour:
   <varientID>k__BackingField: blank
   baseBlockData: {fileID: 11400000, guid: f7777f7bb5d50b6c99a297b841f161ba, type: 2}
   mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
-  material: {fileID: 2100000, guid: 61fe7b6280a5cba43a57e01d863682f2, type: 2}
+  material: {fileID: 2100000, guid: 8e08bae9207ac74b8be96e9874e260a4, type: 2}
   properties:
   - {fileID: 11400000, guid: fd729db7cf6e3fedc8af0fde4283f7a8, type: 2}
   - {fileID: 11400000, guid: ba13637f83ea2e68eaed34a78cb31aae, type: 2}

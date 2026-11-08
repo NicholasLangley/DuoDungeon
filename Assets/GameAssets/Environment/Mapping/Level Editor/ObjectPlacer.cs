@@ -54,11 +54,12 @@ public class ObjectPlacer : MonoBehaviour
     Vector3Int _drawStartPosition;
     [SerializeField] float maxDrawDistanceBetweenBlocks;
     List<Vector3> _ghostDrawPositionList;
-    //private GameObject _ghostParent;
+    private GameObject _ghostRendererParent;
     private GameObject _ghostRotator;
     private Placeable _ghostSelectedPlaceable;
     List<Vector3> _ghostWorldPlacePositionList;
     private bool _hidingGhosts; 
+    FlyweightRenderer _ghostRenderer;
 
     UltimateList ultimateList;
     public List<string> wallListIDs;
@@ -84,7 +85,8 @@ public class ObjectPlacer : MonoBehaviour
         _ghostDrawPositionList = new List<Vector3>();
         _ghostWorldPlacePositionList = new List<Vector3>();
         _hidingGhosts = true;
-        //_ghostParent = new GameObject(name: "ghost parent");
+        _ghostRendererParent = new GameObject(name: "ghost renderer parent");
+        _ghostRenderer = _ghostRendererParent.AddComponent<FlyweightRenderer>();
     }
 
     // Update is called once per frame
@@ -163,6 +165,13 @@ public void SetBlockList(UltimateList list)
     {
         _ghostSelectedPlaceable = placeable;
         
+        //Set renderer object
+        BlockData blockData = ultimateList.GetMasterList(placeable.listID)
+            .GetBlock(placeable.baseID, placeable.varientID);
+        _ghostRenderer.SetMesh(blockData.mesh);
+        _ghostRenderer.SetMaterial(blockData.material);
+        _ghostRenderer.SetTransparency(0.5f);
+
         /*if (_ghostSelectedPlaceable != null) { GameObject.Destroy(_ghostSelectedPlaceable.gameObject); }
         _ghostSelectedPlaceable = Instantiate(obj);
         _ghostSelectedPlaceable.name = "Ghost Block Blueprint";
@@ -262,10 +271,33 @@ public void SetBlockList(UltimateList list)
         }
 
         _ghostWorldPlacePositionList = new List<Vector3>(_ghostDrawPositionList);
+        UpdateGhostRendererTransforms();
         
-        //TODO draw the ghosts with batch rendering here
         //update grid to be around player cursor
         gridPlane.transform.position = Map.GetIntVector3(GetCurrentIntersectPoint());
+    }
+
+    void UpdateGhostRendererTransforms()
+    {
+        List<FlyweightTransform> transforms = new List<FlyweightTransform>();
+        _ghostRenderer.ClearRedTransforms();
+        map.ClearRedBlocks();
+        int i = 0;
+        foreach (Vector3 position in _ghostDrawPositionList)
+        {
+            transforms.Add(new FlyweightTransform(position, _ghostRotator.transform.rotation));
+            
+            //check if ghost overlaps existing block
+            if (map.GetBlockAtGridPosition(position, null, Vector3.down) != null)
+            {
+                _ghostRenderer.SetTransformRed(i);
+                map.SetBlockRedAtWorldPosition(position);
+            }
+
+            i++;
+        }
+        
+        _ghostRenderer.SetTransforms(transforms);
     }
 
     void CalculatePointModeGhost()
@@ -523,6 +555,7 @@ public void SetBlockList(UltimateList list)
         {
             //get place commands and add to command group in order
             List<Command> commands = PlaceCurrentObject(ghostPos);
+            if(commands == null) {return null;}
             foreach (Command command in commands)
             {
                 commandGroup.AddCommand(command);
@@ -588,7 +621,7 @@ public void SetBlockList(UltimateList list)
                 break;
             }
 
-            BlockInstance? preExistingBlockInstance = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
+            BlockInstance preExistingBlockInstance = map.GetBlockAtGridPosition(positionCheck, null, Vector3.down);
             if (preExistingBlockInstance != null)
             {
                 string preExistingListID;
@@ -612,11 +645,11 @@ public void SetBlockList(UltimateList list)
                 }
                 else
                 {*/
-                preExistingListID = preExistingBlockInstance.Value.blockData.listID; //preExistingBlockInstance.blockData.listID;
-                preExistingBaseID = preExistingBlockInstance.Value.blockData.baseID;
-                preExistingVarID = preExistingBlockInstance.Value.blockData.varientID;
+                preExistingListID = preExistingBlockInstance.blockData.listID; //preExistingBlockInstance.blockData.listID;
+                preExistingBaseID = preExistingBlockInstance.blockData.baseID;
+                preExistingVarID = preExistingBlockInstance.blockData.varientID;
                 //}
-                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockInstance.Value.rotation);
+                RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlockInstance.rotation);
                 commands.Add(removeCmd);
             }
         }
@@ -655,9 +688,9 @@ public void SetBlockList(UltimateList list)
         */
     }
 
-    public void RemoveBlock(Vector3Int position)
+    public void RemoveBlock(Vector3 position)
     {
-        map.RemoveBlockAtLocation(position);
+        map.RemoveBlockAtWorldLocation(position);
         //TODO figure out why blocks are going to 0,0,0 or elsewhere?
     }
 
@@ -696,7 +729,7 @@ public void SetBlockList(UltimateList list)
         }
         List<Command> commands = new List<Command>();
 
-        BlockInstance? preExistingBlock = map.GetBlockAtGridPosition(worldPosition, null, Vector3.down);
+        BlockInstance preExistingBlock = map.GetBlockAtGridPosition(worldPosition, null, Vector3.down);
 
         Vector3Int oldPlayerPos = isRedPlayer ? Map.GetIntVector3(redPlayerPlacementIndicator.transform.position) : Map.GetIntVector3(bluePlayerPlacementIndicator.transform.position);
         Quaternion oldPlayerRot = isRedPlayer ? redPlayerPlacementIndicator.transform.rotation : bluePlayerPlacementIndicator.transform.rotation;
@@ -720,12 +753,12 @@ public void SetBlockList(UltimateList list)
             }
             else
             {*/
-            preExistingListID = preExistingBlock.Value.blockData.listID;
-            preExistingBaseID = preExistingBlock.Value.blockData.baseID;
-            preExistingVarID = preExistingBlock.Value.blockData.varientID;
+            preExistingListID = preExistingBlock.blockData.listID;
+            preExistingBaseID = preExistingBlock.blockData.baseID;
+            preExistingVarID = preExistingBlock.blockData.varientID;
             //}
 
-            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.Value.rotation);
+            RemoveBlockCommand removeCmd = new RemoveBlockCommand(this, rootPosition, preExistingListID, preExistingBaseID, preExistingVarID, preExistingBlock.rotation);
             commands.Add(removeCmd);
         }
         //checked for player collision
@@ -748,7 +781,7 @@ public void SetBlockList(UltimateList list)
 
     public void PlacePlayer(Vector3Int position, Quaternion rotation, bool isRedPlayer)
     {
-        map.RemoveBlockAtLocation(position);
+        map.RemoveBlockAtWorldLocation(position);
         if (isRedPlayer)
         {
             map.redPlayerSpawn = position;

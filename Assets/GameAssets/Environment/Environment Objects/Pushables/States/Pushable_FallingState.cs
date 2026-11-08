@@ -78,13 +78,13 @@ public class Pushable_FallingState : FullGridMoveableState
             return;
         }
 
-        BlockInstance? startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
-        BlockInstance? destBlock;
+        BlockInstance startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
+        BlockInstance destBlock;
         fallDestination = baseBlockPosition;
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        if (startingBlock != null && startingBlock.Value.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.Value.rotation).centerType == CenterType.GROUND)
+        if (startingBlock != null && startingBlock.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.rotation).centerType == CenterType.GROUND)
         {
             destBlock = startingBlock;
         }

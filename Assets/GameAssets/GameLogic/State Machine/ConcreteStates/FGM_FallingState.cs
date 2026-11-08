@@ -78,14 +78,14 @@ public class FGM_FallingState : FullGridMoveableState
             return;
         }
         
-        BlockInstance? startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
-        BlockInstance? destBlock = null;
+        BlockInstance startingBlock = _fgm.map.GetBlockAtGridPosition(baseBlockPosition, _fgm.gameObject, _fgm.gravityDirection);
+        BlockInstance destBlock = null;
         fallDestination = baseBlockPosition;
         
         DownDirection downDir = _fgm.GetCurrentDownDirection();
         float landingHeightAdjustment = 0.0f;
 
-        if (startingBlock != null && startingBlock.Value.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.Value.rotation).centerType == CenterType.GROUND)
+        if (startingBlock != null && startingBlock.blockData.GetOrientedTopSide(_fgm.gravityDirection, startingBlock.rotation).centerType == CenterType.GROUND)
         {
             destBlock = startingBlock;
         }
@@ -154,7 +154,7 @@ public class FGM_FallingState : FullGridMoveableState
         //get dest block height to fall to
         if (destBlock != null)
         {
-            landingHeightAdjustment = BlockMath.GetMidBlockHeight(destBlock.Value, _fgm.gravityDirection);
+            landingHeightAdjustment = BlockMath.GetMidBlockHeight(destBlock, _fgm.gravityDirection);
         }
         
         switch (downDir)

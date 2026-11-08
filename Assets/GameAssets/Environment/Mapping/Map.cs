@@ -192,14 +192,14 @@ public class Map
         }
     }
 
-    private BlockInstance? GetStaticBlock(Vector3Int halfGridPosition)
+    private BlockInstance GetStaticBlock(Vector3Int halfGridPosition)
     {
         if (currentStaticBlocks.ContainsKey(halfGridPosition)) { return currentStaticBlocks[halfGridPosition]; }
 
         return null;
     }
 
-    private BlockInstance? GetStaticBlock(Vector3 worldPosition)
+    private BlockInstance GetStaticBlock(Vector3 worldPosition)
     {
         Vector3Int halfGridPosition = WorldToHalfGrid(worldPosition);
         return (GetStaticBlock(Map.GetIntVector3(halfGridPosition)));
@@ -254,11 +254,11 @@ public class Map
 
     #endregion
 
-    public void RemoveBlockAtLocation(Vector3 pos)
+    public void RemoveBlockAtWorldLocation(Vector3 worldPos)
     {
-        Vector3 position = WorldToHalfGrid(pos);
-        BlockInstance? block = GetBlockAtGridPosition(position, null, Vector3.down);
-        if (block == null){ return; }
+        //Vector3 position = WorldToHalfGrid(worldPos);
+        //BlockInstance block = GetBlockAtGridPosition(position, null, Vector3.down);
+        //if (block == null){ return; }
         /*
          TODO reintegrate
         if (block.GetComponentInParent<ComplexBlock>() != null)
@@ -266,18 +266,18 @@ public class Map
             RemoveComplexBlockAtLocation(position);
         }
         else*/
-        RemoveBlockFromWorld(Map.GetIntVector3(position));
+        RemoveBlockFromWorld(Map.GetIntVector3(worldPos));
     }
 
-    public BlockInstance? GetBlockAtGridPosition(Vector3 worldPos, GameObject requestor, Vector3 downVector)
+    public BlockInstance GetBlockAtGridPosition(Vector3 worldPos, GameObject requestor, Vector3 downVector)
     {
         return GetBlockAtGridPosition(Map.GetIntVector3(worldPos), requestor, downVector);
     }
 
-    public BlockInstance? GetBlockAtGridPosition(Vector3Int worldPos, GameObject requestor, Vector3 downVector)
+    public BlockInstance GetBlockAtGridPosition(Vector3Int worldPos, GameObject requestor, Vector3 downVector)
     {
         Vector3Int halfGridPos = WorldToHalfGrid(worldPos);
-        BlockInstance? staticBlock = GetStaticBlock(halfGridPos);
+        BlockInstance staticBlock = GetStaticBlock(halfGridPos);
         // todo fix
         //BlockOLD complexBlockOldPart = GetComplexBlockPart(halfGridPos, requestor);
         
@@ -293,7 +293,7 @@ public class Map
         return staticBlock;
     }
 
-    public BlockInstance? GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
+    public BlockInstance GetCurrentlyOccupiedBlock(GameObject requestor, DownDirection downDir)
     {
         Vector3 gridPosition = requestor.transform.position;
         switch (downDir)
@@ -537,5 +537,23 @@ public class Map
             GameObject.Destroy(renderer.gameObject);
         }
         _renderers.Clear();
+    }
+
+    public void ClearRedBlocks()
+    {
+        foreach (FlyweightRenderer renderer in _renderers.Values)
+        {
+            renderer.ClearRedTransforms();
+        }
+    }
+
+    public void SetBlockRedAtWorldPosition(Vector3 worldPosition)
+    {
+        BlockInstance block = GetBlockAtGridPosition(worldPosition, null, Vector3.down);
+        FlyweightRenderer renderer = _renderers[block.blockData.GetIdString()];
+        if (renderer != null)
+        {
+            renderer.SetTransformRed(block.rendererIndex);
+        }
     }
 }

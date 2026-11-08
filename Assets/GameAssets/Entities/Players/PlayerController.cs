@@ -121,9 +121,9 @@ public class PlayerController : ICommandable
         //check if blocking object is a pushable object
         if (redBlocked && !redBlockedByWall)
         {
-            BlockInstance? destinationBlock =
+            BlockInstance destinationBlock =
                 redPlayer.map.GetBlockAtGridPosition(nextRedPos, redPlayer.gameObject, redPlayer.gravityDirection);
-            if (destinationBlock != null && PushableBlockProperty.IsPushable(destinationBlock.Value.blockData))
+            if (destinationBlock != null && PushableBlockProperty.IsPushable(destinationBlock.blockData))
             {
                 Debug.Log("red attempting push! NEED to implement");
                 //todo reimplement pushables via properties
@@ -138,10 +138,10 @@ public class PlayerController : ICommandable
 
         if (blueBlocked && !blueBlockedByWall)
         {
-            BlockInstance? destinationBlock =
+            BlockInstance destinationBlock =
                 bluePlayer.map.GetBlockAtGridPosition(nextBluePos, bluePlayer.gameObject, bluePlayer.gravityDirection);
             if (destinationBlock != null &&
-                PushableBlockProperty.IsPushable(destinationBlock.Value.blockData))
+                PushableBlockProperty.IsPushable(destinationBlock.blockData))
             {
                 Debug.Log("blue attempting push! NEED to implement");
                 //todo reimplement pushables via properties

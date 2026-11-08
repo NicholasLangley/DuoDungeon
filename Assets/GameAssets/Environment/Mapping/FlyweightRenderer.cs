@@ -27,15 +27,30 @@ public class FlyweightRenderer : MonoBehaviour
     private int _totalCount;
     //can only draw 1023 instances per call
     private int _maxBatchSize = 1023;
-    Matrix4x4[] _batchMatricies;
+    private Matrix4x4[] _batchMatricies;
+    private Vector4[] _colors;
     private HashSet<int> _disabledIndexes;
+    private HashSet<int> _redIndexes;
+    
+    //properties
+    private MaterialPropertyBlock _propertyBlock;
+    private float _alpha;
+    private int _colorPropertyID;
     
     public void OnEnable()
     {
         _flyweightMatricies = new List<Matrix4x4>();
         _batchMatricies = new Matrix4x4[_maxBatchSize];
+        _colors = new Vector4[_maxBatchSize];
         _disabledIndexes = new HashSet<int>();
+        _redIndexes = new HashSet<int>();
         _totalCount = _flyweightMatricies.Count;
+        
+        SetTransparency(1.0f);
+        _colorPropertyID = Shader.PropertyToID("_Color");
+            
+        _propertyBlock = new MaterialPropertyBlock();
+
     }
 
     public void Update()
@@ -50,6 +65,7 @@ public class FlyweightRenderer : MonoBehaviour
             {
                 //assign instances to batch array
                 _batchMatricies[batchArrayCounter] = _flyweightMatricies[i];
+                _colors[batchArrayCounter] = GetInstanceColor(i);
                 batchArrayCounter++;
                 if (batchArrayCounter == _maxBatchSize)
                 {
@@ -78,8 +94,16 @@ public class FlyweightRenderer : MonoBehaviour
         _material = m;
     }
 
+    //this alpha value is applied to every block being rendered currently.
+    //No per instance transparancy at the moment
+    public void SetTransparency(float f)
+    {
+        _alpha = f;
+    }
+
     public void SetTransforms(List<FlyweightTransform> transforms)
     {
+        if(_flyweightMatricies == null){return;}
         _flyweightMatricies.Clear();
         _flyweightMatricies.Capacity = transforms.Count;
         foreach (var t in transforms)
@@ -113,6 +137,7 @@ public class FlyweightRenderer : MonoBehaviour
 
     public void DisableTransform(int index)
     {
+        if(index < 0 || index >= _flyweightMatricies.Count){return;}
         _disabledIndexes.Add(index);
     }
     
@@ -121,14 +146,40 @@ public class FlyweightRenderer : MonoBehaviour
         _disabledIndexes.Remove(index);
     }
 
+    public void SetTransformRed(int index)
+    {
+        _redIndexes.Add(index);
+    }
+
+    public void UnsetTransformRed(int index)
+    {
+        _redIndexes.Remove(index);
+    }
+
+    public void ClearRedTransforms()
+    {
+        _redIndexes.Clear();
+    }
+
     public int GetNextIndex()
     {
         return _totalCount;
     }
+
+    Vector4 GetInstanceColor(int i)
+    {
+        Vector4 color;
+        if (_redIndexes.Contains(i)) { color = Color.red;}
+        else {color = Color.white;}
+        
+        color.w = _alpha;
+        return color;
+    }
     
     void SendDrawCall(int batchSize)
     {
-        Graphics.DrawMeshInstanced(_mesh, 0, _material, _batchMatricies, batchSize);
+        _propertyBlock.SetVectorArray(_colorPropertyID, _colors);
+        Graphics.DrawMeshInstanced(_mesh, 0, _material, _batchMatricies, batchSize,  _propertyBlock);
     }
     
 }

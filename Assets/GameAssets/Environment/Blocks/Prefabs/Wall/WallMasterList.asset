@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: WallMasterList
   m_EditorClassIdentifier: 
   listID: Wall
-  blockVarientLists:
-  - {fileID: 11400000, guid: 11c5fc3c01ad5d586962502bdd06f3e7, type: 2}
+  blockVarientLists: []

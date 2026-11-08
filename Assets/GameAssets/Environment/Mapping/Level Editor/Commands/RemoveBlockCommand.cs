@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RemoveBlockCommand : Command
 {
-    Vector3Int placementLocation;
+    Vector3 placementLocation;
     string listID, baseID, varientID;
     Quaternion blockRotation;
     ObjectPlacer objectPlacer;

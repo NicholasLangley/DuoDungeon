@@ -34,10 +34,10 @@ public class FGM_MovementState : FullGridMoveableState
         //halfway point still need to calculate proper y value with block heights
         halfwayPosition = Vector3.Lerp(srcPosition, destPosition, 0.5f);
 
-        BlockInstance? srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
-        BlockInstance? destBlock = _fgm.map.GetBlockAtGridPosition(Map.GetGridSpace(destPosition), _fgm.gameObject, _fgm.gravityDirection);
+        BlockInstance srcBlock = _fgm.map.GetCurrentlyOccupiedBlock(_fgm.gameObject, _fgm.GetCurrentDownDirection());
+        BlockInstance destBlock = _fgm.map.GetBlockAtGridPosition(Map.GetGridSpace(destPosition), _fgm.gameObject, _fgm.gravityDirection);
         //need to check if the block is being pushed, so we can ignore it
-        if(destBlock != null && PushableBlockProperty.IsPushable(destBlock.Value.blockData))
+        if(destBlock != null && PushableBlockProperty.IsPushable(destBlock.blockData))
         {
             //TODO fix pushing
             /*
@@ -52,8 +52,8 @@ public class FGM_MovementState : FullGridMoveableState
 
         DownDirection downDir = _fgm.GetCurrentDownDirection();
 
-        float srcBlockExitHeight = srcBlock != null ? BlockMath.GetBlockExitHeight((BlockInstance)srcBlock, _fgm.GetCurrentBlockPosition(), destPosition, _fgm.transform.up, _fgm.GetCurrentDownDirection()) : 0;
-        float destBlockEnterHeight = destBlock != null ? BlockMath.GetBlockEntryHeight((BlockInstance)destBlock, _fgm.GetCurrentBlockPosition(), destPosition, _fgm.transform.up, _fgm.GetCurrentDownDirection()) : 0;
+        float srcBlockExitHeight = srcBlock != null ? BlockMath.GetBlockExitHeight(srcBlock, _fgm.GetCurrentBlockPosition(), destPosition, _fgm.transform.up, _fgm.GetCurrentDownDirection()) : 0;
+        float destBlockEnterHeight = destBlock != null ? BlockMath.GetBlockEntryHeight(destBlock, _fgm.GetCurrentBlockPosition(), destPosition, _fgm.transform.up, _fgm.GetCurrentDownDirection()) : 0;
 
         //function doesnt care about height differences
         if (srcBlock != null) 
@@ -197,7 +197,7 @@ public class FGM_MovementState : FullGridMoveableState
         }*/
         if (destBlock != null && srcBlockExitHeight + Mathf.Floor(BlockMath.GetPositionsDownOrientedHeight(srcPosition, downDir)) - (destBlockEnterHeight + BlockMath.GetPositionsDownOrientedHeight(destPosition, downDir)) <= _fgm.maxStairClimbHeight) //TODO if this is broken the destPoition was originally destBlock.worldPosition. I think this is the same but maybe not
         {
-            float destBlockHeight = BlockMath.GetMidBlockHeight((BlockInstance)destBlock, _fgm.gravityDirection);
+            float destBlockHeight = BlockMath.GetMidBlockHeight(destBlock, _fgm.gravityDirection);
             //Debug.Log("climbdown within partial: " + destBlockHeight);
             //TODO if this is broken the destPoition was originally destBlock.worldPosition. I think this is the same but maybe not
             switch (downDir)
@@ -247,8 +247,8 @@ public class FGM_MovementState : FullGridMoveableState
                 Vector3 belowDestPos = destPosition;
                 belowDestPos += _fgm.gravityDirection;
                 belowDestPos = Map.GetGridSpace(belowDestPos);
-                BlockInstance? belowDestBlock = _fgm.map.GetBlockAtGridPosition(belowDestPos, _fgm.gameObject, _fgm.gravityDirection);
-                if (belowDestBlock != null && BlockMath.GetMidBlockHeight((BlockInstance)belowDestBlock, _fgm.gravityDirection) == 1.0f && Mathf.Abs(BlockMath.GetPositionsDownOrientedHeight(destPosition, _fgm.GetCurrentDownDirection()) - BlockMath.GetPositionsDownOrientedHeight(belowDestPos, _fgm.GetCurrentDownDirection()) - 1.0f) <= _fgm.maxStairClimbHeight) 
+                BlockInstance belowDestBlock = _fgm.map.GetBlockAtGridPosition(belowDestPos, _fgm.gameObject, _fgm.gravityDirection);
+                if (belowDestBlock != null && BlockMath.GetMidBlockHeight(belowDestBlock, _fgm.gravityDirection) == 1.0f && Mathf.Abs(BlockMath.GetPositionsDownOrientedHeight(destPosition, _fgm.GetCurrentDownDirection()) - BlockMath.GetPositionsDownOrientedHeight(belowDestPos, _fgm.GetCurrentDownDirection()) - 1.0f) <= _fgm.maxStairClimbHeight) 
                 {
                     switch (downDir)
                     {
